@@ -1,0 +1,14 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Titel}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Untertitel}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Auflistung}{2}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Aufz\IeC {\"a}hlung}{2}{subsection.1.3}
+\contentsline {section}{\numberline {2}Math}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Inline}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Full Math}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Nummerierte Gleichungen}{2}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Diverses}{2}{subsection.2.4}
+\contentsline {section}{\numberline {3}Graphiken}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Ein Bild einf\IeC {\"u}gen}{2}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Tabelle}{2}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Direkt im Dokument}{3}{subsection.3.3}
