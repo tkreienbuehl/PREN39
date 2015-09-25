@@ -7,13 +7,13 @@ Hier kommt etwas über die Motoren rein.
 \subsubsection{Anforderungen}
 \begin{itemize}
 \item Das Board muss eine Schnittstelle zu dem Boardcomputer haben.
-\item Das Borad muss AD Wandler haben.
+\item Das Board muss AD Wandler haben.
 \item Möglichst Kostengünstig.
 \end{itemize}
 
 
 \subsubsection{Tinkerforge}
-Tinkerforge bietet ein vielseitiges System aus Mikrocontrollern, Sensoren, Treiber und weiteren Baugruppen an. Diese Funktionen sind jeweils in Module aufgeteilt, welche Modular hinzufügbar sind. Diese Module kommunizieren einerseits untereinander und andererseits mit einem Hauptsteuerelement. Dieses kann ein PC oder aber auch ein Linux basierter Minirechner sein (wie zum Beispiel das Beaglebone oder Freedomboard).\\\\
+%%Tinkerforge bietet ein vielseitiges System aus Mikrocontrollern, Sensoren, Treiber und weiteren Baugruppen an. Diese Funktionen sind jeweils in Module aufgeteilt, welche Modular hinzufügbar sind. Diese Module kommunizieren einerseits untereinander und andererseits mit einem Hauptsteuerelement. Dieses kann ein PC oder aber auch ein Linux basierter Minirechner sein (wie zum Beispiel das Beaglebone oder Freedomboard).\\\\%%
 \textbf {Vorteile}
 \begin{itemize}
 \item Einfache und modulare Schnittstelle zum Boardcomputer.
@@ -24,15 +24,15 @@ Tinkerforge bietet ein vielseitiges System aus Mikrocontrollern, Sensoren, Treib
 \item Grosser Aufwand für eigene Module(Abhängigkeit zu Tinkerforge).
 \item Eher teure Module.		
 \end{itemize}
-Mögliche Kostenberechnung: 1x Hauptmodul: 50, 2x Distanzsensoren: 10, Linesensor: 10, 2x Schrittmotoren: 100, Diverses:10. Gesamt: 180 Euro.
+%%Mögliche Kostenberechnung: 1x Hauptmodul: 50, 2x Distanzsensoren: 10, Linesensor: 10, 2x Schrittmotoren: 100, Diverses:10. Gesamt: 180 Euro.%%
 
-\begin{figure}[ht]
-	\centering									
-	\includegraphics{TinkerforgeUebersicht.jpg}
-	\caption{Ein möglicher Aufbau des Tinkerfoge Systems. Hier mit einem Ultraschallsensor.}
-	\label{fig1}
-	%Quelle: http://www.heise.de/make/meldung/Modul-Baukasten-Tinkerforge-Abnabelung-vom-PC-dank-RED-Brick-2490601.html
-\end{figure}
+%%\begin{figure}[ht]
+%%	\centering									
+%%	\includegraphics{TinkerforgeUebersicht.jpg}
+%%	\caption{Ein möglicher Aufbau des Tinkerfoge Systems. Hier mit einem Ultraschallsensor.}
+%%	\label{fig1}
+%%	%Quelle: http://www.heise.de/make/meldung/Modul-Baukasten-Tinkerforge-Abnabelung-vom-PC-dank-RED-Brick-2490601.html
+%%\end{figure}
 
 \subsubsection{HCS08 Devlopperboard}
 %http://ch.farnell.com/freescale-semiconductor/dc9s08qe32/tochterplatine-f-r-demoqe32/dp/1692128
@@ -55,7 +55,7 @@ Mögliche Kostenberechnung: 1x Hauptmodul: 50, 2x Distanzsensoren: 10, Linesenso
 \end{itemize}
 
 \subsubsection{Ultraschallsensoren}
-Ultraschalsensoren werden häufig als Bewegungsmelder eingesetzt. 
+%Ultraschalsensoren werden häufig als Bewegungsmelder eingesetzt. 
 %http://www.miniinthebox.com/de/ultraschall-modul-hc-sr04-entfernung-messumformer-sensor-fuer-arduino-201211270080054_p478889.html
 \textbf {Vorteile}
 \begin{itemize}
@@ -66,17 +66,17 @@ Ultraschalsensoren werden häufig als Bewegungsmelder eingesetzt.
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.\\
+\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.
 \item Sind empfindlich auf UV-Licht!
 \item Geringe Reichweite (je nach Typ nur bis 5mm)
 \end{itemize}
 \subsubsection{Infrarotsensoren}
 %http://rn-wissen.de/wiki/index.php?title=CNY70
-Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.
+Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 \textbf {Vorteile}
 \begin{itemize}
 \item Kostengünstig (Sensor und Empfänger kosten zusammen 1.7Fr).
-\item Häufig gebraucht für diese Anwendung => grosse Community.\\
+\item Häufig gebraucht für diese Anwendung => grosse Community.
 \item Kann als Liniensensor und Rad-Encoder eingesetzt werden.\\
 \end{itemize}
 \textbf {Nachteile}
