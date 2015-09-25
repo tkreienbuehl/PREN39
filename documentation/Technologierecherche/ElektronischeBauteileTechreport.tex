@@ -6,9 +6,10 @@ Hier kommt etwas über die Motoren rein.
 \subsection*{MC Board}
 \subsubsection{Anforderungen}
 \begin{itemize}
-\item Das Board muss eine Schnittstelle zu dem Boardcomputer haben.
-\item Das Board muss AD Wandler haben.
-\item Möglichst Kostengünstig.
+\item Das Board muss eine Schnittstelle zu dem Boardcomputer haben. (UART,I2C,SPI,Ethernet)
+\item Gute Rechenperformance (besser mehr als zu wenig).
+\item Das Board muss einen AD Wandler haben.
+\item Möglichst Kostengünstig (Richtpreis 20Fr.).
 \end{itemize}
 
 
@@ -36,11 +37,32 @@ Hier kommt etwas über die Motoren rein.
 
 \subsubsection{HCS08 Devlopperboard}
 %http://ch.farnell.com/freescale-semiconductor/dc9s08qe32/tochterplatine-f-r-demoqe32/dp/1692128
+\textbf {Vorteile}
+\begin{itemize}
+\item Positive Erfahrungen im MC Modul (Einarbeitung in die Grundfunktionen entfällt).
+\item Starterkit von der Hochschule erhältlich. \\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Begrenzte Rechenpower.	
+\end{itemize}
 
-\subsubsection{MSP430 Launchpad}
-%http://www.ti.com/ww/en/launchpad/launchpads-connected.html#tabs
 \subsubsection{Arduinoboard}
 %http://www.ti.com/ww/en/launchpad/launchpads-connected.html#tabs
+\textbf {Vorteile}
+\begin{itemize}
+\item Erschwinglich, ein Sensor kostet ungefähr 5.Fr.
+\item Häufig gebraucht für diese Anwendung $\Rightarrow$ grosse Community.
+\item Unempfindlich auf Störeinflüsse.(Ausser andere Ultraschallsensoren)
+\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.
+\item Sind empfindlich auf UV-Licht!
+\item Geringe Reichweite (je nach Typ nur bis 5mm)
+\end{itemize}
+
 \subsubsection{Freedomboard}
 %http://www.ti.com/ww/en/launchpad/launchpads-connected.html#tabs
 
@@ -60,7 +82,7 @@ Hier kommt etwas über die Motoren rein.
 \textbf {Vorteile}
 \begin{itemize}
 \item Erschwinglich, ein Sensor kostet ungefähr 5.Fr.
-\item Häufig gebraucht für diese Anwendung => grosse Community.
+\item Häufig gebraucht für diese Anwendung $\Rightarrow$ grosse Community.
 \item Unempfindlich auf Störeinflüsse.(Ausser andere Ultraschallsensoren)
 \item Kann als Liniensensor und Rad-Encoder eingesetzt werden.\\
 \end{itemize}
@@ -87,4 +109,4 @@ Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 \end{itemize}
 
 \subsubsection{Liniensensoren/Reflexkoppler}
-\end {document}
+
