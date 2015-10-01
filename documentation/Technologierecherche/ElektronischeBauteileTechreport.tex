@@ -63,7 +63,17 @@ Hier kommt etwas über die Motoren rein.
 \end{itemize}
 
 \subsubsection{Freedomboard}
-%http://www.ti.com/ww/en/launchpad/launchpads-connected.html#tabs
+\textbf {Vorteile}
+\begin{itemize}
+\item Im Preisrahmen, ein Board gibt es ab 20Fr.-.
+\item Wurde an der Hochschule bereits eingesetzt.(Mögliche Ansprechpersonen)
+\item Einfache Programmierung.\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Besitzt ein Betriebsystem. $\Rightarrow$ weniger Hardware nahe.
+\item Keine persönlichen Programmiererfahrungen auf dem Freedomboard.
+\end{itemize}
 
 \subsection*{Distanzsensoren}
 \subsubsection{Anforderungen}
@@ -73,6 +83,7 @@ Hier kommt etwas über die Motoren rein.
 \item Preis darf 10Fr. nicht übersteigen.
 \item Möglichst Störungsunabhängig.
 \item Distanz 10cm.
+\item Möglichst eindeutige Aussage (geriner Streuungswinkel).
 \end{itemize}
 
 \subsubsection{Ultraschallsensoren}
@@ -83,14 +94,14 @@ Hier kommt etwas über die Motoren rein.
 \item Erschwinglich, ein Sensor kostet ungefähr 5.Fr.
 \item Häufig gebraucht für diese Anwendung $\Rightarrow$ grosse Community.
 \item Unempfindlich auf Störeinflüsse.(Ausser andere Ultraschallsensoren)
-\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.\\
+\item Grosse Distanz (>10cm).\\
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.
-\item Sind empfindlich auf UV-Licht!
-\item Geringe Reichweite (je nach Typ nur bis 5mm)
+\item Kann nicht als als Liniensensor eingesetzt werden.
+\item Keine klaren Grenzen. (grosser Abstrahlwinkel)
 \end{itemize}
+
 \subsubsection{Infrarotsensoren}
 %http://rn-wissen.de/wiki/index.php?title=CNY70
 Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
@@ -98,14 +109,37 @@ Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 \begin{itemize}
 \item Kostengünstig (Sensor und Empfänger kosten zusammen 1.7Fr).
 \item Häufig gebraucht für diese Anwendung => grosse Community.
-\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.\\
+\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.
+\item Eher klaren Grenzen. (kleiner Abstrahlwinkel)\\
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
 \item Benötigt zwei AD Eingänge.
 \item Sind empfindlich auf UV-Licht!
-\item Geringe Reichweite (je nach Typ nur bis 5mm)
+\item Geringe Reichweite (je nach Typ nur bis 5mm).
+\item Als Liniensensor: Nicht senkrechtes Abtasten ist problematisch.
 \end{itemize}
 
-\subsubsection{Liniensensoren/Reflexkoppler}
+\subsection{Farbsensoren}
+% LAB-Farbsensor, True-Color-Sensor oder RGB-Sensor. Auch Druckmarkensensor 
+\subsubsection{Anforderungen}
+\begin{itemize}
+\item Einfaches auslesen der Daten muss möglich sein.
+\item Genaue Farberkennung (Unterschied Gelb zwischen Blau und Grün muss möglich sein).
+\item Preis darf 10Fr. nicht übersteigen.
+\item Distanz mindestens 5cm.
+\end{itemize}
 
+\subsubsection{Eigenschaften}
+
+\textbf {Vorteile}
+\begin{itemize}
+\item Im Preisrahmen, ein Farnsensor kostet ungefähr 10.-.
+\item Häufig gebraucht für diese Anwendung $\Rightarrow$ grosse Community.
+\item Unempfindlich auf Störeinflüsse.(Ausser andere Ultraschallsensoren)
+\item Grosse Distanz (>10cm).\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Benötigt  AD Eingänge.
+\end{itemize}
