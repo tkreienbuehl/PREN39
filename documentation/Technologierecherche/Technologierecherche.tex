@@ -11,7 +11,8 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{geometry}
-
+\usepackage{scrpage2}
+\usepackage{lastpage}
 \usepackage{hyperref}
 \usepackage{listings}
 \lstset{language=[ansi]C++}
@@ -26,6 +27,11 @@
 }
 
 
+\pagestyle{scrheadings}
+\ihead{PREN1 Gruppe 39}\ohead{Technologierecherche} 
+\ifoot{\today} \ofoot{Seite \thepage\ von \pageref{LastPage}}
+
+
 \begin{document}
 \input{titlepageTR.tex}
 \input{abstractTR.tex}
@@ -37,6 +43,9 @@
 \input{Bilderkennung.tex}
 \input{Kamarasysteme.tex}
 \input{Lenkung.tex}
+\input{Greifer.tex}
+\input{Beladen.tex}
+\input{Entladen.tex}
 \input{morphkasten.tex}
 \input{Recherchequellen.tex}
 \input{schlussTR.tex}
