@@ -11,7 +11,8 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{geometry}
-
+\usepackage{scrpage2}
+\usepackage{lastpage}
 \usepackage{hyperref}
 \usepackage{listings}
 \lstset{language=[ansi]C++}
@@ -24,6 +25,11 @@
     citecolor={blue!50!black},
     urlcolor={blue!80!black}
 }
+
+
+\pagestyle{scrheadings}
+\ihead{PREN1 Gruppe 39}\ohead{Technologierecherche} 
+\ifoot{\today} \ofoot{Seite \thepage\ von \pageref{LastPage}}
 
 
 \begin{document}
