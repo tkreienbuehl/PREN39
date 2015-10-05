@@ -1,10 +1,6 @@
 % !TEX root = Dokumentation.tex
-\section{Elektronische Bauteile}
-\subsection {Motoren}
-Hier kommt etwas über die Motoren rein.
-
-\subsection*{MC Board}
-\subsubsection{Anforderungen}
+\section*{Mikrocontroller-Board}
+\subsection{Anforderungen}
 \begin{itemize}
 \item Das Board muss eine Schnittstelle zu dem Boardcomputer haben. (UART,I2C,SPI,Ethernet)
 \item Gute Rechenperformance (besser mehr als zu wenig).
@@ -13,7 +9,7 @@ Hier kommt etwas über die Motoren rein.
 \end{itemize}
 
 
-\subsubsection{Tinkerforge}
+\subsection{Tinkerforge}
 %%Tinkerforge bietet ein vielseitiges System aus Mikrocontrollern, Sensoren, Treiber und weiteren Baugruppen an. Diese Funktionen sind jeweils in Module aufgeteilt, welche Modular hinzufügbar sind. Diese Module kommunizieren einerseits untereinander und andererseits mit einem Hauptsteuerelement. Dieses kann ein PC oder aber auch ein Linux basierter Minirechner sein (wie zum Beispiel das Beaglebone oder Freedomboard).\\\\%%
 \textbf {Vorteile}
 \begin{itemize}
@@ -36,7 +32,7 @@ Hier kommt etwas über die Motoren rein.
 %%	%Quelle: http://www.heise.de/make/meldung/Modul-Baukasten-Tinkerforge-Abnabelung-vom-PC-dank-RED-Brick-2490601.html
 %%\end{figure}
 
-\subsubsection{HCS08 Devlopperboard}
+\subsection{HCS08 Devlopperboard}
 %http://ch.farnell.com/freescale-semiconductor/dc9s08qe32/tochterplatine-f-r-demoqe32/dp/1692128
 \textbf {Vorteile}
 \begin{itemize}
@@ -48,7 +44,7 @@ Hier kommt etwas über die Motoren rein.
 \item Begrenzte Rechenpower.	
 \end{itemize}
 
-\subsubsection{Arduinoboard}
+\subsection{Arduinoboard}
 %http://www.ti.com/ww/en/launchpad/launchpads-connected.html#tabs
 \textbf {Vorteile}
 \begin{itemize}
@@ -63,7 +59,7 @@ Hier kommt etwas über die Motoren rein.
 \item Geringe Reichweite (je nach Typ nur bis 5mm)
 \end{itemize}
 
-\subsubsection{Freedomboard}
+\subsection{Freedomboard}
 \textbf {Vorteile}
 \begin{itemize}
 \item Im Preisrahmen, ein Board gibt es ab 20Fr.-.
@@ -76,8 +72,8 @@ Hier kommt etwas über die Motoren rein.
 \item Keine persönlichen Programmiererfahrungen auf dem Freedomboard.
 \end{itemize}
 
-\subsection*{Distanzsensoren}
-\subsubsection{Anforderungen}
+\section*{Distanzsensoren}
+\subsection{Anforderungen}
 \begin{itemize}
 \item Einfaches auslesen der Daten muss möglich sein.
 \item Genaue Positionsdaten, je nach Anforderungen +/- 1mm.
@@ -87,7 +83,7 @@ Hier kommt etwas über die Motoren rein.
 \item Möglichst eindeutige Aussage (geriner Streuungswinkel).
 \end{itemize}
 
-\subsubsection{Ultraschallsensoren}
+\subsection{Ultraschallsensoren}
 %Ultraschalsensoren werden häufig als Bewegungsmelder eingesetzt. 
 %http://www.miniinthebox.com/de/ultraschall-modul-hc-sr04-entfernung-messumformer-sensor-fuer-arduino-201211270080054_p478889.html
 \textbf {Vorteile}
@@ -103,7 +99,7 @@ Hier kommt etwas über die Motoren rein.
 \item Keine klaren Grenzen. (grosser Abstrahlwinkel)
 \end{itemize}
 
-\subsubsection{Infrarotsensoren}
+\subsection{Infrarotsensoren}
 %http://rn-wissen.de/wiki/index.php?title=CNY70
 Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 \textbf {Vorteile}
@@ -121,11 +117,11 @@ Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 \item Als Liniensensor: Nicht senkrechtes Abtasten ist problematisch.
 \end{itemize}
 
-\subsubsection{TOF}
+\subsection{TOF}
 
-\subsection{Farbsensoren}
+\section{Farbsensoren}
 % LAB-Farbsensor, True-Color-Sensor oder RGB-Sensor. Auch Druckmarkensensor 
-\subsubsection{Anforderungen}
+\subsection{Anforderungen}
 \begin{itemize}
 \item Einfaches auslesen der Daten muss möglich sein.
 \item Genaue Farberkennung (Unterschied Gelb zwischen Blau und Grün muss möglich sein).
@@ -133,7 +129,7 @@ Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 \item Distanz mindestens 5cm.
 \end{itemize}
 
-\subsubsection{Eigenschaften}
+\subsection{Eigenschaften}
 
 \textbf {Vorteile}
 \begin{itemize}
