@@ -1,5 +1,5 @@
 % !TEX root = Dokumentation.tex
-\section*{Mikrocontroller-Board}
+\section{Mikrocontroller-Board}
 \subsection{Anforderungen}
 \begin{itemize}
 \item Schnittstelle zu möglichem Boardcomputer (UART,I2C,SPI,Ethernet)
@@ -35,51 +35,49 @@
 %http://ch.farnell.com/freescale-semiconductor/dc9s08qe32/tochterplatine-f-r-demoqe32/dp/1692128
 \textbf {Vorteile}
 \begin{itemize}
-\item Positive Erfahrungen im MC Modul (Einarbeitung in die Grundfunktionen entfällt).
-\item Starterkit von der Hochschule erhältlich. \\
+\item Positive Erfahrungen im MC Modul (Einarbeitung in die Grundfunktionen entfällt)
+\item Starterkit von der Hochschule erhältlich \\
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Begrenzte Rechenpower.	
+\item Begrenzte Rechenpower
 \end{itemize}
 
 \subsection{Arduinoboard}
 %http://www.ti.com/ww/en/launchpad/launchpads-connected.html#tabs
 \textbf {Vorteile}
 \begin{itemize}
-\item Im Preisrahmen, ein Board gibt es ab 20Fr.-.
-\item Sehr grosse Community.
-\item Einfache Programmierung.\\
+\item Im Preisrahmen, ein Board gibt es ab 20Fr.-
+\item Sehr grosse Community
+\item Einfache Programmierung\\
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Besitzt ein Betriebsystem. $\Rightarrow$ weniger Hardware nahe.
-\item Sind empfindlich auf UV-Licht!
-\item Geringe Reichweite (je nach Typ nur bis 5mm)
+\item Besitzt ein Betriebsystem $\Rightarrow$ weniger Hardware nahe
 \end{itemize}
 
 \subsection{Freedomboard}
 \textbf {Vorteile}
 \begin{itemize}
-\item Im Preisrahmen, ein Board gibt es ab 20Fr.-.
+\item Im Preisrahmen, ein Board gibt es ab 20Fr.-
 \item Wurde an der Hochschule bereits eingesetzt.(Mögliche Ansprechpersonen)
-\item Einfache Programmierung.\\
+\item Einfache Programmierung\\
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Besitzt ein Betriebsystem. $\Rightarrow$ weniger Hardware nahe.
-\item Keine persönlichen Programmiererfahrungen auf dem Freedomboard.
+\item Besitzt ein Betriebsystem $\Rightarrow$ weniger Hardware nahe
+\item Keine persönlichen Programmiererfahrungen auf dem Freedomboard
 \end{itemize}
 
-\section*{Distanzsensoren}
+\section{Distanzsensoren}
 \subsection{Anforderungen}
 \begin{itemize}
-\item Einfaches auslesen der Daten muss möglich sein.
-\item Genaue Positionsdaten, je nach Anforderungen +/- 1mm.
-\item Preis darf 10Fr. nicht übersteigen.
-\item Möglichst Störungsunabhängig.
-\item Distanz 10cm.
-\item Möglichst eindeutige Aussage (geriner Streuungswinkel).
+\item Einfaches auslesen der Daten muss möglich sein
+\item Genaue Positionsdaten, je nach Anforderungen +/- 1mm
+\item Preis darf 10Fr. nicht übersteigen
+\item Möglichst Störungsunabhängig
+\item Distanz 0.5 - 10cm (je nach Einsatz)
+\item Möglichst eindeutige Aussage (geringer Streuungswinkel)
 \end{itemize}
 
 \subsection{Ultraschallsensoren}
@@ -87,33 +85,31 @@
 %http://www.miniinthebox.com/de/ultraschall-modul-hc-sr04-entfernung-messumformer-sensor-fuer-arduino-201211270080054_p478889.html
 \textbf {Vorteile}
 \begin{itemize}
-\item Erschwinglich, ein Sensor kostet ungefähr 5.Fr.
-\item Häufig gebraucht für diese Anwendung $\Rightarrow$ grosse Community.
-\item Unempfindlich auf Störeinflüsse.(Ausser andere Ultraschallsensoren)
-\item Grosse Distanz (>10cm).\\
+\item Erschwinglich, ein Sensor kostet ungefähr 5.Fr
+\item Häufig gebraucht für diese Anwendung $\Rightarrow$ grosse Community
+\item Unempfindlich auf Störeinflüsse (Ausser andere Ultraschallsensoren)
+\item Grosse Distanz (>10cm)\\
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Kann nicht als als Liniensensor eingesetzt werden.
-\item Keine klaren Grenzen. (grosser Abstrahlwinkel)
+\item Kann nicht als als Liniensensor eingesetzt werden
+\item Keine klaren Grenzen (grosser Abstrahlwinkel)
 \end{itemize}
 
 \subsection{Infrarotsensoren}
 %http://rn-wissen.de/wiki/index.php?title=CNY70
-Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 \textbf {Vorteile}
 \begin{itemize}
-\item Kostengünstig (Sensor und Empfänger kosten zusammen 1.7Fr).
-\item Häufig gebraucht für diese Anwendung => grosse Community.
+\item Kostengünstig (Sensor und Empfänger kosten zusammen 1.7Fr)
 \item Kann als Liniensensor und Rad-Encoder eingesetzt werden.
-\item Eher klaren Grenzen. (kleiner Abstrahlwinkel)\\
+\item Eher klaren Grenzen (kleiner Abstrahlwinkel)\\
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Benötigt zwei AD Eingänge.
-\item Sind empfindlich auf UV-Licht!
-\item Geringe Reichweite (je nach Typ nur bis 5mm).
-\item Als Liniensensor: Nicht senkrechtes Abtasten ist problematisch.
+\item Benötigt zwei AD Eingänge
+\item Sind empfindlich auf UV-Licht
+\item Geringe Reichweite (je nach Typ nur bis 5mm)
+\item Als Liniensensor: Nicht senkrechtes Abtasten ist problematisch
 \end{itemize}
 
 %\subsection{TOF}
@@ -122,22 +118,20 @@ Infrarotsensoren eignen sich gut als Distanz oder Liniensensoren.\\
 % LAB-Farbsensor, True-Color-Sensor oder RGB-Sensor. Auch Druckmarkensensor 
 \subsection{Anforderungen}
 \begin{itemize}
-\item Einfaches auslesen der Daten muss möglich sein.
-\item Genaue Farberkennung (Unterschied Gelb zwischen Blau und Grün muss möglich sein).
-\item Preis darf 10Fr. nicht übersteigen.
-\item Distanz mindestens 5cm.
+\item Einfaches auslesen der Daten muss möglich sein
+\item Genaue Farberkennung (Unterschied Gelb zwischen Blau und Grün muss möglich sein)
+\item Preis darf 10Fr. nicht übersteigen
+\item Distanz mindestens 5cm
 \end{itemize}
 
 \subsection{Eigenschaften}
 
 \textbf {Vorteile}
 \begin{itemize}
-\item Im Preisrahmen, ein Farnsensor kostet ungefähr 10.-.
-\item Häufig gebraucht für diese Anwendung $\Rightarrow$ grosse Community.
-\item Unempfindlich auf Störeinflüsse.(Ausser andere Ultraschallsensoren)
-\item Grosse Distanz (>10cm).\\
+\item Im Preisrahmen, ein Farbsensor kostet ungefähr 10.-
 \end{itemize}
 \textbf {Nachteile}
 \begin{itemize}
-\item Benötigt  AD Eingänge.
+\item Benötigt  AD Eingänge
+
 \end{itemize}
