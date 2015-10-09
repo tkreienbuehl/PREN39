@@ -1,12 +1,22 @@
 % !TEX root = Konzeptvarianten.tex
-\section{Stromversorgung}
+\section{Antrieb}
 
+Während der Recherche wurden diverse Antriebsmöglichkeiten geprüft.
+Antriebe wie der Verbrennungsmotor oder eine Dampfmaschine wurden aus Aufwandgründen ausgeschlossen.
+In die engere Auswahl sind insbesondere alle Elektromotoren gekommen.
+Darunter der Bürstenlose Gleichstrommotor (BLDC), der Gleichstrommotor (DC) und der Schrittmotor (STP).
 
 
 \begin{table}[h]
 \begin{tabular}{|p{4.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{2cm}|}\hline
 	
-	\textbf{Kriterium}	& 	\textbf{Gewichtung (1-3)} & \textbf{OpenCV} & \textbf{SimpleCV} & \textbf{LibCCV}\\\hline
+	\textbf{Kriterium}	& 	\textbf{Gewichtung (1-3)} & \textbf{BLDC} & \textbf{DC} & \textbf{STP}\\\hline
+	{Preis}	& 	{3} & {1} & {2} & {3}\\\hline
+	{Grösse}	& 	{3} & {2} & {2} & {2}\\\hline
+	{Leistung}	& 	{2} & {3} & {2} & {2}\\\hline
+	{Regelung}	& 	{2} & {1} & {2} & {3}\\\hline
+	{Genauigkeit}	& 	{2} & {1} & {1} & {3}\\\hline
+	
 	
 	
 	
