@@ -1,13 +1,37 @@
 % !TEX root = Konzeptvarianten.tex
 \section{Bilderkennung}
 
+\subsection{Idee}
+Das Fahrzeug muss die vorgegebene Strecke autonom abfahren können. Das heisst, dass es einerseits die Strecke und andererseits auch mögliche Objekte auf und neben der Strasse erkennen muss. Um dies zu bewerkstelligen wird das Fahrzeug mit einer Kamera und Sensoren ausgestattet. Auf die Sensoren wird in einem anderen Kaptitel eingegangen. Die aufgenommenen Bilder der Kamera werden mit Hilfe von Software analysiert.
+
+Ausserdem muss auch entschieden werden, mit welcher Programmier-Sprache die Bilderkennung realisiert wird. Als mögliche Programmier-Sprachen werden C++, Java und Python untersucht.
+
 In der Recherchephase wurden verschiedene Hilfs-Bibliotheken für die Bilderkennung evauliert, welche im Folgenden verglichen werden.
-MatLab wird hier nicht im Vergleich aufgenommen, da die Lizenzkosten zu hoch wären und auch die nötige Rechenleistung in diesem Projekt nicht gewährleistet werden kann.
+MatLab wird hier nicht im Vergleich aufgenommen, da die Lizenzkosten zu hoch wären und auch die nötige Rechenleistung zu hoch ist.
+
+\subsection{OpenCV}
+OpenCV ist eine Software-Bibliothek welche eine grosse Anzahl von Funktionen für die Bilderkennung bereitstellt.
+
+Die Vorteile von OpenCV sind, dass man es frei nutzen kann und eine ziemlich grosse Community hat.
+
+OpenCV ist mit Python, Java und C++ kompatibel, wobei jedoch der grösste Teil der Community mit C++ arbeitet.
+
+Wie verschiedene Anleitungen im Internet zeigen, können mit Hilfe von OpenCV Linien und Objekte, inklusive Farberkennung, erkennt werden.
+
+\subsection{SimpleCV}
+SimpleCV basiert auf OpenCV und ermöglicht es, die Bibliotheken von OopenCV auf eine einfachere Art zu verwenden. Es besteht jedoch das Risiko, dass Funktionen welche im Projekt verwendet werden von SimpleCV nicht unterstützt werden.
+
+
 
 \begin{table}[h]
 \begin{tabular}{|p{4.5cm}|p{3.5cm}|p{2cm}|p{2cm}|p{2cm}|}\hline
 	
 	\textbf{Kriterium}	& 	\textbf{Gewichtung (1-3)} & \textbf{OpenCV} & \textbf{SimpleCV} & \textbf{LibCCV}\\\hline
+	Community & 3 & 3 & 2 & 1\\\hline
+	Preis & 3 & 3 & 3 & 3 \\\hline
+	nötige Rechenleistung & 2 & 3 & 3 & 3 \\\hline
+	Auswertung &  & 24 & 21 & 18\\\hline
+	
 	
 	
 	
