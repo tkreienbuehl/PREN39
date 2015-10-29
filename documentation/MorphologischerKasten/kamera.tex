@@ -54,7 +54,7 @@
 &
 \begin{itemize}
 \item Kein Autofokus: Scharfstellung nicht sichergestellt
-\item Farbverhalten beu unterschiedlichen Lichtverhältnissen 
+\item Farbverhalten bei unterschiedlichen Lichtverhältnissen 
 \end{itemize}
 
  
@@ -63,10 +63,15 @@
 
 \pagebreak
 
-
 %##############
-\subsection{Webcam}
-Grafik
+\subsection{Raspberry Pi Cam Noir}
+
+\begin{figure}[h!]%Position festigen
+\centering
+\includegraphics[width=0.5\textwidth]{fig/raspberry-pi-camera-noir.jpg}
+\caption{Pi Cam Noir (Quelle: https://www.adafruit.com)}
+\label{fig:PiCamNoir}
+\end{figure}
 
 \begin{table}[h]
 \begin{tabular}{p{0.5\textwidth} | p{0.5\textwidth}}
@@ -75,20 +80,20 @@ Grafik
  \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
 	 
 \begin{itemize}
-\item Vorteil 1
-\item Vorteil 2
-\item Vorteil 3
-\item ...
+\item Relativ tiefe Anschaffungskosten.
+\item analog Raspberry Pi Cam.
+\item Infrarot bei Tageslicht verwendbar, weniger empfindlich auf ändernde Lichtverhältnisse.
 \end{itemize}
 
  
  &
  
 \begin{itemize}
-\item Nachteil 1
-\item Nachteil 2
-\item Nachteil 3
-\item ...
+\item Fester Fokus auf 1m.
+\item Relativ geringer Winkel mit 53.5°.
+\item Halterung muss erstellt werden.
+\item MIPI Schnittstelle erforderlich.
+\item Keine echten Farben, Erkennung derer unsicher.
 \end{itemize}
 
 \end{tabular}
@@ -101,13 +106,73 @@ Grafik
  \textbf{Risiken} & \\ \hline
 	 
 \begin{itemize}
-\item Risiko 1
-\item Risiko 2
+\item Fahrbahn kann nicht vollständig erfasst werden in der Kurve.
+\item Objekte können nicht vollständig erfasst werden.
+\item Kompatibilität zu Minicomputer eingeschränkt (Nur Rasp Pi und Banana Pi).
 \end{itemize}
 &
 \begin{itemize}
-\item Risiko 3
-\item ...
+\item Kein Autofokus: Scharfstellung nicht sichergestellt.
+\item Farben könnten nicht richtig erkannt werden.
+\item Höhere Anschaffungskosten ohne Garantie auf Erfolgsverbesserung.
+\end{itemize}
+
+ 
+\end{tabular}
+\end{table}
+
+\pagebreak
+
+%##############
+\subsection{Webcam}
+
+\begin{figure}[h!]%Position festigen
+\centering
+\includegraphics[width=0.5\textwidth]{fig/hd-webcam-c525-gallery.png}
+\caption{Webcam (Quelle: http://www.logitech.com)}
+\label{fig:Webcam}
+\end{figure}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth} | p{0.5\textwidth}}
+
+
+ \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
+	 
+\begin{itemize}
+\item Grosse Modellvielfalt.
+\item Autofokus.
+\item Grosse Blickwinkel mit ca 80° horizontal.
+\item USB-Universalschnittstelle.
+\item Halterung oftmals integriert.
+\end{itemize}
+
+ 
+ &
+ 
+\begin{itemize}
+\item Höhere Anschaffungskosten.
+\item Kamerafunktionalitäten nur mit Herstellertreiber (proprietär).
+\item Treiber meist nur für Windows erhältlich.
+\item Grössere Abmasse.
+\end{itemize}
+
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
+
+
+ \textbf{Risiken} & \\ \hline
+	 
+\begin{itemize}
+\item Vorteile der Kamera können nicht genutzt werden.
+\item Kamerasystem zu gross, müsste zerlegt werden.
+\end{itemize}
+&
+\begin{itemize}
+\item Hohe Kosten belasten Budget zu stark.
 \end{itemize}
 
  
