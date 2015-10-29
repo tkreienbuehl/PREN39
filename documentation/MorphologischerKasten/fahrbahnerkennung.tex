@@ -17,7 +17,7 @@
 		\includegraphics[width=\textwidth]{fig/Trottoirerkennung_1.png}
 		\caption{2. Situation: Sensoren für die Abstandserkennung}
 \end{subfigure}
-	\caption{Mögliche Spurerkennung mit Distanzsensoren}\label{fig:animals}
+	\caption{Mögliche Spurerkennung mit Distanzsensoren}\label{fig:SpurerkennungSensoren}
 \end{figure}
 
 
@@ -29,10 +29,8 @@
  \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
 	 
 \begin{itemize}
-\item dfg
-\item Vorteil 2
-\item Vorteil 3
-\item ...
+\item Gut zu testen (Funktionsmuster)
+\item Gute Präzision wird erwartet
 \end{itemize}
 
  
@@ -40,9 +38,7 @@
  
 \begin{itemize}
 \item Braucht externe Hardware und Verkabelung
-\item Nachteil 2
-\item Nachteil 3
-\item ...
+\item Funktionsmuster zwingend notwendig
 \end{itemize}
 
 \end{tabular}
@@ -51,17 +47,15 @@
 \begin{table}[h]
 \begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
 
-
  \textbf{Risiken} & \\ \hline
 	 
 \begin{itemize}
-\item Risiko 1
-\item Risiko 2
+\item Die Linie lässt sich nicht Erkennen (ohne Konflikte mit der Anforderungsliste)
+\item Das Trottoir ist zu wenig hoch damit es sich erkennen lässt
 \end{itemize}
 &
 \begin{itemize}
-\item Risiko 3
-\item ...
+\item Die Steuerung aufgrund der Linienerkennung ist nicht praktikabel
 \end{itemize}
 
  
@@ -73,7 +67,20 @@
 
 %##############
 \subsection{Bilderkennung}
-Grafik
+
+\begin{figure} [hbp]
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{fig/FahrbahnFoto.png}
+		\caption{Kamerafoto der Fahrbahn}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{fig/ColorFilter.png}
+		\caption{Farbfilter und Kantendetektierung}
+\end{subfigure}
+	\caption{Mögliche Spurerkennung mit Bildverarbeitung}\label{fig:SpurerkennungKamera}
+\end{figure}
 
 \begin{table}[h]
 \begin{tabular}{p{0.5\textwidth} | p{0.5\textwidth}}
@@ -82,20 +89,19 @@ Grafik
  \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
 	 
 \begin{itemize}
-\item Vorteil 1
-\item Vorteil 2
-\item Vorteil 3
-\item ...
+\item Universelles System nicht nur auf den Parcour beschränkt
+\item Vorausschauend für schnelleres Fahren
+\item Nur Kamera benötigt und keine zusätzlichen Sensoren
 \end{itemize}
 
  
  &
  
 \begin{itemize}
-\item Nachteil 1
-\item Nachteil 2
-\item Nachteil 3
-\item ...
+\item Bildverarbeitung eher aufwändig.
+\item Anfällig auf Änderungen der Lichtverhältnisse.
+\item In Kurve kann Fahrbahn aus dem Sichtfeld der Kamera geraten.
+\item Kein Wiederfinden der Bahn bei Fahrbahnverlust.
 \end{itemize}
 
 \end{tabular}
@@ -108,13 +114,13 @@ Grafik
  \textbf{Risiken} & \\ \hline
 	 
 \begin{itemize}
-\item Risiko 1
-\item Risiko 2
+\item Minicomputer kann Bilder nicht in verlangter Geschwindigkeit verarbeiten.
+\item Kamera verliert die Fahrbahn aus dem Sichtfeld
 \end{itemize}
 &
 \begin{itemize}
-\item Risiko 3
-\item ...
+\item Hohe Anforderung an die Softwareentwicklung.
+\item Wechselnde Lichtverhältnisse können massiv stören.
 \end{itemize}
 
  
