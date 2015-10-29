@@ -54,7 +54,7 @@
 &
 \begin{itemize}
 \item Kein Autofokus: Scharfstellung nicht sichergestellt
-\item Farbverhalten beu unterschiedlichen Lichtverhältnissen 
+\item Farbverhalten bei unterschiedlichen Lichtverhältnissen 
 \end{itemize}
 
  
@@ -63,6 +63,65 @@
 
 \pagebreak
 
+%##############
+\subsection{Raspberry Pi Cam Noir}
+
+\begin{figure}[h!]%Position festigen
+\centering
+\includegraphics[width=0.5\textwidth]{fig/raspberry-pi-camera-noir.jpg}
+\caption{Pi Cam (Quelle: https://www.adafruit.com)}
+\label{fig:PiCamNoir}
+\end{figure}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth} | p{0.5\textwidth}}
+
+
+ \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
+	 
+\begin{itemize}
+\item Relativ tiefe Anschaffungskosten
+\item analog Raspberry Pi Cam
+\item Infrarot bei Tageslicht verwendbar, weniger empfindlich auf ändernde Lichtverhältnisse
+\end{itemize}
+
+ 
+ &
+ 
+\begin{itemize}
+\item Fester Fokus auf 1m
+\item Relativ geringer Winkel mit 53.5°
+\item Halterung muss erstellt werden
+\item MIPI Schnittstelle erforderlich
+\item Keine echten Farben, Erkennung derer unsicher
+\end{itemize}
+
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
+
+
+ \textbf{Risiken} & \\ \hline
+	 
+\begin{itemize}
+\item Fahrbahn kann nicht vollständig erfasst werden in der Kurve
+\item Objekte können nicht vollständig erfasst werden.
+\item Kompatibilität zu Minicomputer eingeschränkt (Nur Rasp Pi und Banana Pi)
+\end{itemize}
+&
+\begin{itemize}
+\item Kein Autofokus: Scharfstellung nicht sichergestellt
+\item Farben könnten nicht richtig erkannt werden
+\item Höhere Anschaffungskosten ohne Garantie auf Erfolgsverbesserung
+\end{itemize}
+
+ 
+\end{tabular}
+\end{table}
+
+\pagebreak
 
 %##############
 \subsection{Webcam}
