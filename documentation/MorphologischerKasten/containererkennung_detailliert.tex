@@ -1,12 +1,16 @@
 % !TEX root = morphkasten.tex
 
 \section{Containererkennung (detailliert)}
-
+Die Containererkennung muss auch ausgelegt sein für die Erkennung des Entladebehälters!
 
 %##############
-\subsection{Sensor}
-
-Grafik
+\subsection{Distanzsensor}
+Die detaillierte Containererkennung mit Sensoren unterscheidet sich nur geringfügig von der groben Variante. Der Hauptunterschied besteht darin, dass bei der detaillierten Variante nur noch die Positionierung des Fahrzeugs vorzunehmen ist. Die Auswertung der Form und der Farbe wird Vorgängig von der Kamera erledigt und an das Mikrocontrollerboard weitergeleitet.
+\begin{figure} [hbp]
+	\centering
+	\includegraphics[width=0.5\textwidth]{fig/Containererkennung_2.png}
+	\caption{Beispielhafte Containererkennung mit Distanzsensoren (ohne Farbsensor)}
+\end{figure}
 
 \begin{table}[h]
 \begin{tabular}{p{0.5\textwidth} | p{0.5\textwidth}}
@@ -15,20 +19,18 @@ Grafik
  \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
 	 
 \begin{itemize}
-\item Vorteil 1
-\item Vorteil 2
-\item Vorteil 3
-\item ...
+\item Präzise Erkennung des Containers (wahrscheinlich)
+\item Mehrfachverwendung mit anderen Anwendungen denkbar
+\item Kostengünstig (kein Farbsensor)
 \end{itemize}
 
  
  &
  
 \begin{itemize}
-\item Nachteil 1
-\item Nachteil 2
-\item Nachteil 3
-\item ...
+\item Unbekannte Präzision
+\item Je nach Sensor Störanfälligkeit
+\item Zusatzhardware und Verkabelung nötig
 \end{itemize}
 
 \end{tabular}
@@ -41,13 +43,13 @@ Grafik
  \textbf{Risiken} & \\ \hline
 	 
 \begin{itemize}
-\item Risiko 1
-\item Risiko 2
+\item Die Sensoren sind zu ungenau
+\item Die Sensoren werden gestört
+
 \end{itemize}
 &
 \begin{itemize}
-\item Risiko 3
-\item ...
+\item Die Kommunikation der groben und detaillierten Erkennung ist zu langsam
 \end{itemize}
 
  
