@@ -1,0 +1,14 @@
+diff a/documentation/MorphologischerKasten/chassis.tex b/documentation/MorphologischerKasten/chassis.tex	(rejected hunks)
+@@ -124,11 +124,10 @@
+ \item Ist das Fahrzeug zu lang, könnte man in der Kurve mit den Hinterrädern die Fahrbahn verlassen.
+ \item Die Lenkung könnte zu unpräzise sein.
+ \end{itemize}
+-&
+ 
+ 
+- 
+ \end{tabular}
++
+ \end{table}
+ 
+ \pagebreak
