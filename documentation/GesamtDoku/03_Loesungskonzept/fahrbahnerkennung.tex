@@ -73,9 +73,21 @@ $z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
 \lVert\nabla f(x,y)\rVert = \sqrt{(f(x+1)-f(x))^2 + (f(y+1) - f(y))^2}
 \]
 Wenn nun der $\lVert\nabla f(x,y)\rVert \geq h$ , wird in die Zielmatrix $M_1$ an die Stelle $(x,y)$ der Wert 255 geschrieben, sonst 0.
-
+\end{itemize}
 @TODO Fahrbahnermittlung ergänzen
 
 Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird die Erkennung an den Flexsensor übergeben, der mit dem seitlichen Abstand zum Trottoir die Fahrspur halten soll.
-\end{itemize}
+Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sensor gebogen wird. Diese Bilder verdeutlichen dies.
+@ToDo Bild von Flexeinfügen
+Diese Kennline stellt den Widestandswert in Funktion von dem Biegewinkel dar.
+
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flex_Biegungskennline.png}
+	\label{fig:Flex_R_Kennlinie}
+	\caption{Widerstand in Funktion des Biegewinkels}
+\end{figure}
+
+Mit dieser Widerstandänderung ...
 \textbf{Testergebnisse}\\
