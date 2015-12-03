@@ -2,12 +2,20 @@
 \subsection{Intelligente Systeme}
 
 \subsubsection{Softwarekonzept}
-\textbf{Funktionsbeschrieb}
-\textbf{Komponentenbeschrieb}
-\textbf{Begründung}
+\textbf{Funktionsbeschrieb}\\[0.2cm]
+Das Softwarekonzept basiert auf dem Model-View-Control Prinzip, wobei sich die View auf einen Debug-Zweck beschränkt. Dabei hat der Controller alle Subprozesse sowie die Schnittstelle zur Harwaresteuerung, via Microcontroller-Board realisiert, unter Kontrolle. Die Subprozesse sind:
+\begin{itemize}
+\item Bilderzeugung
+\item Objekterkennung
+\item Fahrbahnerkennung
+\end{itemize}
+Der Zustand des Fahrzeuges wird im Model gespeichert und steht allen Prozessen zu Verfügung. Die Datenstruktur ist dabei so aufgebaut, dass keine Zugriffskonflikte entstehen sollten.\\
+Der Controller handelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container hat dieser rest mal Priorität und das Microcontroller-Board erhält die entsprechenden Anweisungen.\\[0.2cm]
+\textbf{Komponentenbeschrieb}\\[0.2cm]
+\textbf{Begründung}\\[0.2cm]
 Wenn benötigt
-\textbf{Berechnungen}
-\textbf{Testergebnisse}
+\textbf{Berechnungen}\\[0.2cm]
+\textbf{Testergebnisse}\\[0.2cm]
 
 \subsubsection{Mini-Computer}
 \textbf{Funktionsbeschrieb}
