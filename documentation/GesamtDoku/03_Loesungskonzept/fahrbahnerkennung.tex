@@ -4,7 +4,7 @@
 Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zu Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der jeweils eine Bildzeile als Graph einer Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Zeile, $y$ der Pixelkoordinate der Spalte und $z$ dem Graustufenwert des Pixels entspricht.\\
 Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden vom Controller an das Microcontrollerboard weitergegeben.\\[0.2cm]
 \textbf{Komponentenbeschrieb}
-\begin{figure}[h!]%Position festigen
+\begin{figure}[h]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
 \caption{Aktivitätendiagramm Fahrbahnerkennung}
@@ -81,7 +81,6 @@ Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sen
 @ToDo Bild von Flexeinfügen
 Diese Kennline stellt den Widestandswert in Funktion von dem Biegewinkel dar.
 
-\end{figure}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flex_Biegungskennline.png}
