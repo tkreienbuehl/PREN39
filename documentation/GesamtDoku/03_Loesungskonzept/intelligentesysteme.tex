@@ -19,20 +19,25 @@ Wenn benötigt
 
 \subsubsection{Mikrocontroller-Board}
 \textbf{Funktionsbeschrieb}
-Das Mikrocontrollerboard bildet die Schnittstelle zwischen der Hardware (Motor, Sensoren, Servos..) und dem Minicomputer. Das Mikrocontrollerboard übernimmt die Ansteuerung und Auswertung der einzelnen Komponenten und stellt die verarbeiteten Informationen dem Minicomputer über eine Schnittstelle zur Verfügung. \\
-\\
-\textbf{Komponentenbeschrieb}
+Das Mikrocontrollerboard bildet die Schnittstelle zwischen der Hardware (Motor, Sensoren, Servos..) und dem Minicomputer. Das Mikrocontrollerboard übernimmt die Ansteuerung und Auswertung der einzelnen Komponenten und stellt die verarbeiteten Informationen dem Minicomputer über eine Schnittstelle zur Verfügung. \\[0.2cm]
+\textbf{Komponentenbeschrieb}\\[0.2cm]
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.5\textwidth]{./Images/freedomboard.png}
+	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/freedomboard.png}
 	\caption{Freedomboard KL25 von Freescale (Quelle:http://ch.farnell.com/)}
 	%http://ch.farnell.com/productimages/standard/de_DE/freescalesemiconductor-frdm-kl25z-40.jpg
 \end{figure}
-Als Mikrocontrollersystem wurde das Freedomboard KL25Z von Freescale ausgewählt. Das Etwicklungsgsboard bietet vieles, wie ausreichend I/O's, AD Wandler und Timerausgänge. Das Bord wird mit der Programmiersprache C programmiert. \\
-\\
+Als Mikrocontrollersystem wurde das Freedomboard KL25Z von Freescale ausgewählt. Das Entwicklungsgsboard bietet vieles, wie ausreichend I/O's, AD Wandler und Timerausgänge. Das Bord wird mit der Programmiersprache C programmiert. \\[0.2cm]
 \textbf{Begründung}
 Das Board überzeugt durch eine gute Rechenperformance zu einem kleinen Preis. Das Hauptargument für das Freedomboard ist die einfache Programmierung. Für viele Komponenten wie Servos oder Ultraschalsensoren steht ein Tool namens ProcessorExpert zu Verfügung. Diese Tool ermöglicht eine relativ einfache Anbindung solcher Komponenten. Dies spart sehr viel Entwicklungsaufwand.
-Das Freedomboard hat sich gegen das Tinkerfogesystem durchgesetzt. Der Hauptgrund ist Flexibilität des Freedomboard gegenüber dem Tinkerfogesysem. Das Tinkerforgesystem ist sehr einfach zu bedienen solange alle Komponenten von Tinkerfogre zu Verfügung gestellt werden. Fehlt aber ein Modul wird es sehr schnell kompliziert. Beim Freedomboard ist der Aufwand für eine Komponente etwas höher, dafür können die meisten Systeme angeschlossen werden.\\
-\\
+Das Freedomboard hat sich gegen das Tinkerfogesystem durchgesetzt. Der Hauptgrund ist Flexibilität des Freedomboard gegenüber dem Tinkerfogesysem. Das Tinkerforgesystem ist sehr einfach zu bedienen solange alle Komponenten von Tinkerfogre zu Verfügung gestellt werden. Fehlt aber ein Modul wird es sehr schnell kompliziert. Beim Freedomboard ist der Aufwand für eine Komponente etwas höher, dafür können die meisten Systeme angeschlossen werden.\\[0.2cm]
 \textbf{Testergebnisse}
-Das Freedomboard wurde als Funktionsmuster bereits in Betrieb genommen. Es hat sich gezeigt, dass die Anbindung der Komponenten Tatsächlich sehr einfach ist. Es wurden bereits ein Ultraschallsensor, mehrere Servos, eine UART Kommunikation und ein Infrarotsensor angebunden. Das System sah dabei sehr vielversprechend aus.
+Das Freedomboard wurde als Funktionsmuster bereits in Betrieb genommen. Es hat sich gezeigt, dass die Anbindung der Komponenten Tatsächlich sehr einfach ist. Es wurden bereits ein Ultraschallsensor, mehrere Servos, eine UART Kommunikation und ein Infrarotsensor angebunden. Das System sah dabei sehr vielversprechend aus.\\[0.2cm]
+\textbf{Software Grundaufbau}\\[0.2cm]
+Das Tool ProcessorExpert bietet eine Komponente FreeRTOS an. Das ist ein Betriebssystem, welches das Programmieren sehr vereinfacht. Damit können verschiedene Tasks definiert werden und quasi parallel ausgeführt werden. Die Software wird damit geplant. Folgende Tasks sind geplant.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/MC_Tasks.png}
+	\caption{Übersicht MC Tasks}
+\end{figure}
+Die Implementierung der Task wird im PREN2 eingegangen.
