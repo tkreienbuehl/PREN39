@@ -1,7 +1,7 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Fahrbahnerkennung}
 \textbf{Funktionsbeschrieb}\\[0.2cm]
-Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zu Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der jeweils eine Bildzeile als Graph einer Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Zeile, $y$ der Pixelkoordinate der Spalte und $z$ dem Graustufenwert des Pixels entspricht.\\
+Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zu Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der jeweils eine Bildzeile als Graph einer Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Spalte, $y$ der Pixelkoordinate der Zeile und $z$ dem Graustufenwert des Pixels entspricht.\\
 Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden vom Controller an das Microcontrollerboard weitergegeben.\\[0.2cm]
 \textbf{Komponentenbeschrieb}
 \begin{figure}[h]%Position festigen
@@ -73,6 +73,19 @@ $z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
 \lVert\nabla f(x,y)\rVert = \sqrt{(f(x+1)-f(x))^2 + (f(y+1) - f(y))^2}
 \]
 Wenn nun der $\lVert\nabla f(x,y)\rVert \geq h$ , wird in die Zielmatrix $M_1$ an die Stelle $(x,y)$ der Wert 255 geschrieben, sonst 0.
+\item Finden der Fahrbahnreferenz am unteren Bildrand:\\
+Wie zuvor beschrieben wird für die Fahrbahn von innen nach aussen gesucht. Dabei wird jeweils die erste Kante genommen, für die gilt:
+\[
+\frac{\partial{z}}{\partial{y}} > h_y
+\]
+wobei $h_y$ für die minimale erwartete Änderung in $y$-Richtung steht. Im Anschluss wird die $min_x$- und $max_y$-Koordinate der gefundenen Limits folgendermassen angeglichen:
+\[
+min_{(x,y)} = 10\cdot\Bigl\lfloor\frac{min_{(x,y)}}{10}+0.5\Bigr\rfloor
+\]
+respektive:
+\[
+max_{(x,y)} = 10\cdot\Bigl\lfloor\frac{max_{(x,y)}}{10}+0.5\Bigr\rfloor
+\]
 \end{itemize}
 @TODO Fahrbahnermittlung ergänzen
 
