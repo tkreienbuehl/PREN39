@@ -12,7 +12,7 @@ Bei der Container- und Entleerungsbeckenerkennung werden einerseits grüne und b
 \\[0.2cm]
 \textbf{Komponentenbeschrieb}\\
 Sobald die ersten Bilder mit der Kamera aufgenommen wurden, werden diese laufend aus dem Bilderpool abgefragt und untersucht. Dabei läuft die Erkennung von grünen und blauen Containern parallel ab. Erst sobald die Kreuzung zum zweiten Mal passiert wurde, wird auch nach dem Entleerungsbecken gesucht.
-\begin{figure}[h!]%Position festigen
+\begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/objekterkennung_containers.png}
 \caption{Aktivitätendiagramm Obkjekterkennung: Container und Entleerungsbecken}
@@ -26,75 +26,73 @@ OpenCV stellt Methoden zur Verfügung, mit welcher ein ganzer Bereich mit Farbwe
 \\[0.2cm]
 \textbf{Testergenisse} \\
 Die Containererkennung wurde bereits soweit getestet, dass grüne und blaue Container bis auf eine bewusst eingeschränkte Distanz erkannt werden. 
-\begin{figure}[h!]%Position festigen
+\begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/containererkennung_blau_gruen.png}
 \caption{erfolgreicher Testversuch}
 \label{fig:erfolgreicher Testversuch}
 \end{figure}\\
 Auch bei aufgenommenen Bildern, welche gleichfarbige Container mit unterschiedlichen Lichtverhältnissen zeigen, konnten die Container korrekt erkannt werden:
-\begin{figure}[h!]%Position festigen
+\begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/containererkennung_div_brightness.png}
 \caption{unterschiedliche Helligkeiten}
 \label{fig:unterschiedliche Helligkeiten}
 \end{figure}\\
 Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls zum Beispiel im Hintergrund ein Objekt steht, welches eine grüne oder blaue Farbe hat und die Masse einem Container entsprechen könnte, kann es zu einer Fehlerkennung kommen. Folgendes Bild zeigt einen solchen Fall:
-\begin{figure}[h!]%Position festigen
+\begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/objekterkennung_blau_fehl.png}
 \caption{fehlerhafter Testversuch}
 \label{fig:fehlerhafter Testversuch}
-\end{figure}
+\end{figure}\\
 Um solche Fälle möglichst zu vermeiden wird versucht den abzusuchenden Bereich so einzuschränken, sodass nur solche Bildbereiche untersucht werden, wo sich auch wirklich ein Container befinden könnte. 
 \\[0.2cm]
 \underline{Rechtsvortritt}
 \\[0.2cm]
-\textbf{Funktionsbeschrieb}\\[0.2cm]
+\textbf{Funktionsbeschrieb}\\
 Falls sich an der Kreuzung ein gegnerisches Fahrzeug von rechts nähert, hat dieses gemäss Aufgabenstellung Vortritt. Die Objekterkennung muss ein solches Fahrzeug erkennen und den Controller darüber informieren, damit das Fahrzeug gestoppt wird.
 \\[0.2cm]
-\textbf{Komponentenbeschrieb}\\[0.2cm]
+\textbf{Komponentenbeschrieb}\\
 Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gleich an der Kreuzung ankommen wird, wird Ausschau nach einem gegnerischen Fahrzeug auf der von rechtskommenden Spur gehalten. Wird ein Fahrzeug erkannt, wird dies an den Controller gemeldet. Der Vorgang wird dann solange wiederholt, bis das Fahrzeug nicht mehr im Bereich liegt. Sobald dies geschehen ist, wird wieder der Controller informiert, damit das Fahrzeug weiterfahren kann.
-\begin{figure}[h!]%Position festigen
+\begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/objekterkennung_rechtsvortritt.png}
 \caption{Aktivitätendiagramm Obkjekterkennung: Rechtsvortritt}
 \label{fig:activityRechtsvortritt}
-\end{figure}
+\end{figure}\\
 Der Bereich, welcher abgesucht werden soll, ist in der folgenden Grafik markiert:
 \\
-@TODO: Bild einfügen und Kapitel nach Absprache fertigstellen\\[0.2cm]
+@TODO: Bild einfügen und Kapitel nach Absprache fertigstellen
+\\
 \subsubsection{Objekterkennung präzise}
-
-%Containererkennung wieder in zwei Teilaufgaben aufgeteilt. Die Containererkennung grob ist für die Erkennung der richtigen Farbe (und Form) zuständig. Die %Containererkennung präzise ist für das Positionieren des Fahrzeuges notwendig. Diese zwei Fälle werden separat angeschaut.\\
-
-\underline{Containererkennung}\\[0.2cm]
-\textbf{Funktionsbeschrieb}\\[0.2cm]
-Die präzise Containererkennung wird für das genaue Stoppen des Fahrzeuges gebraucht. Dieses Modul gibt das Kommando zum anhalten.\\[0.2cm]
-\textbf{Komponentenbeschrieb}\\[0.2cm]
+Die Containererkennung hat das Ziel die richtigen Container zu erkennen und das genaue positionieren des Fahrzeuges zu ermöglichen. Dabei wird die Containererkennung wieder in zwei Teilaufgaben aufgeteilt. Die Containererkennung grob ist für die Erkennung der richtigen Farbe (und Form) zuständig. Die Containererkennung präzise ist für das Positionieren des Fahrzeuges notwendig. Diese zwei Fälle werden separat angeschaut.\\
+\\
+\underline{Containererkennung}\\
+\\
+\textbf{Funktionsbeschrieb}\\
+Die präzise Containererkennung wird für das genaue Stoppen des Fahrzeuges gebraucht. Dieses Modul gibt den Trigger zum anhalten.\\
+\\
+\textbf{Komponentenbeschrieb}\\
 Die Container Erkennung wird mit Hilfe von Distanzsensoren realisiert. Dafür sind Infrarot Distanzmesser oder Infrarot Reflexkoppler vorgesehen. Diese werden auf der rechten Seite des Fahrzeuges befestigt. Sobald ein Objekt in der Nähe ist ändert sich der Spannungswert, was einer Distanzänderung gleichkommt. 
-\begin{figure} [h]
+\begin{figure} [hbp]
 	\centering
-	\includegraphics[width=0.35\textwidth]{03_Loesungskonzept/pictures/InfrarotContainererkennung.png}
+	\includegraphics[width=0.35\textwidth]{./Images/InfrarotContainererkennung.png}
 	\caption{Beispielhafte Containererkennung mit einem Infrarotsensor}
-\end{figure}\\[0.2cm]
-\textbf{Begründung}\\[0.2cm]
-Die Positionierung mit einem Infrarotsensor ist die Ideale Lösung. Sie ist einfach zu realisieren im Vergleich zu einer Kamera oder einem Farbesensor und präziserer als ein Ultraschallsensor. Wenn ein Reflexkoppler verwendet wird, muss beachtet werden das unterschiedliche Farben unterschiedlich fest Reflektieren. Der Infrarotwert wird via AD-Wandler eingelesen.\\[0.2cm]
-\textbf{Testergebnisse}\\[0.2cm]
-Für die Ermittlung des besten Sensors wurde ein Ultraschall und Infrarotsensor als Funktionsmuster getestet. Der relativ grosse "Empfangswinkel", welcher der Ultraschallsensor aufweist, ist in dieser Anwendung nicht gewollt. Der Infrarotsensor ist diesbezüglich besser. Dieser ist jedoch Lichtempfindlich, jedoch sollte dieses Problem gelöst werden können.\\[0.2cm]
-\underline{Rechtsvortritt} \\[0.2cm]
-\textbf{Funktionsbeschrieb}\\[0.2cm]
-Die Rechtsvortritterkennung detailliert hat die Aufgabe das Fahrzeug vor einer Kollision zu Bewahren. Wenn rechts oder vor dem Fahrzeug etwas im Weg ist, soll das Fahrzeug anhalten.\\[0.2cm]
-\textbf{Komponentenbeschrieb}\\[0.2cm]
-\begin{figure} [h]
-	\centering
-	\includegraphics[width=0.25\textwidth]{03_Loesungskonzept/pictures/ultraschallsensor.png}
-	\caption{Getesteter Ultraschallsensor (Quelle: www.generationrobots.com)}
-	%http://www.generationrobots.com/2653-large_default/ultraschallsensor-hc-sr04.jpg
-\end{figure}
-Diese Aufgabe wird mit einem Ultraschallsensor gelöst. \\[0.2cm]
-\textbf{Begründung}\\[0.2cm]
-Ein Ultraschallsensor ist für unter 5Fr. zu haben und hat gute Eigenschaften für diese Aufgabe. Diese sind grosser Abstrahlwinkel und Reichweite.
-Zudem ist die Anbindung an das Freedomboard gut möglich.\\[0.2cm]
-\textbf{Testergebnisse}\\[0.2cm]
-Der Ultraschallsensor wurde bereits erfolgreich an das Freedomboard angeschlossen und  ausgewertet. Die Anbindung wurde mit Hilfe einer Anleitung vom mcuoneclipse.com realisiert. Die Distanzauswertung funktionierte bei dem Test relativ genau ($\approx \pm $ 1cm).
+\end{figure}\\
+\\
+\textbf{Begründung}
+\\
+Die Positionierung mit einem Infrarotsensor ist die Ideale Lösung. Sie ist einfach zu realisieren im Vergleich zu einer Kamera oder einem Farbesensor und präziserer als ein Ultraschallsensor.\\
+\\
+\textbf{Testergebnisse}\\
+Für die Ermittlung des besten Sensors wurde ein Ultraschall und Infrarotsensor als Funktionsmuster getestet. Der relativ grosse "Empfangswinkel", welcher der Ultraschallsensor aufweist, ist in dieser Anwendung nicht gewollt. Der Infrarotsensor ist diesbezüglich besser. Dieser ist jedoch Lichtempfindlich, jedoch sollte dieses Problem gelöst werden können.\
+\\[0.2cm]
+\underline{Rechtsvortritt} \\
+\textbf{Funktionsbeschrieb}
+
+\textbf{Komponentenbeschrieb}
+\textbf{Begründung}
+Wenn benötigt
+\textbf{Berechnungen}
+\textbf{Testergebnisse}
