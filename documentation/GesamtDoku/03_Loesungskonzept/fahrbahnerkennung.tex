@@ -4,31 +4,40 @@
 Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zu Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der jeweils eine Bildzeile als Graph einer Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Spalte, $y$ der Pixelkoordinate der Zeile und $z$ dem Graustufenwert des Pixels entspricht.\\
 Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden vom Controller an das Microcontrollerboard weitergegeben.\\[0.2cm]
 \textbf{Komponentenbeschrieb}
-\begin{figure}[h]%Position festigen
+\begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
 \caption{Aktivitätendiagramm Fahrbahnerkennung}
 \label{fig:activityRoute}
-\end{figure}\\[0.2cm]
+\end{figure}
+Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Für die Kantenerkennung wird jede Zeile eines Bildes als Funktion angeschaut und falls die Änderungsrate in $x$- und $y$-Richtung den Filterwert überschreitet eine Kante erkannt und auch die Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
 Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Für die Kantenerkennung wird jede Zeile eines Bildes als Funktion angeschaut und falls die Änderungsrate in $x$- und $y$-Richtung den Filterwert überschreitet eine Kante erkannt und auch die Richtung festgehalten (Abbildung).\\
-Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.\\
-\begin{figure}[h!]%Position festigen
+Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.
+\begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
 \caption{Bild nach Kantenerkennung}
+\label{fig:edges}
+\end{figure}
+\begin{figure}[H]%Position festigen
+\centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/graphPicture.png}
 \caption{Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}
 \label{fig:grayscale}
-\end{figure}\\
-\begin{figure}[ht!]
+\end{figure}
+Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Die Mitte zwischen diesen Kanten wird anschliessend in die Zielspur umgewandelt.
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/minEdge.png}
 \caption{Erste Kante links der Mitte}
+\label{fig:kantenl}
+\end{figure}
+\begin{figure}[H]
+\centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/maxEdge.png}
 \caption{Erste Kante rechts der Mitte}
-\label{fig:kanten}
+\label{fig:kantenr}
 \end{figure}
-Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt. Die Mitte zwischen diesen Kanten wird anschliessend in die Zielspur umgewandelt.\\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Mit der beschriebenen Vorgehensweise kann der Aufwand pro Bild gegenüber OpenCV deutlich reduziert werden, da die Operationen ausschliesslich für die Fahrbahnerkennung erstellt werden. Die Tests haben die Realisierbarkeit dieser Vorgehensweise als machbar und fexibel aufgezeigt.\\[0.2cm]
 \textbf{Berechnungen}\\[0.2cm]
