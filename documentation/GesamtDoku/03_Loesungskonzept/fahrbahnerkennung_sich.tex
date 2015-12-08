@@ -1,0 +1,109 @@
+% !TEX root = ../Dokumentation.tex
+\subsection{Fahrbahnerkennung}
+\textbf{Funktionsbeschrieb}\\[0.2cm]
+Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zu Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der jeweils eine Bildzeile als Graph einer Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Spalte, $y$ der Pixelkoordinate der Zeile und $z$ dem Graustufenwert des Pixels entspricht.\\
+Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden vom Controller an das Microcontrollerboard weitergegeben.\\[0.2cm]
+\textbf{Komponentenbeschrieb}
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
+\caption{Aktivitätendiagramm Fahrbahnerkennung}
+\label{fig:activityRoute}
+\end{figure}
+Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Für die Kantenerkennung wird jede Zeile eines Bildes als Funktion angeschaut und falls die Änderungsrate in $x$- und $y$-Richtung den Filterwert überschreitet eine Kante erkannt und auch die Richtung festgehalten (\ref{fig:grayscale}).\\
+Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.\\
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
+\caption{Bild nach Kantenerkennung}
+\label{fig:edges}
+\end{figure}
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/graphPicture.png}
+\caption{Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}
+\label{fig:grayscale}
+\end{figure}
+Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt. Die Mitte zwischen diesen Kanten wird anschliessend in die Zielspur umgewandelt.\\[0.2cm]
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/minEdge.png}
+\caption{Erste Kante links der Mitte}
+\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/maxEdge.png}
+\caption{Erste Kante rechts der Mitte}
+\label{fig:kanten}
+\end{figure}
+\textbf{Begründung}\\[0.2cm]
+Mit der beschriebenen Vorgehensweise kann der Aufwand pro Bild gegenüber OpenCV deutlich reduziert werden, da die Operationen ausschliesslich für die Fahrbahnerkennung erstellt werden. Die Tests haben die Realisierbarkeit dieser Vorgehensweise als machbar und fexibel aufgezeigt.\\[0.2cm]
+\textbf{Berechnungen}\\[0.2cm]
+Komplexität des Algorithmus, jedes Bild wird als eine $n\times{m}$ Matrix $M$ betrachtet, wobei $n$ = Spaltenzahl und $m$ = Zeilenzahl. Die Resultate der Kantenerkennung werden in einer zweiten $n\times{m}$ Matrix $M_1$ gespeichert, welche für die weiteren Berechnungen verwendet wird. Anhand des Bildformates gilt: $n>m$. Die Umwandlung des Bildes in Graustufen, von OpenCV durchgeführt, ist in der Abschätzung nicht enthalten.
+\begin{itemize}
+\item Iteration für Kantenerkennung:
+\[
+n \cdot m \leq n \cdot n \text{ wenn } n\geq m \rightarrow \mathcal{O}(n^2) \text{ mit den Zeugen }C=1 \text{ und } k = 1
+\]
+\item Iteration für Kantenfindung Fahrbahn:
+\[
+\frac{1}{2}(10n) + \frac{1}{2}(10n) = 5n + 5n = 10n \rightarrow \mathcal{O}(n) \text{ mit den Zeugen }C=10 \text{ und } k = 1
+\]
+\item Iteration für Fahrbahnausfilterung und das Erzeugen der Sollspur:
+\[
+n \cdot m \leq n \cdot n \text{ wenn } n\geq m \rightarrow \mathcal{O}(n^2) \text{ mit den Zeugen }C=1 \text{ und } k = m
+\]
+\item Zusammengezogene Schätzung der Komplexität:
+\begin{align*}
+2(n^2) + 10n &\leq 2n^2 + 10n^2 \text{ wenn } n\geq 1\\
+             &= 12n^2\\
+             &\rightarrow \mathcal{O}(n^2) \text{ mit den Zeugen }C=12 \text{ und } k = m
+\end{align*}
+\end{itemize}
+Formeln für die Berechnungen:
+\begin{itemize}
+\item Kantenfindung $h=$ Grenzwert für die Änderungsrate um eine Kante zu ermitteln und $z_1$ der Wert des Pixels in der Quellmatrix $M$:
+$z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
+\[
+\frac{\partial{z}}{\partial{x}}=\frac{f(x+\Delta{x})-f(x)}{\Delta{x}} = \frac{f(x+1)-f(x)}{1} = f(x+1)-f(x)
+\]
+\[
+\frac{\partial{z}}{\partial{y}}=\frac{f(y+\Delta{x})-f(y)}{\Delta{y}} = \frac{f(y+1)-f(y)}{1} = f(y+1)-f(y)
+\]
+\[
+\nabla f(x,y) = \begin{bmatrix}
+\frac{\partial{z}}{\partial{x}}\\
+\frac{\partial{z}}{\partial{y}}
+\end{bmatrix}
+\]
+\[
+\lVert\nabla f(x,y)\rVert = \sqrt{(f(x+1)-f(x))^2 + (f(y+1) - f(y))^2}
+\]
+Wenn nun der $\lVert\nabla f(x,y)\rVert \geq h$ , wird in die Zielmatrix $M_1$ an die Stelle $(x,y)$ der Wert 255 geschrieben, sonst 0.
+\item Finden der Fahrbahnreferenz am unteren Bildrand:\\
+Wie zuvor beschrieben wird für die Fahrbahn von innen nach aussen gesucht. Dabei wird jeweils die erste Kante genommen, für die gilt:
+\[
+\frac{\partial{z}}{\partial{y}} > h_y
+\]
+wobei $h_y$ für die minimale erwartete Änderung in $y$-Richtung steht. Im Anschluss wird die $min_x$- und $max_y$-Koordinate der gefundenen Limits folgendermassen angeglichen:
+\[
+min_{(x,y)} = 10\cdot\Bigl\lfloor\frac{min_{(x,y)}}{10}+0.5\Bigr\rfloor
+\]
+respektive:
+\[
+max_{(x,y)} = 10\cdot\Bigl\lfloor\frac{max_{(x,y)}}{10}+0.5\Bigr\rfloor
+\]
+\end{itemize}
+@TODO Fahrbahnermittlung ergänzen
+
+Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird die Erkennung an den Flexsensor übergeben, der mit dem seitlichen Abstand zum Trottoir die Fahrspur halten soll.
+Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sensor gebogen wird. Diese Bilder verdeutlichen dies.
+@ToDo Bild von Flexeinfügen
+Diese Kennline stellt den Widestandswert in Funktion von dem Biegewinkel dar.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flex_Biegungskennline.png}
+	\label{fig:Flex_R_Kennlinie}
+	\caption{Widerstand in Funktion des Biegewinkels}
+\end{figure}
+
+Mit dieser Widerstandänderung ...
+\textbf{Testergebnisse}\\
