@@ -39,13 +39,13 @@ Auch bei aufgenommenen Bildern, welche gleichfarbige Container mit unterschiedli
 \caption{unterschiedliche Helligkeiten}
 \label{fig:unterschiedliche Helligkeiten}
 \end{figure}
-Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls zum Beispiel im Hintergrund ein Objekt steht, welches eine grüne oder blaue Farbe hat und die Masse einem Container entsprechen könnte, kann es zu einer Fehlerkennung kommen. Folgendes Bild zeigt einen solchen Fall:
+Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls zum Beispiel im Hintergrund ein Objekt steht, welches eine grüne oder blaue Farbe hat und die Masse einem Container entsprechen könnten, kann es zu einer Fehlerkennung kommen. Folgendes Bild zeigt einen solchen Fall:
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/objekterkennung_blau_fehl.png}
 \caption{fehlerhafter Testversuch}
 \label{fig:fehlerhafter Testversuch}
-\end{figure}
+\end{figure} \\
 Um solche Fälle möglichst zu vermeiden wird versucht den abzusuchenden Bereich so einzuschränken, sodass nur solche Bildbereiche untersucht werden, wo sich auch wirklich ein Container befinden könnte. 
 \\[0.2cm]
 \underline{Rechtsvortritt}
@@ -54,17 +54,23 @@ Um solche Fälle möglichst zu vermeiden wird versucht den abzusuchenden Bereich
 Falls sich an der Kreuzung ein gegnerisches Fahrzeug von rechts nähert, hat dieses gemäss Aufgabenstellung Vortritt. Die Objekterkennung muss ein solches Fahrzeug erkennen und den Controller darüber informieren, damit das Fahrzeug gestoppt wird.
 \\[0.2cm]
 \textbf{Komponentenbeschrieb}\\
-Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gleich an der Kreuzung ankommen wird, wird Ausschau nach einem gegnerischen Fahrzeug auf der von rechtskommenden Spur gehalten. Wird ein Fahrzeug erkannt, wird dies an den Controller gemeldet. Der Vorgang wird dann solange wiederholt, bis das Fahrzeug nicht mehr im Bereich liegt. Sobald dies geschehen ist, wird wieder der Controller informiert, damit das Fahrzeug weiterfahren kann.
+Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gleich an der Kreuzung ankommen wird, wird Ausschau nach einem gegnerischen Fahrzeug auf der von rechtskommenden Spur gehalten. Wird ein Fahrzeug erkannt, wird dies dem Controller gemeldet. Der Vorgang wird dann solange wiederholt, bis das Fahrzeug nicht mehr im Bereich liegt. Sobald dies geschehen ist, wird wieder der Controller informiert, damit das Fahrzeug weiterfahren kann.
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/objekterkennung_rechtsvortritt.png}
 \caption{Aktivitätendiagramm Obkjekterkennung: Rechtsvortritt}
 \label{fig:activityRechtsvortritt}
+\end{figure} \\
+Da nicht nur angehalten werden muss, wenn ein gegenerisches Fahrzeug an der Kreuzun steht, sondern auch, wenn es sich von rechts nähert, muss der zu überprüfende Bereich eine gewisse Grösse haben. Der ungefähre Bereich, welcher abgesucht werden soll, ist in der folgenden Grafik markiert:
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/rechtsvortritt_bereich.jpg}
+\caption{Abgedeckter Bereich beim Rechtsvortritt}
+\label{fig:bereichRechtsvortritt}
 \end{figure}
-Der Bereich, welcher abgesucht werden soll, ist in der folgenden Grafik markiert:
-\\
-@TODO: Bild einfügen und Kapitel nach Absprache fertigstellen
-\\
+\\[0.2cm]
+\textbf{Begründung}\\
+Bei der Vortrittserkennung kann nicht nach Farben oder Konturen gesucht werden, da man nicht weiss, wie das gegnerische Fahrzeug aussehen wird. Daher ist es nötig, dass erkennt werden kann, ob ein definierter Strassenabschnitt verdeckt ist oder nicht. Falls der Abtschnitt verdeckt ist, heisst das, dass sich ein Fahrzeug darauf befindet, welches Vortritt hat.
 \subsubsection{Objekterkennung präzise}
 \underline{Containererkennung}\\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
