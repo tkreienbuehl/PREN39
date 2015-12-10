@@ -16,7 +16,7 @@ Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend de
 \caption{Aktivitätendiagramm Fahrbahnerkennung}
 \label{fig:activityRoute}
 \end{figure}
-Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Für die Kantenerkennung wird jede Zeile eines Bildes als Funktion angeschaut und falls die Änderungsrate in $x$- und $y$-Richtung den Filterwert überschreitet eine Kante erkannt und auch die Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
+Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Die erhaltenen Bilder werden vor der Analyse verkleinert auf ein Format von 320x230 Pixel. Für die Kantenerkennung wird jede Zeile eines Bildes als Funktion angeschaut und falls die Änderungsrate in $x$- und $y$-Richtung den Filterwert überschreitet eine Kante erkannt und auch die Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
 Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.
 \begin{figure}[H]%Position festigen
 \centering
@@ -96,24 +96,35 @@ max_{(x,y)} = 10\cdot\Bigl\lfloor\frac{max_{(x,y)}}{10}+0.5\Bigr\rfloor
 \]
 \end{itemize}
 Die Fahrbahnkanten werden im Anschluss anhand der Ermittelten Werte gesucht. Ist eine Kante in der Nähe der ermittelten Fahrbahn, wird sie behalten, ansonsten Entfernt. Der Grenzwert muss noch genau ermittelt werden.\\
-Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor entsprechend dem eingeschlagenen Radius der Lenkung gebogen.\\
-Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird die Erkennung an den Flexsensor übergeben, der mit dem seitlichen Abstand zum Trottoir die Fahrspur halten soll.
-
-\begin{figure}[h]
+Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor entsprechend dem eingeschlagenen Radius der Lenkung gebogen.
+\\[0.2cm]
+\textbf{Testergebnisse}\\[0.2cm]
+In den bisher durchgeführten Tests konnten die Bilder der Kamera mit einer Framerate von 10 - 20 Bilder auf dem Minicomputer verarbeitet werden. Die Lichteinflüsse haben sich dabei als handelbar präsentiert, wenn die Beleuchtung mindestens der im Testgebäude vorhandenen Standardbelöeuchtung entspricht. Hellere Lichtverhältnisse haben sich positiv auf die Kantenerkennung ausgewirkt.\\
+Die Parallelisierung hat sich ebenfalls erfolgreich testen lassen, gemeinsam mit der Objekterkennung, allerdings nur auf dem Notebook aufgrund einer defekten Testkamera.
+\\[0.2cm]
+\underline{Fahrbahnerkennung Unterstützung}
+\\[0.2cm]
+\textbf{Funktionsbeschrieb}\\[0.2cm]
+Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird die Erkennung an den Flexsensor übergeben, der mit dem seitlichen Abstand zum Trottoir die Fahrspur halten soll.\\[0.2cm]
+\textbf{Komponentenbeschrieb}\\[0.2cm]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flexsensor.jpg}
 	\label{fig:Flexsensor}
 	\caption{Flexsensor}
-\end{figure}
-
-Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sensor gebogen wird. 
+\end{figure}%
+Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sensor gebogen wird. \\[0.2cm]
+%
+\textbf{Begründung}\\[0.2cm]
+Für die Distanzmessung zum Trottoir wurden noch andere Sensoren (Ultraschall und Infrarot -Sensro) in Betracht gezogen. Jedoch sind die Ultraschallsensoren zu unpräzise und die Infrarotsensoren habe mühe mit der schwarzen Oberfläche des Trottoirs. Beides wurde mit einem Funktionsmuster ausgetestet. Der Flexsensor hat bei beiden diesen Punkten bessere Eigenschaften.\\[0.2cm]
+\textbf{Testergebnisse}\\[0.2cm]
 Diese Kennlinie stellt den Widerstandswert in Funktion von dem Biegewinkel dar.
-
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flex_Biegungskennline.png}
 	\label{fig:Flex_R_Kennlinie}
 	\caption{Widerstand in Funktion des Biegewinkels}
 \end{figure}
-
-Mit dieser Widerstandsänderung kann auf die Distanz geschlossen werden. Die Berechnung oder Auswertung welcher Widerstandswert zu welcher Distanz passt muss noch im PREN2 ausgewertet werden. Der Widerstandswert des Flexsensors kann über einen einfachen Spannungsteiler und einem AD-Wandler eingelesen werden.
+%
+Mit dieser Widerstandsänderung kann auf die Distanz geschlossen werden. Die Berechnung oder Auswertung welcher Widerstandswert zu welcher Distanz passt muss noch im PREN2 gemacht werden. Der Widerstandswert des Flexsensors kann über einen einfachen Spannungsteiler und einem AD-Wandler eingelesen werden.
+Ein Risiko besteht darin das der Flexsensor auf das Trottoir springt, anstatt sich zu biegen. Jedoch sollte dies durch eine optimale Positionierung vermieden werden können.\\[0.2cm]

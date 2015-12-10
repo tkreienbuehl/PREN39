@@ -1,7 +1,7 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Objekterkennung}
 Die Objekterkennung hat das Ziel die richtigen Objekte zu erkennen und das genaue positionieren des Fahrzeuges zu ermöglichen. Dabei wird die Containererkennung in zwei Teilaufgaben aufgeteilt. Die Objekterkennung grob ist für die Erkennung der richtigen Objekte mittels Farb- und Formerkennung zuständig. Die Objekterkennung präzise ist für das Positionieren des Fahrzeuges notwendig. Diese zwei Fälle werden separat angeschaut.
-
+%
 \subsubsection{Objekterkennung grob}
 Die Aufgabe der Objekterkennung grob ist es, die aufzuladenden Container, kreuzenden Fahrzeuge und das Entleerungsbecken zu erkennen. Sobald ein ein solches Objekt erkannt wird, wird der zentrale Controller darüber informiert, damit die Informationen an die Objekterkennung präzise weitergegeben werden können.
 \\[0.2cm]
@@ -53,7 +53,7 @@ Um solche Fälle möglichst zu vermeiden wird versucht den abzusuchenden Bereich
 \textbf{Funktionsbeschrieb}\\
 Falls sich an der Kreuzung ein gegnerisches Fahrzeug von rechts nähert, hat dieses gemäss Aufgabenstellung Vortritt. Die Objekterkennung muss ein solches Fahrzeug erkennen und den Controller darüber informieren, damit das Fahrzeug gestoppt wird.
 \\[0.2cm]
-\textbf{Komponentenbeschrieb}\\
+\textbf{Komponentenbeschrieb}\\[0.2cm]
 Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gleich an der Kreuzung ankommen wird, wird Ausschau nach einem gegnerischen Fahrzeug auf der von rechtskommenden Spur gehalten. Wird ein Fahrzeug erkannt, wird dies dem Controller gemeldet. Der Vorgang wird dann solange wiederholt, bis das Fahrzeug nicht mehr im Bereich liegt. Sobald dies geschehen ist, wird wieder der Controller informiert, damit das Fahrzeug weiterfahren kann.
 \begin{figure}[H]%Position festigen
 \centering
@@ -69,7 +69,7 @@ Da nicht nur angehalten werden muss, wenn ein gegenerisches Fahrzeug an der Kreu
 \label{fig:bereichRechtsvortritt}
 \end{figure}
 \\[0.2cm]
-\textbf{Begründung}\\
+\textbf{Begründung}\\[0.2cm]
 Bei der Vortrittserkennung kann nicht nach Farben oder Konturen gesucht werden, da man nicht weiss, wie das gegnerische Fahrzeug aussieht. Daher ist es nötig, dass erkennt werden kann, ob ein definierter Strassenabschnitt verdeckt ist oder nicht. Falls der Abtschnitt verdeckt ist, heisst das, dass sich ein Fahrzeug darauf befindet, welches Vortritt hat.
 \subsubsection{Objekterkennung präzise}
 \underline{Containererkennung}\\[0.2cm]
@@ -84,9 +84,9 @@ Die Container Erkennung wird mit Hilfe von Distanzsensoren realisiert. Dafür si
 \end{figure}
 \textbf{Begründung}\\[0.2cm]
 Die Positionierung mit einem Infrarotsensor ist die Ideale Lösung. Sie ist einfach zu realisieren im Vergleich zu einer Kamera oder einem Farbesensor und präziserer als ein Ultraschallsensor.\\[0.2cm]
-\textbf{Testergebnisse}
+\textbf{Testergebnisse}\\[0.2cm]
 Für die Ermittlung des besten Sensors wurde ein Ultraschall und Infrarotsensor als Funktionsmuster getestet. Der relativ grosse "Empfangswinkel", welcher der Ultraschallsensor aufweist, ist in dieser Anwendung nicht gewollt. Der Infrarotsensor ist diesbezüglich besser. Dieser ist jedoch Lichtempfindlich, jedoch sollte dieses Problem gelöst werden können.\\[0.2cm]
-
+%
 \underline{Rechtsvortritt} \\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Die Rechtsvortritterkennung detailliert hat die Aufgabe das Fahrzeug vor einer Kollision zu Bewahren. Wenn rechts oder vor dem Fahrzeug etwas im Weg ist, soll das Fahrzeug anhalten.\\[0.2cm]
@@ -103,7 +103,7 @@ Ein Ultraschallsensor ist für unter 5Fr. zu haben und hat gute Eigenschaften f�
 Zudem ist die Anbindung an das Freedomboard gut möglich.\\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
 Der Ultraschallsensor wurde bereits erfolgreich an das Freedomboard angeschlossen und  ausgewertet. Die Anbindung wurde mit Hilfe einer Anleitung vom mcuoneclipse.com realisiert. Die Distanzauswertung funktionierte bei dem Test relativ genau ($\approx \pm $ 1cm).\\[0.2cm]
-
+%
 \underline{Entleerungbecken Erkennung} \\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Damit das Schüttgut im Entleerungsbecken entleert werden kann, muss das Entleerungsbecken richtig detektiert werden können. \\[0.2cm]

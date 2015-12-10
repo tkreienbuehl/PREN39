@@ -19,3 +19,13 @@ So wird beispielsweise die gesamte Bilderkennung über den Minicomputer gesteuer
 \label{fig:Java}
 \end{figure}
 In Abbildung 2 wird eine detaillierte Ansicht der Komponente dargestellt, insbesondere was die Schnittstellen betrifft. So ist erkenntlich, dass der Microcontroller als Hauptknoten fungiert und als Schnittstelle für analoge wie auch digitale Signale dient.
+\subsubsection{Geschwindigkeitsregelung}
+Damit das Fahrzeug mit einer konstanten Geschwindigkeit fahren kann, muss ein Regler eingebaut werden.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Gesch_Regelung.png}
+	\label{fig:Flex_R_Kennlinie}
+	\caption{Grober Regelkreis}
+\end{figure}
+Hier zu sehen ist der grobe Regelkreis. Der Sollwert wird vom Minicomputer vorgegeben und an das Mikrokontrollerboard weitergeleitet. In diesem wird dann die Regelung implementiert. Der Regelausgang ist ein PWM Signal, der die Geschwindigkeit des Antriebsmotors bestimmt. 
+\subsubsection{Lenkregeung}

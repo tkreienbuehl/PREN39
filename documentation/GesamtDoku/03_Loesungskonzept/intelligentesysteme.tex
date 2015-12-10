@@ -1,6 +1,5 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Intelligente Systeme}
-
 \subsubsection{Softwarekonzept}
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control} Prinzip, wobei sich die View auf einen Debug-Zweck beschränkt. Dabei hat der Controller aller Subprozesse sowie die Schnittstelle zur Harwaresteuerung, via Microcontroller-Board realisiert, unter Kontrolle. Die parallel laufenden  Subprozesse sind:
@@ -9,6 +8,11 @@ Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control} Prinz
 \item Objekterkennung
 \item Fahrbahnerkennung
 \end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/grobablauf.png}
+	\caption{Aktivitätendiagramm Grobablauf}
+\end{figure}
 Der Zustand des Fahrzeuges wird im Model gespeichert und steht allen Prozessen zu Verfügung. Die Datenstruktur ist dabei so aufgebaut, dass keine Zugriffskonflikte entstehen sollten.\\
 Der Controller handelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container hat dieser Priorität vor dem normalen Fahren und das Microcontroller-Board erhält die entsprechenden Anweisungen.\\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
@@ -20,12 +24,17 @@ TDD soll sicherstellen, dass vor Allem bei kurzfristigen Änderungen keine unerw
 \textbf{Testergebnisse}\\[0.2cm]
 
 \subsubsection{Mini-Computer}
-\textbf{Funktionsbeschrieb}
-\textbf{Komponentenbeschrieb}
-\textbf{Begründung}
-Wenn benötigt
-\textbf{Berechnungen}
-\textbf{Testergebnisse}
+\textbf{Funktionsbeschrieb}\\[0.2cm]
+Der Mini-Computer beinhaltet die Logik- und Ablaubsteuerung, nimmt Bilder von der Kamera entgegen und verarbeitet diese um Container zu orten und in der Mitte der Fahrbahn zu bleiben. Die Lenkkorrektur und weitere Befehle zur Steuerung der Mechanik werden via USB Schnittstelle an as Mikrocontroller-Board weitergeleitet.\\[0.2cm]
+\textbf{Komponentenbeschrieb}\\[0.2cm]
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/raspberrypi2.png}
+	\caption{Raspberry Pi2 Model B (Quelle:http://pcworld.com/)}
+\end{figure}
+Das Raspberry Pi2 bietet mit einem 900MHz Quadcore Prozessor, einem eigenem Grafikchip und 1GB Ram viel Leistung und ist ideal geeignet.\\[0.2cm]
+\textbf{Begründung}\\[0.2cm]
+Dem Team war von Anfang an klar, dass die Bildverarbeitung viel Ressourcen verbrauchen wird. Gleichzeitig darf der Energieverbrauch die Kapazität eines Akkus nicht übersteigen. Das Raspberry Pi2 besitzt genügend Leistung und ist trotzdem sparsam. Mit einem Quadcore und 1GB RAM ist es ausreichend performant um Bilder zeitig zu verarbeiten. Zusätzlich ist es einfach zu verwalten und bedienen, da es ein eigenes Betriebssystem besitzt.\\[0.2cm]
 
 \subsubsection{Mikrocontroller-Board}
 \textbf{Funktionsbeschrieb}
