@@ -18,15 +18,15 @@ public:
 	RouteFinder(PrenController* controller);
 	~RouteFinder();
 
-	int FindRoute(PictureCreator* picCreator);
-	std::string FormatFileName(std::string fileStr, int nr);
-	void OutputMat(cv::Mat* mat, cv::Mat* changesMat);
-	void ApproxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row);
-	void CalcAverageLimit(int* upperLimit, int* lowerLimit);
+	int findRoute(PictureCreator* picCreator);
+	std::string formatFileName(std::string fileStr, int nr);
+	void outputMat(cv::Mat* mat, cv::Mat* changesMat);
+	void approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row);
+	void calcAverageLimit(int* upperLimit, int* lowerLimit);
 
 private:
-	static void* StaticEntryPoint(void* threadId);
-	int RunProcess();
+	static void* staticEntryPoint(void* threadId);
+	int runProcess();
 
 	vector<int>minVals;
 	vector<int>maxVals;

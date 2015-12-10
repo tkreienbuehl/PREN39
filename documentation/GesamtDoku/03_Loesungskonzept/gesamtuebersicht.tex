@@ -8,19 +8,14 @@
 \label{fig:Java}
 \end{figure}
 
-\subsubsection{Zusammenspiel}
-\textbf{Funktionsbeschrieb}\\[0.2cm]
-Das Herzstück des autonomen Entsorgungsfahrzeug bildet das Microcontrollerboard. 
-\textbf{Komponentenbeschrieb}
-\textbf{Begründung}
-Wenn benötigt
-\textbf{Berechnungen}
-\textbf{Testergebnisse}
-
+\subsubsection{Zusammenspiel}\\[0.2cm]
+Wie die obige Darstellung zeigt, besteht zwischen allen Komponenten ein enges Zusammenspiel.
+So wird beispielsweise die gesamte Bilderkennung über den Minicomputer gesteuert. Dieser erhält seine Daten einerseits durch die Kamera, aber auch von den Sensoren welche über den Microcontroller an ihn gesendet werden. Nachdem die Informationen bearbeitet wurden, werden Befehle an den Microcontroller geschickt, welcher die Ansteuerung der Motoren übernimmt. Die Motoren wiederum, lösen die mechanischen Bewegungen aus wie z.B die Schwenkung der Kamera oder das Senken des Greifarmes.\\[0.2cm]
 \subsubsection{Schnittstellen}
-\textbf{Funktionsbeschrieb}
-\textbf{Komponentenbeschrieb}
-\textbf{Begründung}
-Wenn benötigt
-\textbf{Berechnungen}
-\textbf{Testergebnisse}
+\begin{figure}[h!]%Position festigen
+\centering
+\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/verteilungsdiagramm.png}
+\caption{Schnittstellenübersicht}
+\label{fig:Java}
+\end{figure}
+In Abbildung 2 wird eine detaillierte Ansicht der Komponente dargestellt, insbesondere was die Schnittstellen betrifft. So ist erkenntlich, dass der Microcontroller als Hauptknoten fungiert und als Schnittstelle für analoge wie auch digitale Signale dient.
