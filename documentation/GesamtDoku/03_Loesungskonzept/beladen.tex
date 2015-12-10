@@ -35,6 +35,24 @@ Der Container wird in den ersten Behälter entleert. Durch den schrägen Boden f
 \item Behälter aus Acrylglas 3mm Dicke (Laserzuschnitt)
 \end{itemize}
 
+Technische Daten der Motors Greifer:
+\begin{itemize}
+\item Stellzeit bei 4.8 Volt: 0.1 sec (50°) 
+\item Stellzeit bei 6 Volt: 0.08 sec (50°) 
+\item Betriebsspannung: 4.6/6 V
+\item Stell-Moment bei 4.8 Volt: 18 Ncm
+\item Stell-Moment bei 6 Volt: 20 Ncm 
+\end{itemize}
+
+Technische Daten des Motors Greifarm:
+\begin{itemize}
+\item Stellzeit bei 4.8 Volt: 0.19 sec (60°) 
+\item Stellzeit bei 6 Volt: 0.17 sec (60°) 
+\item Betriebsspannung: 4.6/6 V
+\item Stell-Moment bei 4.8 Volt: 32 Ncm 
+\item Stell-Moment bei 6 Volt: 35 Ncm 
+\end{itemize}
+
 \textbf{Berechnungen}
 \\[0.2cm]
 Servo Motor für Greifer schliessen /
@@ -67,4 +85,11 @@ Servo Motor für Entladeklappe:
 \item M = m*g*l = 0.015Nm = 1.5Ncm
 \item Sicherheitsfaktor =2
 \item M = 1.5*2 = 3Ncm
+\end{itemize}
+
+Leistungsberechnung der Motoren Greifer/Entladeklape:
+\begin{itemize}
+\[
+P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 0.72\frac{U}{sec}\cdot 0.18Nm = 0.81W
+\]
 \end{itemize}
