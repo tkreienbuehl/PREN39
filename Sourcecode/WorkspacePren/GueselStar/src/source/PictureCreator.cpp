@@ -57,7 +57,6 @@ void PictureCreator::StartRecording() {
         	cout << "Image is empty" << endl;
         	m_State = false;
         }
-        //cout << "picture done" << endl;
 	}
 
 	cvReleaseCapture( &capture );

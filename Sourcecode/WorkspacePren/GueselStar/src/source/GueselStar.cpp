@@ -4,15 +4,19 @@ int main() {
 
 	PrenController* controller = new PrenController();
 
-	PictureCreator* PicCreator = new PictureCreator(controller);
-	RouteFinder* RtFinder = new RouteFinder(controller);
-	RtFinder->FindRoute(PicCreator);
+	PictureCreator* picCreator = new PictureCreator(controller);
+	RouteFinder* rtFinder = new RouteFinder(controller);
+	ObjectFinder* objectFinder = new ObjectFinder(controller);
+
+	rtFinder->findRoute(picCreator);
+	objectFinder->findObjects(picCreator);
 
 	controller->Start();
 
-	PicCreator->StopRecording();
-	delete RtFinder;
-	delete PicCreator;
+	delete rtFinder;
+	delete objectFinder;
+	picCreator->StopRecording();
+	delete picCreator;
 	delete controller;
 	return 0;
 }
