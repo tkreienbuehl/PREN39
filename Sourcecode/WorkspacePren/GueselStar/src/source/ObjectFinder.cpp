@@ -56,7 +56,7 @@ void ObjectFinder::RunProcess() {
 	cv::waitKey(0);
 }
 
-cv::Mat createImage(cv::String filename) {
+cv::Mat ObjectFinder::createImage(cv::String filename) {
 	cv::Mat srcImage = imread(filename, 1);
 
 	if (srcImage.data == NULL) {
@@ -70,14 +70,14 @@ cv::Mat createImage(cv::String filename) {
 	return origImage;
 }
 
-cv::Mat convertImageToHSV(cv::Mat rgbImage) {
+cv::Mat ObjectFinder::convertImageToHSV(cv::Mat rgbImage) {
 	cv::Mat HSVImage;
 
 	cvtColor(rgbImage, HSVImage, CV_RGB2HSV);
 	return HSVImage;
 }
 
-cv::Mat filterColorInImage(cv::String color, cv::Mat imageToFilter) {
+cv::Mat ObjectFinder::filterColorInImage(cv::String color, cv::Mat imageToFilter) {
 
 	cv::Mat filteredImage;
 	if (color == "green") {
@@ -91,7 +91,7 @@ cv::Mat filterColorInImage(cv::String color, cv::Mat imageToFilter) {
 	return filteredImage;
 }
 
-vector<vector<cv::Point> > findContainersInImage(cv::Mat imageToFindContainer) {
+vector<vector<cv::Point> > ObjectFinder::findContainersInImage(cv::Mat imageToFindContainer) {
 	vector<vector<cv::Point> > contours;
 	vector<cv::Vec4i> hierarchy;
 	cv::findContours(imageToFindContainer, contours, hierarchy, CV_RETR_TREE,
@@ -100,7 +100,7 @@ vector<vector<cv::Point> > findContainersInImage(cv::Mat imageToFindContainer) {
 	return contours;
 }
 
-vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1,
+vector<vector<cv::Point> > ObjectFinder::mergeContours(vector<vector<cv::Point> > contours1,
 		vector<vector<cv::Point> > contours2) {
 	vector<vector<cv::Point> > contours;
 
@@ -112,7 +112,7 @@ vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1,
 
 }
 
-cv::Mat markFindContoursInImage(vector<vector<cv::Point> > contours,
+cv::Mat ObjectFinder::markFindContoursInImage(vector<vector<cv::Point> > contours,
 		cv::Mat imageToMarkContainer) {
 
 	vector<vector<cv::Point> > contours_poly(contours.size());
