@@ -16,7 +16,7 @@ int RouteFinder::findRoute(PictureCreator* picCreator) {
 
 	m_PicCreator = picCreator;
 	pthread_t thread;
-	short i = 0;
+	short i = 1;
 	int rc;
 	m_State = true;
 	cout << "main() : creating thread, " << i << endl;
