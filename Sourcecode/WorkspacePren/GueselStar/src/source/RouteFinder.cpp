@@ -12,15 +12,15 @@ RouteFinder::~RouteFinder() {
 	delete m_GradMat;
 }
 
-int RouteFinder::FindRoute(PictureCreator* picCreator) {
+int RouteFinder::findRoute(PictureCreator* picCreator) {
 
 	m_PicCreator = picCreator;
 	pthread_t thread;
-	short i = 0;
+	short i = 1;
 	int rc;
 	m_State = true;
 	cout << "main() : creating thread, " << i << endl;
-	rc = pthread_create(&thread, NULL, RouteFinder::StaticEntryPoint, this);
+	rc = pthread_create(&thread, NULL, RouteFinder::staticEntryPoint, this);
 	if (rc) {
 	 cout << "Error:unable to create thread," << rc << endl;
 	 exit(-1);
@@ -29,7 +29,7 @@ int RouteFinder::FindRoute(PictureCreator* picCreator) {
 	return 0;
 }
 
-std::string RouteFinder::FormatFileName(std::string fileStr, int nr) {
+std::string RouteFinder::formatFileName(std::string fileStr, int nr) {
 	ostringstream nrStream;
 	nrStream << nr;
 	int start = fileStr.find("000");
@@ -39,7 +39,7 @@ std::string RouteFinder::FormatFileName(std::string fileStr, int nr) {
 	return fileStr;
 }
 
-void RouteFinder::OutputMat(cv::Mat* mat, cv::Mat* changesMat) {
+void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
 
     // accept only char type matrices
     CV_Assert(mat->depth() == CV_8U);
@@ -72,17 +72,17 @@ void RouteFinder::OutputMat(cv::Mat* mat, cv::Mat* changesMat) {
     lowerLimit = -100;
     for( i = nRows-3; i > 0; i--) {
     	if (i > nRows - NROFLINES) {
-    		ApproxLimit(changesMat, &upperLimit, &lowerLimit, i);
+    		approxLimit(changesMat, &upperLimit, &lowerLimit, i);
     	}
     	else {
     		if (i == nRows - NROFLINES) {
-    			CalcAverageLimit(&upperLimit, &lowerLimit);
+    			calcAverageLimit(&upperLimit, &lowerLimit);
     		}
     	}
     }
 }
 
-void RouteFinder::ApproxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row) {
+void RouteFinder::approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row) {
 
 	int val;
 	bool minim = false;
@@ -116,7 +116,7 @@ void RouteFinder::ApproxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, in
 	maxVals.push_back(*upperLimit);
 }
 
-void RouteFinder::CalcAverageLimit(int* upperLimit, int* lowerLimit) {
+void RouteFinder::calcAverageLimit(int* upperLimit, int* lowerLimit) {
 
 	int minVal = 0, maxVal = 0, nrs;
 	nrs = minVals.size();
@@ -135,12 +135,12 @@ void RouteFinder::CalcAverageLimit(int* upperLimit, int* lowerLimit) {
 	//cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
 }
 
-void* RouteFinder::StaticEntryPoint(void* threadId) {
-	((RouteFinder*)threadId)->RunProcess();
+void* RouteFinder::staticEntryPoint(void* threadId) {
+	((RouteFinder*)threadId)->runProcess();
 	return NULL;
 }
 
-int RouteFinder::RunProcess() {
+int RouteFinder::runProcess() {
 	cv::Mat grayImage, reducedImg, image;
 	ostringstream nrStream;
 
@@ -159,7 +159,7 @@ int RouteFinder::RunProcess() {
 
 			cv::Mat diffsPic(reducedImg.rows, reducedImg.cols, cv::DataType<uchar>::type);
 			m_GradMat = GradientMat::getInstance(static_cast<short>(reducedImg.rows), static_cast<short>(reducedImg.cols));
-			OutputMat(&grayImage, &diffsPic);
+			outputMat(&grayImage, &diffsPic);
 
 			cv::imshow("The Image", diffsPic);
 			cv::imshow("The Source gray Image", grayImage);
@@ -169,6 +169,7 @@ int RouteFinder::RunProcess() {
         	i--;
         }
     }
+
     m_Controller->SetState(m_Controller->END);
 	string bye = "Now I've done my job, have fun with your pics ;)";
 	cout << bye << endl;
