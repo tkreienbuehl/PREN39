@@ -1,7 +1,5 @@
 #include "../header/PrenController.hpp"
 
-using namespace std;
-
 
 PrenController::PrenController() {
 	m_State = STOPPED;
@@ -11,31 +9,34 @@ PrenController::~PrenController() {
 
 }
 
-void PrenController::Start() {
+void PrenController::start() {
 	// Start thread PictureCreator
 	m_State = RUNNING;
-	RunProgram();
+	runProgram();
 }
 
-void PrenController::SetState(const states state) {
+void PrenController::setState(const states state) {
 	switch (state) {
 	case END:
-		StopProgram();
+		stopProgram();
 		break;
 	default:
 		cout << "illegal state used" << endl;
 	}
 }
 
-void PrenController::RunProgram() {
+void PrenController::runProgram() {
 
 	while (m_State != END) {
 		//@TODO Implement Controller code here
+		usleep(300);
 	}
+	cout << "exiting Controller" << endl;
 
 }
 
-int PrenController::StopProgram() {
+int PrenController::stopProgram() {
 	m_State = END;
+	cout << "Controller stopped " << endl;
 	return m_State;
 }

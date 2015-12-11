@@ -1,8 +1,12 @@
 #pragma once
 
-#include "GradientMat.hpp"
+#include <iostream>
+#include <unistd.h>
+
+using namespace std;
 
 class PrenController {
+
 public:
 
 	enum states {
@@ -13,15 +17,15 @@ public:
 		STOPPED = -99
 	};
 
-	PrenController();
+	PrenController(void);
 	~PrenController();
 
-	void Start();
-	void SetState(const states state);
+	void start(void);
+	void setState(states state);
 
 private:
-	void RunProgram();
-	int StopProgram();
+	void runProgram(void);
+	int stopProgram(void);
 	states m_State;
 
 };

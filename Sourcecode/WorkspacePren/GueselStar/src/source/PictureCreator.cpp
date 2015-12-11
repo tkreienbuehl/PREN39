@@ -8,26 +8,18 @@
 #include "../header/PictureCreator.hpp"
 
 PictureCreator::PictureCreator(PrenController* controller) {
-
-	pthread_t thread;
-	short i = 0;
-	int rc;
-	m_State = true;
-	cout << "main() : creating thread, " << i << endl;
-	rc = pthread_create(&thread, NULL, PictureCreator::StaticEntryPoint, this);
-	if (rc) {
-	 cout << "Error:unable to create thread," << rc << endl;
-	 exit(-1);
-	}
+	m_Controller = controller;
+	m_State = false;
 }
 
 PictureCreator::~PictureCreator() {
 
 }
 
-void* PictureCreator::StaticEntryPoint(void* threadId) {
+void* PictureCreator::staticEntryPoint(void* threadId) {
 	((PictureCreator*)threadId)->StartRecording();
-	return NULL;
+	cout << "Stop recording pictures" << endl;
+	pthread_exit(threadId);
 }
 
 cv::Mat* PictureCreator::GetImage() {
@@ -40,14 +32,18 @@ void PictureCreator::StopRecording() {
 
 void PictureCreator::StartRecording() {
 
+	usleep(1000);
+	cout << "Start recording pictures" << endl;
+	m_State = true;
+
 	CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
 
-	cout << "running :)" << endl;
 	if(!capture) {
 		cout << "No camera detected" << endl;
 		return;
 	}
 
+	cout << "running :)" << endl;
 	while (m_State) {
 	    IplImage* iplImg = cvQueryFrame( capture );
 	    m_TheImage = cv::cvarrToMat(iplImg);
@@ -60,4 +56,5 @@ void PictureCreator::StartRecording() {
 	}
 
 	cvReleaseCapture( &capture );
+
 }

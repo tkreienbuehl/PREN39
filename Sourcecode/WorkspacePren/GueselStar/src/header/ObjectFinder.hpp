@@ -6,13 +6,15 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
+#include <pthread.h>
+
 using namespace std;
 
 class ObjectFinder {
 
 
 public:
-	ObjectFinder(PrenController* controller);
+	ObjectFinder(PrenController* controller, PictureCreator* picCreator);
 	~ObjectFinder();
 
 	void findObjects(PictureCreator* picCreator);
@@ -23,13 +25,11 @@ public:
 	cv::Mat markFindContoursInImage(vector<vector<cv::Point> > contours, cv::Mat imageToMarkContainer);
 	vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1, vector<vector<cv::Point> > contours2);
 
+	static void* staticEntryPoint(void* threadId);
+
 private:
-	static void* StaticEntryPoint(void* threadId);
+
 	void RunProcess();
-	cv::Mat origImage;
-	cv::Mat hsvImage;
-	cv::Mat filteredImageGreen;
-	cv::Mat filteredImageBlue;
 	vector<vector<cv::Point> > contoursGreen;
 	vector<vector<cv::Point> > contoursBlue;
 	vector<vector<cv::Point> > contours;
