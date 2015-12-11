@@ -1,16 +1,13 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Gesamtübersicht}
-
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/uebersichtszeichnung.png}
 \caption{Übersichtszeichnung}
 \label{fig:Übersichtszeichnung}
-\end{figure}\flushleft
-
-\subsubsection{Zusammenspiel}\\[0.2cm]
-Wie die obige Darstellung zeigt, besteht zwischen allen Komponenten ein enges Zusammenspiel.
-So wird beispielsweise die gesamte Bilderkennung über den Minicomputer gesteuert. Dieser erhält seine Daten einerseits durch die Kamera, aber auch von den Sensoren welche über den Mikrocontroller an ihn gesendet werden. Nachdem die Informationen bearbeitet wurden, werden Befehle an den Mikrocontroller geschickt, welcher die Ansteuerung der Motoren übernimmt. Die Motoren wiederum, lösen die mechanischen Bewegungen aus wie z.B die Schwenkung der Kamera oder das Senken des Greifarmes.\\[0.2cm]
+\end{figure}
+\subsubsection{Zusammenspiel}
+Wie die obige Darstellung zeigt, besteht zwischen allen Komponenten ein enges Zusammenspiel. So wird beispielsweise die gesamte Bilderkennung über den Minicomputer gesteuert. Dieser erhält seine Daten einerseits durch die Kamera, aber auch von den Sensoren welche über den Mikrocontroller an ihn gesendet werden. Nachdem die Informationen bearbeitet wurden, werden Befehle an den Mikrocontroller geschickt, welcher die Ansteuerung der Motoren übernimmt. Die Motoren wiederum, lösen die mechanischen Bewegungen aus wie z.B die Schwenkung der Kamera oder das Senken des Greifarmes.
 \subsubsection{Schnittstellen}
 \begin{figure}[H]%Position festigen
 \centering
@@ -39,4 +36,4 @@ Damit des Fahrzeug auf der Strecke bleiben kann, braucht es einen Regelkreis fü
 	\caption{Grober Steuerungs Regelkreis }
 \end{figure}\flushleft
 %Wie in Abbildung \ref{Regelung_Lenken} 
-Wie hier zu sehen ist, befindet sich der Regler auf dem Minicomputer. Der Regelausgang wird über UART auf das Mikrocontrollerboard weitergeleitet. Dieser ändert darauf hin das PWM Signal zu Servo. Die Positionsdetektion wird über die Kamera/Flexsensor realisiert. Das ist nur eine Übersicht über den Regelkreis.
+Wie hier zu sehen ist, befindet sich der Regler auf dem Minicomputer. Der Regelausgang wird über UART\footnote{UART= Serielles Kommunikationsprotokoll} auf das Mikrocontrollerboard weitergeleitet. Dieser ändert darauf hin das PWM Signal zu Servo. Die Positionsdetektion wird über die Kamera/Flexsensor realisiert. Das ist nur eine Übersicht über den Regelkreis.
