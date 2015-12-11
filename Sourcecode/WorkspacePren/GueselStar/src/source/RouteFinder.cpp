@@ -1,32 +1,15 @@
 #include "../header/RouteFinder.hpp"
 
-RouteFinder::RouteFinder(PrenController* controller)
+RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 : MINLENGTH(10), MINYDIFF(3), NROFLINES(20) {
 	m_Controller = controller;
-	m_PicCreator = nullptr;
+	m_PicCreator = picCreator;
 	m_GradMat = nullptr;
 	m_State = false;
 }
 
 RouteFinder::~RouteFinder() {
 	delete m_GradMat;
-}
-
-int RouteFinder::findRoute(PictureCreator* picCreator) {
-
-	m_PicCreator = picCreator;
-	pthread_t thread;
-	short i = 1;
-	int rc;
-	m_State = true;
-	cout << "main() : creating thread, " << i << endl;
-	rc = pthread_create(&thread, NULL, RouteFinder::staticEntryPoint, this);
-	if (rc) {
-	 cout << "Error:unable to create thread," << rc << endl;
-	 exit(-1);
-	}
-
-	return 0;
 }
 
 std::string RouteFinder::formatFileName(std::string fileStr, int nr) {
@@ -111,7 +94,7 @@ void RouteFinder::approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, in
 			}
 		}
 	}
-	cout << " min: " << *lowerLimit << " max: " << *upperLimit << endl;
+	//cout << " min: " << *lowerLimit << " max: " << *upperLimit << endl;
 	minVals.push_back(*lowerLimit);
 	maxVals.push_back(*upperLimit);
 }
@@ -132,11 +115,12 @@ void RouteFinder::calcAverageLimit(int* upperLimit, int* lowerLimit) {
 		*upperLimit = maxVal / nrs;
 		*lowerLimit = minVal / nrs;
 	}
-	//cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
+	cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
 }
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
 	((RouteFinder*)threadId)->runProcess();
+	cout << "Thread ended " << endl;
 	return NULL;
 }
 
@@ -145,8 +129,9 @@ int RouteFinder::runProcess() {
 	ostringstream nrStream;
 
     cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
+
 	cout << "Start" << endl;
-    for(int i = 0; i<500; i++) {
+    for(int i = 0; i<1000; i++) {
 
         image = *m_PicCreator->GetImage();
 
@@ -161,16 +146,18 @@ int RouteFinder::runProcess() {
 			m_GradMat = GradientMat::getInstance(static_cast<short>(reducedImg.rows), static_cast<short>(reducedImg.cols));
 			outputMat(&grayImage, &diffsPic);
 
-			cv::imshow("The Image", diffsPic);
-			cv::imshow("The Source gray Image", grayImage);
-			cv::waitKey(0);
+			//cv::imshow("The Image", diffsPic);
+			//cv::imshow("The Source gray Image", grayImage);
+			//cv::waitKey(0);
+
+
         }
         else {
         	i--;
         }
     }
 
-    m_Controller->SetState(m_Controller->END);
+    m_Controller->setState(m_Controller->END);
 	string bye = "Now I've done my job, have fun with your pics ;)";
 	cout << bye << endl;
 

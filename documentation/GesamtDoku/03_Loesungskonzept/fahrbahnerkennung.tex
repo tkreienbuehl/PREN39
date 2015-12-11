@@ -7,15 +7,15 @@ Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden 
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
 \caption{Bild nach Kantenerkennung}
 \label{fig:edges}
-\end{figure}
-Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden vom Controller an das Microcontrollerboard weitergegeben.\\[0.2cm]
+\end{figure}\flushleft
+Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden vom Controller an das Mikrocontrollerboard weitergegeben.\\[0.2cm]
 \textbf{Komponentenbeschrieb}
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
 \caption{Aktivitätendiagramm Fahrbahnerkennung}
 \label{fig:activityRoute}
-\end{figure}
+\end{figure}\flushleft
 Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Die erhaltenen Bilder werden vor der Analyse verkleinert auf ein Format von 320x230 Pixel. Für die Kantenerkennung wird jede Zeile eines Bildes als Funktion angeschaut und falls die Änderungsrate in $x$- und $y$-Richtung den Filterwert überschreitet eine Kante erkannt und auch die Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
 Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.
 \begin{figure}[H]%Position festigen
@@ -23,7 +23,7 @@ Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrba
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/graphPicture.png}
 \caption{Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}
 \label{fig:grayscale}
-\end{figure}
+\end{figure}\flushleft
 Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Lücken werden geschlossen, indem in Richtung des letzten Elementes fortgesetzt wird. Die Mitte zwischen diesen Kanten wird anschliessend in die Zielspur umgewandelt.
 \begin{figure}[H]
 \centering
@@ -36,7 +36,7 @@ Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantende
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/maxEdge.png}
 \caption{Erste Kante rechts der Mitte}
 \label{fig:kantenr}
-\end{figure}
+\end{figure}\flushleft
 \textbf{Begründung}\\[0.2cm]
 Mit der beschriebenen Vorgehensweise kann der Aufwand pro Bild gegenüber OpenCV deutlich reduziert werden, da die Operationen ausschliesslich für die Fahrbahnerkennung erstellt werden. Die Tests haben die Realisierbarkeit dieser Vorgehensweise als machbar und fexibel aufgezeigt.\\[0.2cm]
 \textbf{Berechnungen}\\[0.2cm]
@@ -102,7 +102,7 @@ Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die 
 In den bisher durchgeführten Tests konnten die Bilder der Kamera mit einer Framerate von 10 - 20 Bilder auf dem Minicomputer verarbeitet werden. Die Lichteinflüsse haben sich dabei als handelbar präsentiert, wenn die Beleuchtung mindestens der im Testgebäude vorhandenen Standardbelöeuchtung entspricht. Hellere Lichtverhältnisse haben sich positiv auf die Kantenerkennung ausgewirkt.\\
 Die Parallelisierung hat sich ebenfalls erfolgreich testen lassen, gemeinsam mit der Objekterkennung, allerdings nur auf dem Notebook aufgrund einer defekten Testkamera.
 \\[0.2cm]
-\underline{Fahrbahnerkennung Unterstützung}
+\underline{\textbf{Fahrbahnerkennung Unterstützung}}
 \\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird die Erkennung an den Flexsensor übergeben, der mit dem seitlichen Abstand zum Trottoir die Fahrspur halten soll.\\[0.2cm]
@@ -112,7 +112,7 @@ Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird d
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flexsensor.jpg}
 	\label{fig:Flexsensor}
 	\caption{Flexsensor}
-\end{figure}%
+\end{figure}\flushleft%
 Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sensor gebogen wird. \\[0.2cm]
 %
 \textbf{Begründung}\\[0.2cm]
@@ -124,7 +124,7 @@ Diese Kennlinie stellt den Widerstandswert in Funktion von dem Biegewinkel dar.
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flex_Biegungskennline.png}
 	\label{fig:Flex_R_Kennlinie}
 	\caption{Widerstand in Funktion des Biegewinkels}
-\end{figure}
+\end{figure}\flushleft
 %
 Mit dieser Widerstandsänderung kann auf die Distanz geschlossen werden. Die Berechnung oder Auswertung welcher Widerstandswert zu welcher Distanz passt muss noch im PREN2 gemacht werden. Der Widerstandswert des Flexsensors kann über einen einfachen Spannungsteiler und einem AD-Wandler eingelesen werden.
 Ein Risiko besteht darin das der Flexsensor auf das Trottoir springt, anstatt sich zu biegen. Jedoch sollte dies durch eine optimale Positionierung vermieden werden können.\\[0.2cm]
