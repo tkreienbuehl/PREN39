@@ -9,7 +9,6 @@
 
 #include "PrenController.hpp"
 #include <iostream>
-#include <cstdlib>
 #include <pthread.h>
 #include <cv.h>
 #include <highgui.h>
@@ -27,10 +26,12 @@ public:
 	cv::Mat* GetImage();
 	void StopRecording();
 
+	static void* staticEntryPoint(void* threadId);
+
 private:
 	void StartRecording(void);
-    static void* StaticEntryPoint(void* threadId);
 
     cv::Mat m_TheImage;
     bool m_State;
+    PrenController* m_Controller;
 };

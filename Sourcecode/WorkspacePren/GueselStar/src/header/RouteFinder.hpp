@@ -6,7 +6,6 @@
 #include <highgui.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
-#include <vector>
 #include "GradientMat.hpp"
 #include <unistd.h>
 
@@ -15,17 +14,17 @@ using namespace std;
 class RouteFinder {
 public:
 
-	RouteFinder(PrenController* controller);
+	RouteFinder(PrenController* controller, PictureCreator* picCreator);
 	~RouteFinder();
 
-	int findRoute(PictureCreator* picCreator);
 	std::string formatFileName(std::string fileStr, int nr);
 	void outputMat(cv::Mat* mat, cv::Mat* changesMat);
 	void approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row);
 	void calcAverageLimit(int* upperLimit, int* lowerLimit);
 
-private:
 	static void* staticEntryPoint(void* threadId);
+
+private:
 	int runProcess();
 
 	vector<int>minVals;
