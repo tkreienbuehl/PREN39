@@ -44,3 +44,9 @@ Thumbs.db
 *.synctex.gz
 *.toc
 *.pdf
+
+#workspace Folders#
+###################
+.metadata
+Release
+Debug
