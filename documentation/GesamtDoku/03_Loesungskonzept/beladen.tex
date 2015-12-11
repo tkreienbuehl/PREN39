@@ -41,33 +41,32 @@ Der Container wird in den ersten Behälter entleert. Durch den schrägen Boden f
 \end{itemize}
 \end{itemize}
 \textbf{Berechnungen}\\[0.2cm]
-\\[0.2cm]
 Servo Motor für Greifer schliessen /
 Berechnung des benötigten Drehmoments: 
 \begin{itemize}
 \item Haftreibung auf 0.7 geschätzt
-\item Masse Container m = 0.075kg
-\item Gewichtskraft = m*g = 0.74 N
-\item Kraft F = (0.5*0.74)/0.7 = 0.53 N
-\item Abstand l = 80mm (Drehpunkt zu Greiffläche)
-\item M = F*l = 0.04 Nm = 4 Ncm
+\item Masse Container $m = 0.075kg$
+\item Gewichtskraft = $m\cdot g = 0.74 N$
+\item Kraft $F = \frac{0.5\cdot 0.74}{0.7} = 0.53 N$
+\item Abstand $l = 80mm$ (Drehpunkt zu Greiffläche)
+\item $M = F\cdot l = 0.04 Nm = 4 Ncm$
 \item Sicherheitsfaktor = 2
-\item M = 4*2 = 8 Ncm
+\item M = $4\cdot 2 = 8 Ncm$
 \end{itemize}
 Servo Motor für Greifarm drehen:
 \begin{itemize}
-\item Gewichtskraft Container Fc = 0.075kg * 9.81 = 0.74 N
-\item Gewichtskraft Greifarm: Fgr = 0.3kg * 9.81 = 2.94 N
+\item Gewichtskraft Container $Fc = 0.075kg\cdot 9.81 = 0.74 N$
+\item Gewichtskraft Greifarm: $Fgr = 0.3kg\cdot 9.81 = 2.94 N$
 \item Benötigtes Moment:
-M = Fgr*0.05m+Fc*0.1m = 0.147Nm+0.07Nm = 0.217Nm = 21.7Ncm
+$M = Fgr\cdot 0.05m+Fc\cdot 0.1m = 0.147Nm+0.07Nm = 0.217Nm = 21.7Ncm$
 \item Sicherheitsfaktor = 2 wegen Abschätzug des Greifergewichts und vernachlässigter Trägheitskräfte
-\item M = 2*21.7 = 43.4 Ncm
+\item $M = 2 \cdot 21.7 = 43.4 Ncm$
 \end{itemize}
 Servo Motor für Entladeklappe:
 \begin{itemize}
-\item m = 0.15kg (Schüttgut + Klappe)
-\item l = 0.1m
-\item M = m*g*l = 0.015Nm = 1.5Ncm
+\item $m = 0.15kg$ (Schüttgut + Klappe)
+\item $l = 0.1m$
+\item $M = m\cdot g\cdot l = 0.015Nm = 1.5Ncm$
 \item Sicherheitsfaktor =2
-\item M = 1.5*2 = 3Ncm
+\item $M = 1.5\cdot 2 = 3Ncm$
 \end{itemize}
