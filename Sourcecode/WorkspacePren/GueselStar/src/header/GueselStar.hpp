@@ -5,5 +5,6 @@
 #include "PictureCreator.hpp"
 #include "RouteFinder.hpp"
 #include "ObjectFinder.hpp"
+#include "PictureViewer.hpp"
 #include <iostream>
 #include <unistd.h>

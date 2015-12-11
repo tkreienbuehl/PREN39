@@ -22,6 +22,9 @@ public:
 	void approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row);
 	void calcAverageLimit(int* upperLimit, int* lowerLimit);
 
+	cv::Mat* getGrayImage();
+	cv::Mat* getFilteredImage();
+
 	static void* staticEntryPoint(void* threadId);
 
 private:
@@ -36,5 +39,7 @@ private:
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;
 	bool m_State;
+	cv::Mat m_GrayImg;
+	cv::Mat m_FltImg;
 
 };

@@ -8,6 +8,7 @@ using namespace std;
 ObjectFinder::ObjectFinder(PrenController* controller ,PictureCreator* picCreator) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
+	m_state = false;
 }
 
 ObjectFinder::~ObjectFinder() {
@@ -26,9 +27,9 @@ void ObjectFinder::RunProcess() {
 	cv::Mat filteredImageGreen;
 	cv::Mat filteredImageBlue;
 
-	//cv::namedWindow("Street", cv::WINDOW_AUTOSIZE);
+	m_state = true;
 
-	for (int i = 0; i < 1000; i++) {
+	while (m_state) {
 
 		origImage = *m_PicCreator->GetImage();
 
@@ -39,15 +40,9 @@ void ObjectFinder::RunProcess() {
 			contoursGreen = findContainersInImage(filteredImageGreen);
 			contoursBlue = findContainersInImage(filteredImageBlue);
 			contours = mergeContours(contoursGreen, contoursBlue);
-			markedImage = markFindContoursInImage(contours, origImage);
-
-			//imshow("Street", markedImage);
-			//cv::waitKey(0);
+			m_MarkedImage = markFindContoursInImage(contours, origImage);
 
 			cout << "Picture worked" << endl;
-		}
-		else {
-			i--;
 		}
 	}
 }
@@ -130,3 +125,10 @@ cv::Mat ObjectFinder::markFindContoursInImage(
 	return markedImage;
 }
 
+cv::Mat ObjectFinder::getImgae() {
+	return m_MarkedImage;
+}
+
+void ObjectFinder::stopProcess() {
+	m_state = false;
+}

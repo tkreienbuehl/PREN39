@@ -27,13 +27,17 @@ public:
 
 	static void* staticEntryPoint(void* threadId);
 
+	cv::Mat getImgae();
+	void stopProcess();
+
 private:
 
 	void RunProcess();
 	vector<vector<cv::Point> > contoursGreen;
 	vector<vector<cv::Point> > contoursBlue;
 	vector<vector<cv::Point> > contours;
-	cv::Mat markedImage;
+	cv::Mat m_MarkedImage;
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;
+	bool m_state;
 };

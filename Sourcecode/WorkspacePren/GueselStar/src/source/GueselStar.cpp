@@ -2,7 +2,7 @@
 
 int main() {
 
-	pthread_t threads[3];
+	pthread_t threads[4];
 	XInitThreads();
 	int rc;
 
@@ -11,6 +11,7 @@ int main() {
 	PictureCreator* picCreator = new PictureCreator(controller);
 	RouteFinder* rtFinder = new RouteFinder(controller, picCreator);
 	ObjectFinder* objectFinder = new ObjectFinder(controller, picCreator);
+	PictureViewer* picViewer = new PictureViewer(rtFinder, objectFinder);
 
 	rc = pthread_create(&threads[0], NULL, PictureCreator::staticEntryPoint, picCreator);
 	if (rc) {
@@ -33,8 +34,20 @@ int main() {
 	}
 	usleep(100);
 
+	rc = pthread_create(&threads[3], NULL, PictureViewer::startThread, picViewer);
+	if (rc) {
+		cout << "Error:unable to create thread," << rc << endl;
+		exit(-1);
+	}
+	usleep(100);
+
 	controller->start();
 
+	picViewer->stopViewer();
+	objectFinder->stopProcess();
+	usleep(1000);
+
+	delete picViewer;
 	delete rtFinder;
 	delete objectFinder;
 

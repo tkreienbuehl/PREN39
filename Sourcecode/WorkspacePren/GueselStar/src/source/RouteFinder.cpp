@@ -118,6 +118,14 @@ void RouteFinder::calcAverageLimit(int* upperLimit, int* lowerLimit) {
 	cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
 }
 
+cv::Mat* RouteFinder::getGrayImage() {
+	return &m_GrayImg;
+}
+
+cv::Mat* RouteFinder::getFilteredImage() {
+	return &m_FltImg;
+}
+
 void* RouteFinder::staticEntryPoint(void* threadId) {
 	((RouteFinder*)threadId)->runProcess();
 	cout << "Thread ended " << endl;
@@ -125,32 +133,24 @@ void* RouteFinder::staticEntryPoint(void* threadId) {
 }
 
 int RouteFinder::runProcess() {
-	cv::Mat grayImage, reducedImg, image;
+	cv::Mat grayImg, reducedImg, image;
 	ostringstream nrStream;
 
-    cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
-
 	cout << "Start" << endl;
-    for(int i = 0; i<1000; i++) {
+    for(int i = 0; i<20000; i++) {
 
         image = *m_PicCreator->GetImage();
 
         if (!image.empty()) {
 
 			cv::resize(image, reducedImg, reducedImg.size(),0.5,0.5,cv::INTER_LANCZOS4);
-
-			//reducedImg = image;
-			cv::cvtColor(reducedImg,grayImage,CV_BGR2GRAY);
+			cv::cvtColor(reducedImg,grayImg,CV_BGR2GRAY);
 
 			cv::Mat diffsPic(reducedImg.rows, reducedImg.cols, cv::DataType<uchar>::type);
+			m_FltImg = diffsPic;
 			m_GradMat = GradientMat::getInstance(static_cast<short>(reducedImg.rows), static_cast<short>(reducedImg.cols));
-			outputMat(&grayImage, &diffsPic);
-
-			//cv::imshow("The Image", diffsPic);
-			//cv::imshow("The Source gray Image", grayImage);
-			//cv::waitKey(0);
-
-
+			outputMat(&grayImg, &m_FltImg);
+			m_GrayImg = grayImg;
         }
         else {
         	i--;
