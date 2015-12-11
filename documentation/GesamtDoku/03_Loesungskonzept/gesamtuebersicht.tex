@@ -14,7 +14,7 @@ So wird beispielsweise die gesamte Bilderkennung über den Minicomputer gesteuer
 \subsubsection{Schnittstellen}
 \begin{figure}[h!]%Position festigen
 \centering
-\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/verteilungsdiagramm.png}
+\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/Verteilungsdiagramm.png}
 \caption{Schnittstellenübersicht}
 \label{fig:Java}
 \end{figure}
@@ -24,8 +24,16 @@ Damit das Fahrzeug mit einer konstanten Geschwindigkeit fahren kann, muss ein Re
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Gesch_Regelung.png}
-	\label{fig:Flex_R_Kennlinie}
+	\label{fig:Regelung_Gesch}
 	\caption{Grober Regelkreis}
 \end{figure}
-Hier zu sehen ist der grobe Regelkreis. Der Sollwert wird vom Minicomputer vorgegeben und an das Mikrokontrollerboard weitergeleitet. In diesem wird dann die Regelung implementiert. Der Regelausgang ist ein PWM Signal, der die Geschwindigkeit des Antriebsmotors bestimmt. 
+Hier zu sehen ist der grobe Regelkreis. Der Sollwert wird vom Minicomputer vorgegeben und an das Mikrokontrollerboard weitergeleitet. In diesem wird dann die Regelung implementiert. Der Regelausgang ist ein PWM Signal, der die Geschwindigkeit des Antriebsmotors bestimmt. Die Drehzahl des Antriebes wird über einen Encoder an der Antriebswelle zurück gelesen.
 \subsubsection{Lenkregeung}
+Damit des Fahrzeug auf der Strecke bleiben kann, braucht es einen Regelkreis für die Steuerung. Der grobe Regelkreis ist hier aufgezeigt.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Lenk_Regelung.png}
+	\label{fig:Regelung_Lenken}
+	\caption{Grober Steuerung Regelkreis }
+\end{figure}
+Wie hier zu sehen ist, befindet sich der Regler auf dem Minicomputer. Der Regelausgang wird über UART auf das Mikrokontrollerboard 
