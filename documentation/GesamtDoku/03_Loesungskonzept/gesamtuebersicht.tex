@@ -19,8 +19,8 @@ So wird beispielsweise die gesamte Bilderkennung über den Minicomputer gesteuer
 \label{fig:Verteilungsdiagramm}
 \end{figure}\flushleft
 In Abbildung \ref{fig:Verteilungsdiagramm} wird eine detaillierte Ansicht der Komponente dargestellt, insbesondere was die Schnittstellen betrifft. So ist erkenntlich, dass der Mikrocontroller als Hauptknoten fungiert und als Schnittstelle für analoge wie auch digitale Signale dient.
-\subsection{Regelkreise}
-\subsubsection{Geschwindigkeitsregelung}
+\subsubsection{Regelkreise}
+\underline{\textbf{Geschwindigkeitsregelung}}\\[0.2cm]
 Damit das Fahrzeug mit einer konstanten Geschwindigkeit fahren kann, muss ein Regler eingebaut werden.
 \begin{figure}[H]
 	\centering
@@ -29,8 +29,8 @@ Damit das Fahrzeug mit einer konstanten Geschwindigkeit fahren kann, muss ein Re
 	\caption{Grober Antriebsregelkreis}
 \end{figure}\flushleft
 %In Abbildung \ref{Regelung_Gesch} 
-Hier ist der grobe Regelkreis des Antriebs zu sehen. Der Sollwert wird vom Minicomputer vorgegeben und an das Mikrocontrollerboard weitergeleitet. In diesem wird dann die Regelung implementiert. Der Regelausgang ist ein PWM\footnote{PWM= Pulsweiten Moduliertes Signal} Signal, welches die Geschwindigkeit des Antriebsmotors bestimmt. Die Drehzahl des Antriebes wird über einen Encoder an der Antriebswelle zurück gelesen.
-\subsubsection{Lenkregeung}
+Hier ist der grobe Regelkreis des Antriebs zu sehen. Der Sollwert wird vom Minicomputer vorgegeben und an das Mikrocontrollerboard weitergeleitet. In diesem wird dann die Regelung implementiert. Der Regelausgang ist ein PWM\footnote{PWM= Pulsweiten Moduliertes Signal} Signal, welches die Geschwindigkeit des Antriebsmotors bestimmt. Die Drehzahl des Antriebes wird über einen Encoder an der Antriebswelle zurück gelesen.\\[0.2cm]
+\underline{\textbf{Lenkregelung}}\\[0.2cm]
 Damit des Fahrzeug auf der Strecke bleiben kann, braucht es einen Regelkreis für die Steuerung. Der grobe Regelkreis ist hier aufgezeigt.
 \begin{figure}[H]
 	\centering

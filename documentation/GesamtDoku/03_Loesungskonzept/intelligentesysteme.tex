@@ -12,12 +12,12 @@ Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control} Prinz
 	\centering
 	\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/grobablauf.png}
 	\caption{Aktivitätendiagramm Grobablauf}
-\end{figure}
+\end{figure}\flushleft
 Der Zustand des Fahrzeuges wird im Model gespeichert und steht allen Prozessen zu Verfügung. Die Datenstruktur ist dabei so aufgebaut, dass keine Zugriffskonflikte entstehen sollten.\\
-Der Controller handelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container hat dieser Priorität vor dem normalen Fahren und das Microcontroller-Board erhält die entsprechenden Anweisungen.\\[0.2cm]
+Der Controller handelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container hat dieser Priorität vor dem normalen Fahren und das Mikrocontroller-Board erhält die entsprechenden Anweisungen.\\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
 Umgesetzt wird das Konzept auf dem Minicomputer in C++. Dabei werden die zuvor beschriebenen Prozesse als eigene Threads realisiert. Um eine hohe Softwarequalität sicherzustellen soll möglichst nach TDD\footnote{TDD = Test Driven Developement} gearbeitet werden. Für die automatisierten Tests werden die Open Source Pakete Google Test und Google Mock verwendet, welche in C++ realisiert und optimiert sind und sich direkt in das Projekt integrieren lassen.\\
-Das Microcontroller-Board wird mit der Programmiersprache C programmiert.\\[0.2cm]
+Das Mikrocontroller-Board wird mit der Programmiersprache C programmiert.\\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Der geplante Minicomputer verfügt über einen Vierkernprozessor, weswegen eine Parallelisierung zwingend notwendig wird, um diesen Prozessor auch vollumfänglich nutzen zu können. Bei der Programmiersprache ist C++ aufgrund der Performance und der einfachen Kopplung an C gewählt worden. Zudem sind keine Zusatztools wie virtuelle Maschinen notwendig. Die verwendete Bildverarbeitungssoftware OpenCV ist ebenfalls in C++ entwickelt und somit direkt nutzbar.\\
 TDD soll sicherstellen, dass vor Allem bei kurzfristigen Änderungen keine unerwünschten Nebeneffekte entstehen und jederzeit sichergestellt ist, dass die Software wunschgemäss läuft.\\[0.2cm]
@@ -31,7 +31,7 @@ Der Mini-Computer beinhaltet die Logik- und Ablaubsteuerung, nimmt Bilder von de
 	\centering
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/raspberrypi2.png}
 	\caption{Raspberry Pi2 Model B (Quelle:http://pcworld.com/)}
-\end{figure}
+\end{figure}\flushleft
 Das Raspberry Pi2 bietet mit einem 900MHz Quadcore Prozessor, einem eigenem Grafikchip und 1GB Ram viel Leistung und ist ideal geeignet.\\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Dem Team war von Anfang an klar, dass die Bildverarbeitung viel Ressourcen verbrauchen wird. Gleichzeitig darf der Energieverbrauch die Kapazität eines Akkus nicht übersteigen. Das Raspberry Pi2 besitzt genügend Leistung und ist trotzdem sparsam. Mit einem Quadcore und 1GB RAM ist es ausreichend performant um Bilder zeitig zu verarbeiten. Zusätzlich ist es einfach zu verwalten und bedienen, da es ein eigenes Betriebssystem besitzt.\\[0.2cm]
@@ -45,12 +45,12 @@ Das Mikrocontrollerboard bildet die Schnittstelle zwischen der Hardware (Motor, 
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/freedomboard.png}
 	\caption{Freedomboard KL25 von Freescale (Quelle:http://ch.farnell.com/)}
 	%http://ch.farnell.com/productimages/standard/de_DE/freescalesemiconductor-frdm-kl25z-40.jpg
-\end{figure}
+\end{figure}\flushleft
 Als Mikrocontrollersystem wurde das Freedomboard KL25Z von Freescale ausgewählt. Das Entwicklungsgsboard bietet vieles, wie ausreichend I/O's, AD Wandler und Timerausgänge. Das Bord wird mit der Programmiersprache C programmiert. \\[0.2cm]
-\textbf{Begründung}
+\textbf{Begründung}\\[0.2cm]
 Das Board überzeugt durch eine gute Rechenperformance zu einem kleinen Preis. Das Hauptargument für das Freedomboard ist die einfache Programmierung. Für viele Komponenten wie Servos oder Ultraschalsensoren steht ein Tool namens ProcessorExpert zu Verfügung. Diese Tool ermöglicht eine relativ einfache Anbindung solcher Komponenten. Dies spart sehr viel Entwicklungsaufwand.
 Das Freedomboard hat sich gegen das Tinkerfogesystem durchgesetzt. Der Hauptgrund ist Flexibilität des Freedomboard gegenüber dem Tinkerfogesysem. Das Tinkerforgesystem ist sehr einfach zu bedienen solange alle Komponenten von Tinkerfogre zu Verfügung gestellt werden. Fehlt aber ein Modul wird es sehr schnell kompliziert. Beim Freedomboard ist der Aufwand für eine Komponente etwas höher, dafür können die meisten Systeme angeschlossen werden.\\[0.2cm]
-\textbf{Testergebnisse}
+\textbf{Testergebnisse}\\[0.2cm]
 Das Freedomboard wurde als Funktionsmuster bereits in Betrieb genommen. Es hat sich gezeigt, dass die Anbindung der Komponenten Tatsächlich sehr einfach ist. Es wurden bereits ein Ultraschallsensor, mehrere Servos, eine UART Kommunikation und ein Infrarotsensor angebunden. Das System sah dabei sehr vielversprechend aus.\\[0.2cm]
 \textbf{Software Grundaufbau}\\[0.2cm]
 Das Tool ProcessorExpert bietet eine Komponente FreeRTOS an. Das ist ein Betriebssystem, welches das Programmieren sehr vereinfacht. Damit können verschiedene Tasks definiert werden und quasi parallel ausgeführt werden. Die Software wird damit geplant. Folgende Tasks sind geplant.
@@ -58,5 +58,5 @@ Das Tool ProcessorExpert bietet eine Komponente FreeRTOS an. Das ist ein Betrieb
 	\centering
 	\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/MC_Tasks.png}
 	\caption{Übersicht MC Tasks}
-\end{figure}
+\end{figure}\flushleft
 Die Implementierung der Task wird im PREN2 eingegangen.
