@@ -8,7 +8,7 @@ Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden 
 \caption{Bild nach Kantenerkennung}
 \label{fig:edges}
 \end{figure}\flushleft
-Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden vom Controller an das Mikrocontrollerboard weitergegeben.\\[0.2cm]
+Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden dabei vom Controller berechnet, und in Grad an das Mikrocontrollerboard weitergegeben.\\[0.2cm]
 \textbf{Komponentenbeschrieb}
 \begin{figure}[H]%Position festigen
 \centering
@@ -96,7 +96,15 @@ max_{(x,y)} = 10\cdot\Bigl\lfloor\frac{max_{(x,y)}}{10}+0.5\Bigr\rfloor
 \]
 \end{itemize}
 Die Fahrbahnkanten werden im Anschluss anhand der Ermittelten Werte gesucht. Ist eine Kante in der Nähe der ermittelten Fahrbahn, wird sie behalten, ansonsten Entfernt. Der Grenzwert muss noch genau ermittelt werden.\\
-Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor entsprechend dem eingeschlagenen Radius der Lenkung gebogen.
+Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor entsprechend dem eingeschlagenen Radius der Lenkung gebogen. Die Parameter für die Regelung werden mit folgender Formel ermittelt:
+\[
+G_R = K_p\left(1 + \frac{1}{T_{n^S} + T_{v^S}}\right)
+\]
+Danach werden die ermittelten Werte in die Korrekturformel eingesetzt:
+\[
+y = K_{PR}\left(e + \frac{1}{T_n}\int{edt} + T_v\dot{e}\right)
+\]
+wobei $y$ dem zu korrigierenden Winkelwert in Grad entspricht.
 \\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
 In den bisher durchgeführten Tests konnten die Bilder der Kamera mit einer Framerate von 10 - 20 Bilder auf dem Minicomputer verarbeitet werden. Die Lichteinflüsse haben sich dabei als handelbar präsentiert, wenn die Beleuchtung mindestens der im Testgebäude vorhandenen Standardbelöeuchtung entspricht. Hellere Lichtverhältnisse haben sich positiv auf die Kantenerkennung ausgewirkt.\\
