@@ -2,7 +2,7 @@
 \subsection{Intelligente Systeme}
 \subsubsection{Softwarekonzept}
 \textbf{Funktionsbeschrieb}\\[0.2cm]
-Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control} Prinzip, wobei sich die View auf einen reinen Debug-Zweck beschränkt. Dabei hat der Controller aller Subprozesse sowie die Schnittstelle zur Hardwaresteuerung, via Mikrocontroller-Board realisiert, unter Kontrolle. Die parallel laufenden Subprozesse sind:
+Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control} Prinzip, wobei sich die View auf einen reinen Debug-Zweck beschränkt. Dementsprechend soll die View über eine Schnittstelle nach aussen verfügbar gestaltet werden, um auf dem Notebook entsprechende Debugkomponenten betreiben zu können. Ebenfalls über Methoden nach aussen offengelegt, sollen die Regelungsparameter zur Laufzeit angepasst werden können. Im produktiven Betrieb ist diese Schnittstelle gemäss Aufgabenstellung geschlossen. Dabei hat der Controller aller Subprozesse sowie die Schnittstelle zur Hardwaresteuerung, via Mikrocontroller-Board realisiert, unter Kontrolle. Die parallel laufenden Subprozesse sind:
 \begin{itemize}
 \item Bilderzeugung
 \item Objekterkennung
