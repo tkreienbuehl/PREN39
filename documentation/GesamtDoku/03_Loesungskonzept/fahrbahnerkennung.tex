@@ -24,7 +24,8 @@ Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrba
 \caption{Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}
 \label{fig:grayscale}
 \end{figure}\flushleft
-Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Lücken werden geschlossen, indem in Richtung des letzten Elementes fortgesetzt wird. Die Mitte zwischen diesen Kanten wird anschliessend in die Zielspur umgewandelt.
+Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Lücken werden geschlossen, indem in Richtung des letzten Elementes fortgesetzt wird.\\
+Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor durch einen Bogen, entsprechend dem eingeschlagenen Radius der Lenkung, ersetzt und mit dem Sollradius der Fahrbahn abgeglichen. Die Abweichung wird dann über die Tangentenfunktion in einen Winkel umgewandelt um für die Regelung nur einen Wertetyp auswerten zu müssen. Da die Kurven, insbesondere auf der Innenbahn, sehr eng sind, verliert die Kamera die Fahrbahn aus der Sicht. Um dieses Problem zu lösen wird die Kamera beim Kurveneingang auf einen festgelegten und konstanten Winkel gedreht, der dann wiederum in der Regelung beachtet werden muss. Am Ende der Kurvenfahrt wird die Kamera wieder auf die null Grad Position zurückgeschwenkt. Nebst der besseren Fahrbahnsicht werden auch Objekte auf diese Weise früher erkannt.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/minEdge.png}
@@ -96,7 +97,7 @@ max_{(x,y)} = 10\cdot\Bigl\lfloor\frac{max_{(x,y)}}{10}+0.5\Bigr\rfloor
 \]
 \end{itemize}
 Die Fahrbahnkanten werden im Anschluss anhand der Ermittelten Werte gesucht. Ist eine Kante in der Nähe der ermittelten Fahrbahn, wird sie behalten, ansonsten Entfernt. Der Grenzwert muss noch genau ermittelt werden.\\
-Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor entsprechend dem eingeschlagenen Radius der Lenkung gebogen. Die Parameter für die Regelung werden mit folgender Formel ermittelt:
+Die Parameter für die Regelung werden mit folgender Formel ermittelt:
 \[
 G_R = K_p\left(1 + \frac{1}{T_{n^S} + T_{v^S}}\right)
 \]
