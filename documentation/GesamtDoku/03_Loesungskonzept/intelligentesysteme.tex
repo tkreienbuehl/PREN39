@@ -45,10 +45,10 @@ Das Mikrocontrollerboard bildet die Schnittstelle zwischen der Hardware (Motoren
 	\caption{Freedomboard KL25 von Freescale (Quelle:http://ch.farnell.com/)}
 	%http://ch.farnell.com/productimages/standard/de_DE/freescalesemiconductor-frdm-kl25z-40.jpg
 \end{figure}\flushleft
-Als Mikrocontrollersystem wurde das Freedomboard KL25Z von Freescale ausgewählt. Das Entwicklungsgsboard bietet vieles, wie ausreichend I/O's, AD Wandler und Timerausgänge. Das Bord wird mit der Programmiersprache C programmiert. \\[0.2cm]
+Als Mikrocontrollersystem wurde das Freedomboard KL25Z von Freescale ausgewählt. Das Entwicklungsgsboard bietet vieles, wie ausreichend I/O's, AD Wandler und Timerausgänge. Das Board wird mit der Programmiersprache C programmiert. \\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Das Board überzeugt durch eine gute Rechenperformance zu einem kleinen Preis. Das Hauptargument für das Freedomboard ist die einfache Programmierung. Für viele Komponenten wie Servos oder Ultraschalsensoren steht ein Tool namens ProcessorExpert zu Verfügung. Dieses Tool ermöglicht eine relativ einfache Anbindung solcher Komponenten. Dies spart sehr viel Entwicklungsaufwand.
-Das Freedomboard hat sich gegen das Tinkerfogesystem durchgesetzt. Der Hauptgrund ist die Flexibilität des Freedomboard gegenüber dem Tinkerfogesysem. Das Tinkerforgesystem ist sehr einfach zu bedienen solange alle Komponenten von Tinkerfogre zu Verfügung gestellt werden. Fehlt aber ein Modul wird es sehr schnell kompliziert. Beim Freedomboard ist der Aufwand für eine Komponente etwas höher, dafür können die meisten Systeme angeschlossen werden.\\[0.2cm]
+Das Freedomboard hat sich gegen das Tinkerforgesystem durchgesetzt. Der Hauptgrund ist die Flexibilität des Freedomboards gegenüber dem Tinkerforgesystem. Das Tinkerforgesystem ist sehr einfach zu bedienen solange alle Komponenten von Tinkerforge zu Verfügung gestellt werden. Fehlt aber ein Modul wird es sehr schnell kompliziert. Beim Freedomboard ist der Aufwand für eine Komponente etwas höher, dafür können die meisten Systeme angeschlossen werden.\\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
 Das Freedomboard wurde als Funktionsmuster bereits in Betrieb genommen. Es hat sich gezeigt, dass die Anbindung der Komponenten tatsächlich sehr einfach ist. Es wurden bereits ein Ultraschallsensor, mehrere Servos, eine UART Kommunikation und ein Infrarotsensor angebunden. Das System sah dabei sehr vielversprechend aus.\\[0.2cm]
 \textbf{Software Grundaufbau}\\[0.2cm]
@@ -58,4 +58,4 @@ Das Tool ProcessorExpert bietet eine Komponente FreeRTOS an. Das ist ein Betrieb
 	\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/MC_Tasks.png}
 	\caption{Übersicht MC Tasks}
 \end{figure}\flushleft
-Die Implementierung der Task wird im PREN2 umgesetzt.
+Die Implementierung der Tasks wird im PREN2 umgesetzt.
