@@ -16,14 +16,14 @@ Die genaue Evaluation der Kapazitäten ist noch nicht abgeschlossen und bezieht 
 \textbf{Begründung}\\[0.2cm]
 Die Entscheidung wird damit begründet, dass Lithium-Polymer-Akkumulatoren in einem vielfältigen Sortiment erhältlich sind und damit eine grosse Flexibilität bei der Auswahl ermöglichen. Somit würde sich auch die Suche nach einem Ersatz bei allfälligen Änderungen vereinfachen. Ausserdem weisen LiPos, im Vergleich zu anderen Akkumulatoren eine wesentlich kompaktere Bauform auf, was entscheidend für die Auswahl war. \\[0.2cm]
 \textbf{Berechnungen}\\[0.2cm]
-Da die Wahl der Servomotoren für die Lenkung und den Greiferarm noch nicht definitiv feststeht, werden für die Berechnung Motoren genommen, die den Anforderungen am nächsten kommen.\\
+Da die Wahl der Motoren noch nicht definitiv feststeht, wurden für die Berechnungen solche genommen, die den Anforderungen am nächsten kommen.\\
 Leistungsberechnungen:
 \begin{itemize}
 \item Servomotor für die Lenkung:
 \[
 P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 0.92\frac{U}{sec}\cdot 0.65Nm = 3.76W
 \]
-\item Servomotoren für Kamerabewegung, Greifer und Behälteröffnung:
+\item Servomotoren für Kamerabewegung und Greifer:
 \[
 P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 0.72\frac{U}{sec}\cdot 0.18Nm = 0.81W
 \]
@@ -34,6 +34,10 @@ P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 1.14\frac{U}{sec}\cdot 0.32Nm = 2
 \item DC-Motor für den Antrieb:
 \[
 P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 5.258\frac{U}{sec}\cdot 2.23Nm = 73.98W
+\]
+\item DC-Motor für die Behälteröffnung:
+\[
+P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 21\frac{U}{sec}\cdot 0.03Nm = 3.9W
 \]
 \end{itemize}
 Kapazitätenberechnungen:
@@ -50,9 +54,13 @@ Kapazitätenberechnungen:
 \[
 \frac{P\cdot t}{U} \to \frac{2.5W\cdot0.25h}{4.8V}= 0.13 Ah
 \]
-\item Servomotoren für Kamerabewegung, Greifer und Behälteröffnung:
+\item Servomotoren für Kamerabewegung und Greifer:
 \[
 \frac{P\cdot t}{U} \to \frac{0.81W\cdot0.25h}{4.8V}= 0.04 Ah
+\]
+\item DC-Motor für die Behälteröffnung:
+\[
+\frac{P\cdot t}{U} \to \frac{3.95W\cdot0.25h}{4.8V}= 0.2 Ah
 \]
 \item Mini-Computer:
 \[
