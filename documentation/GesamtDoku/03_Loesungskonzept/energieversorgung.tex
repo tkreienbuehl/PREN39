@@ -35,12 +35,20 @@ P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 1.14\frac{U}{sec}\cdot 0.32Nm = 2
 \[
 P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 5.258\frac{U}{sec}\cdot 2.23Nm = 73.98W
 \]
+\item DC-Motor für die Behälteröffnung:
+\[
+P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 16.6\frac{U}{sec}\cdot 0.028Nm = 2.9W
+\]
 \end{itemize}
 Kapazitätenberechnungen:
 \begin{itemize}
 \item DC-Motor für den Antrieb:
 \[
 \frac{P\cdot t}{U} \to \frac{73.98W\cdot0.25h}{12V}= 1.54 Ah
+\]
+\item DC-Motor für die Behälteröffnung:
+\[
+\frac{P\cdot t}{U} \to \frac{2.9W\cdot0.25h}{4.8V}= 0.15 Ah
 \]
 \item Servomotor für die Lenkung:
 \[
@@ -60,7 +68,7 @@ I\cdot t \to 2A*0.25h = 0.5 Ah
 \]
 \item Benötigte Kapazität für den 11.1 Volt Akkumulator:
 \[
-1.54Ah+0.19Ah+0.13Ah+0.04Ah = 1.9Ah
+1.54Ah+0.15Ah+0.19Ah+0.13Ah+0.04Ah = 2.05Ah
 \]
 \item Benötigte Kapazität für den 7.4 Volt Akkumulator:
 \[
