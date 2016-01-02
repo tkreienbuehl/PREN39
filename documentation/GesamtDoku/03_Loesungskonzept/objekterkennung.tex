@@ -1,9 +1,9 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Objekterkennung}
-Die Objekterkennung hat das Ziel die richtigen Objekte zu erkennen und das genaue Positionieren des Fahrzeuges zu ermöglichen. Dabei wird die Containererkennung in zwei Teilaufgaben aufgeteilt. Die Objekterkennung grob ist für die Erkennung der richtigen Objekte mittels Farb- und Formerkennung zuständig. Die Objekterkennung präzise ist für das Positionieren des Fahrzeuges notwendig. Diese zwei Teilaufgaben werden separat angeschaut.
+Die Objekterkennung hat das Ziel die richtigen Objekte zu erkennen und das genaue Positionieren des Fahrzeuges zu ermöglichen. Dabei wird die Containererkennung in zwei Teilaufgaben aufgeteilt: Die \glqq{Objekterkennung grob}\grqq{} ist für die Erkennung der richtigen Objekte mittels Farb- und Formerkennung zuständig. Die \glqq{Objekterkennung präzise}\grqq{} ist für das Positionieren des Fahrzeuges notwendig. Diese zwei Teilaufgaben werden separat angeschaut.
 %
 \subsubsection{Objekterkennung grob}
-Die Aufgabe der Objekterkennung grob ist es, die aufzuladenden Container, kreuzenden Fahrzeuge und das Entleerungsbecken zu erkennen. Sobald ein ein solches Objekt erkannt wird, wird der zentrale Controller darüber informiert, damit die Informationen an die Objekterkennung präzise weitergegeben werden können.
+Die Aufgabe der \glqq{Objekterkennung grob}\grqq ist es, die aufzuladenden Container, kreuzenden Fahrzeuge und das Entleerungsbecken zu erkennen. Sobald ein solches Objekt erkannt wird, wird der zentrale Controller darüber informiert, damit die Informationen an die \glqq{Objekterkennung}\grqq{} präzise weitergegeben werden können.
 \\[0.2cm]
 \underline{\textbf{Container und Entleerungsbecken}}
 \\[0.2cm]
@@ -26,7 +26,7 @@ Da der Blickwinkel auf die Container durch die Kurven variieren kann, wäre es w
 OpenCV stellt Methoden zur Verfügung, mit welcher ein ganzer Bereich mit Farbwerten im HSV-Format angegeben werden kann. Das bedeutet, dass auch bei unterschiedlichen Lichtverhältnissen die Farbtöne korrekt erfasst werden können.
 \\[0.2cm]
 \textbf{Testergenisse} \\[0.2cm]
-Die Containererkennung wurde bereits soweit getestet, dass grüne und blaue Container bis auf eine bewusst eingeschränkte Distanz erkannt werden. 
+Die Containererkennung wurde bereits soweit getestet, dass grüne und blaue Container bis auf eine bewusst eingeschränkte Distanz erkannt werden können. 
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/containererkennung_blau_gruen.png}
@@ -42,7 +42,7 @@ Auch bei aufgenommenen Bildern, welche gleichfarbige Container mit unterschiedli
 \label{fig:unterschiedliche Helligkeiten}
 \end{figure} \\
 \flushleft
-Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls zum Beispiel im Hintergrund ein Objekt steht, welches eine grüne oder blaue Farbe hat und die Masse einem Container entsprechen könnten, kann es zu einer Fehlerkennung kommen. Folgendes Bild zeigt einen solchen Fall:
+Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls zum Beispiel im Hintergrund ein Objekt steht, welches eine grüne oder blaue Farbe hat und dessen Masse einem Container entsprechen könnten, kann es zu einer Fehlerkennung kommen. Folgendes Bild zeigt einen solchen Fall:
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/objekterkennung_blau_fehl.png}
@@ -50,7 +50,7 @@ Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls 
 \label{fig:fehlerhafter Testversuch}
 \end{figure} \\
 \flushleft
-Um solche Fälle möglichst zu vermeiden wird versucht den abzusuchenden Bereich  einzuschränken, sodass nur solche Bildbereiche untersucht werden, wo sich auch wirklich ein Container befinden könnte. 
+Um solche Fälle möglichst zu vermeiden, wird versucht den abzusuchenden Bereich einzuschränken, sodass nur solche Bildbereiche untersucht werden, wo sich auch wirklich ein Container befinden könnte. 
 \\[0.2cm]
 \underline{\textbf{Rechtsvortritt}}
 \\[0.2cm]
@@ -58,7 +58,7 @@ Um solche Fälle möglichst zu vermeiden wird versucht den abzusuchenden Bereich
 Falls sich an der Kreuzung ein gegnerisches Fahrzeug von rechts nähert, hat dieses gemäss Aufgabenstellung Vortritt. Die Objekterkennung muss ein solches Fahrzeug erkennen und den Controller darüber informieren, damit das Fahrzeug gestoppt wird.
 \\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
-Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gleich an der Kreuzung ankommen wird, wird Ausschau nach einem gegnerischen Fahrzeug auf der von rechtskommenden Spur gehalten. Wird ein Fahrzeug erkannt, wird dies dem Controller gemeldet. Der Vorgang wird wiederholt, bis das Fahrzeug nicht mehr im Bereich liegt. Sobald dies geschehen ist, wird wieder der Controller informiert, damit das Fahrzeug weiterfahren kann.
+Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gleich an der Kreuzung ankommen wird, wird Ausschau nach einem gegnerischen Fahrzeug auf der von rechtskommenden Spur gehalten. Wird ein Fahrzeug erkannt, wird dies dem Controller gemeldet. Der Vorgang wird wiederholt, bis das Fahrzeug nicht mehr im Bereich liegt. Nachdem dies geschehen ist, wird wieder der Controller informiert, damit das Fahrzeug weiterfahren kann.
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/objekterkennung_rechtsvortritt.png}
@@ -82,7 +82,7 @@ Bei der Vortrittserkennung kann nicht nach Farben oder Konturen gesucht werden, 
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Die präzise Containererkennung wird für das genaue Stoppen des Fahrzeuges gebraucht. Dieses Modul gibt den Trigger zum Anhalten.\\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
-Die Containererkennung wird mit Hilfe von Distanzsensoren realisiert. Dafür sind Infrarot Distanzmesser oder Infrarot Reflexkoppler vorgesehen. Diese werden auf der rechten Seite des Fahrzeuges befestigt. Sobald ein Objekt in der Nähe ist, ändert sich der Spannungswert, was einer Distanzänderung gleichkommt. 
+Die Containererkennung wird mit Hilfe von Distanzsensoren realisiert. Dafür sind Infrarot-Distanzmesser oder Infrarot-Reflexkoppler vorgesehen. Diese werden auf der rechten Seite des Fahrzeuges befestigt. Sobald ein Objekt in der Nähe ist, ändert sich der Spannungswert, was einer Distanzänderung gleichkommt. 
 \begin{figure} [H]
 	\centering
 	\includegraphics[width=0.35\textwidth]{03_Loesungskonzept/pictures/InfrarotContainererkennung.png}
@@ -96,7 +96,7 @@ Für die Ermittlung des besten Sensors wurde ein Ultraschall und Infrarotsensor 
 %
 \underline{\textbf{Rechtsvortritt}} \\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
-Die Rechtsvortritterkennung detailliert hat die Aufgabe das Fahrzeug vor einer Kollision zu Bewahren. Wenn rechts oder vor dem Fahrzeug etwas im Weg ist, soll das Fahrzeug anhalten.\\[0.2cm]
+Die \glqq{Rechtsvortritterkennung detailliert}\grqq{} hat die Aufgabe das Fahrzeug vor einer Kollision mit einem zweiten Fahrzeug zu bewahren. Wenn rechts oder vor dem Fahrzeug etwas im Weg ist, soll das Fahrzeug anhalten.\\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
 \begin{figure} [H]
 	\centering
@@ -107,15 +107,14 @@ Die Rechtsvortritterkennung detailliert hat die Aufgabe das Fahrzeug vor einer K
 \flushleft
 Diese Aufgabe wird mit einem Ultraschallsensor gelöst. \\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
-Ein Ultraschallsensor ist für unter 5Fr. zu haben und hat gute Eigenschaften für diese Aufgabe. Diese sind grosser Abstrahlwinkel und Reichweite.
-Zudem ist die Anbindung an das Freedomboard gut möglich.\\[0.2cm]
+Ein Ultraschallsensor ist für unter fünf Franken zu haben und erfüllt mit seinem grossen Abstrahlwinkel und seiner Reichweite die geforderten Bedingungen. Zudem ist die Anbindung an das Freedomboard gut möglich.\\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
-Der Ultraschallsensor wurde bereits erfolgreich an das Freedomboard angeschlossen und  ausgewertet. Die Anbindung wurde mit Hilfe einer Anleitung vom mcuoneclipse.com realisiert. Die Distanzauswertung funktionierte bei dem Test relativ genau ($\approx \pm $ 1cm).\\[0.2cm]
+Der Ultraschallsensor wurde bereits erfolgreich an das Freedomboard angeschlossen und  ausgewertet. Die Anbindung wurde mit Hilfe einer Anleitung von mcuoneclipse.com realisiert. Die Distanzauswertung funktionierte bei dem Test relativ genau ($\approx \pm $ 1cm).\\[0.2cm]
 %
 \underline{\textbf{Entleerungbecken Erkennung}} \\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Damit das Schüttgut im Entleerungsbecken entleert werden kann, muss das Entleerungsbecken richtig detektiert werden können. \\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
-Die Container und Fahrbahnerkennung benötigen bereits Sensoren. Dies wären der Flexsensor und der Infrarotsensor. Für die Detektion des Entleerungsbehälters ist kein weiterer Sensor mehr nötig. Die Detektion ist mit beiden Sensoren möglich. Bei Tests mit den beiden Sensoren wird sich zeigen welcher dieser beiden besser geeignet ist.\\[0.2cm]
+Die Container und Fahrbahnerkennung benötigen bereits Sensoren. Dies wären der Flexsensor und der Infrarotsensor. Für die Detektion des Entleerungsbehälters ist kein weiterer Sensor mehr nötig. Die Detektion ist mit beiden Sensoren möglich. Bei Tests mit den beiden Sensoren wird sich zeigen, welcher dieser beiden besser geeignet ist.\\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Die Einsparung von Sensoren entlastet das Budget und spart zusätzlichen Implementierungsaufwand.\\[0.2cm]

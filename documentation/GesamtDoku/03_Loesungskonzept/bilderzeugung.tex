@@ -1,8 +1,8 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Bilderzeugung}
 \textbf{Funktionsbeschrieb}\\[0.2cm]
-Die Bilderzeugung stellt die Schnittstelle zur Kamera sicher und speichert die erzeugten Bilder fortlaufend in einer von OpenCV zu Verfügung gestellten Datenstruktur bereit. Dabei wird jeweils nur das aktuellste Bild der Kamera zu Verfügung gestellt.\\
-Als Kamera kommt die Raspberry Pi CAM zum Einsatz (Abbildung \ref{fig:camera}), die über eine MIPI Schnittstelle direkt an den Minicomputer angeschlossen und kostengünstig erworben werden kann. Das Bildformat lässt sich über den Open Source Treiber einstellen, was zu einer Performanceverbesserung beiträgt. Der Winkel von 53° ist etwas knapp, daher wird die Kamera drehbar auf dem Fahrzeug montiert. Dies soll für die Kurvenfahrt sowie den Rechtsvortritt genutzt werden. Der Neigungswinkel der Kamera lässt sich ebenfalls einstellen, um die benötigte Flexibiltät der Sichtposition der Kamera sicherzustellen.
+Die Bilderzeugung stellt die Schnittstelle zur Kamera sicher und speichert die erzeugten Bilder fortlaufend in einer von OpenCV zu Verfügung gestellten Datenstruktur. Dabei wird den übrigen Prozessen jeweils nur das aktuellste Bild der Kamera zur Verfügung gestellt.\\
+Als Kamera kommt die Raspberry Pi CAM zum Einsatz (Abbildung \ref{fig:camera}), die über eine MIPI Schnittstelle direkt an den Minicomputer angeschlossen und kostengünstig erworben werden kann. Das Bildformat lässt sich über den Open Source Treiber einstellen, was zu einer Performanceverbesserung beiträgt. Der Winkel von 53° ist etwas knapp, daher wird die Kamera drehbar auf dem Fahrzeug montiert. Diese Vorrichtung soll für die Kurvenfahrt sowie den Rechtsvortritt genutzt werden. Der Neigungswinkel der Kamera lässt sich ebenfalls einstellen, um die benötigte Flexibiltät der Sichtposition der Kamera sicherzustellen.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/raspberry-pi-camera-module.jpg}
@@ -14,5 +14,5 @@ Die Bilderzeugung ist ein eigener als Thread realisierter Subprozess und liefert
 \textbf{Begründung}\\[0.2cm]
 Der beschriebene Lösungsansatz bietet den Vorteil, dass die Fahrbahnerkennung und die Objekterkennung, welche diesen Prozess benutzen, unabhängig voneinander ihre Weiterverarbeitung parallel durchführen können. So wird der Mehrkernprozessor des Minicomputers optimal genutzt. Weiter  sollte eine Synchronisation der \code{GetImage()}-Methode nicht notwendig sein, da das erzeugte Bild nicht verändert, sondern nur genutzt wird, was sich wiederum positiv auf die Performance auswirkt.\\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
-Anhand der Tests mit dem Minicomputer und der entsprechenden Kamera werden ca. 20-30 Frames pro Minute zu Verfügung gestellt. Die Bilder sind dabei in guter Qualität und mit wenig Glanzeffekten entstanden. Es könnte dennoch von Vorteil sein, den Glanz noch wegzufiltern, um Störungen zu vermeiden.\\
+Die Tests mit dem Minicomputer und der entsprechenden Kamera zeigen, dass ca. 20-30 Frames pro Minute zu Verfügung gestellt werdem. Die Bilder sind dabei in guter Qualität und mit wenig Glanzeffekten entstanden. Es könnte dennoch von Vorteil sein, den Glanz wegzufiltern, um Störungen zu vermeiden.\\
 Die parallelen Zugriffe haben sich in den Tests bewährt und konfliktfrei funktioniert.

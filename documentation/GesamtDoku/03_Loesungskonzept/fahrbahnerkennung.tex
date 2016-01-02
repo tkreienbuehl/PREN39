@@ -1,14 +1,14 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Fahrbahnerkennung}
 \textbf{Funktionsbeschrieb}\\[0.2cm]
-Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zu Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der das ganze Bild als Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Spalte, $y$ der Pixelkoordinate der Zeile und $z$ dem Graustufenwert des Pixels entspricht (Abbildung \ref{fig:edges}).
+Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zur Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der das ganze Bild als Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Spalte, $y$ der Pixelkoordinate der Zeile und $z$ dem Graustufenwert des Pixels entspricht (Abbildung \ref{fig:edges}).
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
 \caption{Bild nach Kantenerkennung}
 \label{fig:edges}
 \end{figure}\flushleft
-Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die Korrektur selber soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden dabei vom Controller berechnet, und in Grad an das Mikrocontrollerboard weitergegeben.\\[0.2cm]
+Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die eigentliche Korrektur soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden dabei vom Controller berechnet, und in Grad an das Mikrocontrollerboard weitergegeben.\\[0.2cm]
 \textbf{Komponentenbeschrieb}
 \begin{figure}[H]%Position festigen
 \centering
@@ -16,16 +16,16 @@ Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend de
 \caption{Aktivitätendiagramm Fahrbahnerkennung}
 \label{fig:activityRoute}
 \end{figure}\flushleft
-Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Die erhaltenen Bilder werden vor der Analyse verkleinert auf ein Format von 320x230 Pixel. Für die Kantenerkennung wird jede Zeile eines Bildes als Funktion angeschaut und falls die Änderungsrate in $x$- und $y$-Richtung den Filterwert überschreitet eine Kante erkannt und auch die Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
-Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.
+Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Die erhaltenen Bilder werden vor der Analyse auf ein Format von 320x230 Pixel verkleinert. Für die Kantenerkennung ein Bild zeilenwiese durchlaufen und die Änderungsrate der Graustufe des nächsten Pixels rechts davon ($x$-Richtung) und aus der darüberliegenden Zeile ($y$-Richtung) betrachtet. Überschreitet diese den Filterwert, wird eine Kante erkannt und auch deren Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
+Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen, die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/graphPicture.png}
 \caption{Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}
 \label{fig:grayscale}
 \end{figure}\flushleft
-Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Lücken werden geschlossen, indem in Richtung des letzten Elementes fortgesetzt wird.\\
-+Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor durch einen Bogen, entsprechend dem eingeschlagenen Radius der Lenkung, ersetzt und mit dem Sollradius der Fahrbahn abgeglichen. Die Abweichung wird dann über die Tangentenfunktion in einen Winkel umgewandelt um für die Regelung nur einen Wertetyp auswerten zu müssen. Da die Kurven, insbesondere auf der Innenbahn, sehr eng sind, verliert die Kamera die Fahrbahn aus der Sicht. Um dieses Problem zu lösen wird die Kamera beim Kurveneingang auf einen festgelegten und konstanten Winkel gedreht, der dann wiederum in der Regelung beachtet werden muss. Am Ende der Kurvenfahrt wird die Kamera wieder auf die null Grad Position zurückgeschwenkt. Nebst der besseren Fahrbahnsicht werden auch Objekte auf diese Weise früher erkannt.
+Da die Fahrbahn keine sprunghaften Änderungen aufweisen kann, wird die kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Lücken werden geschlossen, indem in Richtung des letzten Elementes fortgefahren wird.\\
+Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor durch einen Bogen, entsprechend dem eingeschlagenen Radius der Lenkung, ersetzt und mit dem Sollradius der Fahrbahn abgeglichen. Die Abweichung wird dann über die Tangentenfunktion in einen Winkel umgewandelt, um für die Regelung nur einen Wertetyp auswerten zu müssen. Da die Kurven, insbesondere auf der Innenbahn, sehr eng sind, verliert die Kamera die Fahrbahn aus der Sicht. Um dieses Problem zu lösen wird die Kamera beim Kurveneingang auf einen festgelegten und konstanten Winkel gedreht, der dann wiederum in der Regelung beachtet werden muss. Am Ende der Kurvenfahrt wird die Kamera wieder auf die Null-Grad-Position zurückgeschwenkt. Nebst der besseren Fahrbahnsicht werden auch Objekte auf diese Weise früher erkannt.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/minEdge.png}
@@ -41,7 +41,7 @@ Da die Fahrbahn keine Sprunghaften Änderungen aufweisen kann, wird die Kantende
 \textbf{Begründung}\\[0.2cm]
 Mit der beschriebenen Vorgehensweise kann der Aufwand pro Bild gegenüber OpenCV deutlich reduziert werden, da die Operationen ausschliesslich für die Fahrbahnerkennung erstellt werden. Die Tests haben die Realisierbarkeit dieser Vorgehensweise als machbar und fexibel aufgezeigt.\\[0.2cm]
 \textbf{Berechnungen}\\[0.2cm]
-Komplexität des Algorithmus, jedes Bild wird als eine $n\times{m}$ Matrix $M$ betrachtet, wobei $n$ = Spaltenzahl und $m$ = Zeilenzahl. Die Resultate der Kantenerkennung werden in einer zweiten $n\times{m}$ Matrix $M_1$ gespeichert, welche für die weiteren Berechnungen verwendet wird. Anhand des Bildformates gilt: $n>m$. Die Umwandlung des Bildes in Graustufen, von OpenCV durchgeführt, ist in der Abschätzung nicht enthalten.
+Abschätzung der Komplexität des Algorithmus: Jedes Bild wird als eine $n\times{m}$ Matrix $M$ betrachtet, wobei $n$ = Spaltenzahl und $m$ = Zeilenzahl. Die Resultate der Kantenerkennung werden in einer zweiten $n\times{m}$ Matrix $M_1$ gespeichert, welche für die weiteren Berechnungen verwendet wird. Anhand des Bildformates gilt: $n>m$. Die Umwandlung des Bildes in Graustufen, von OpenCV durchgeführt, ist in der Abschätzung nicht enthalten.
 \begin{itemize}
 \item Iteration für Kantenerkennung:
 \[
@@ -87,7 +87,7 @@ Wie zuvor beschrieben wird für die Fahrbahn von innen nach aussen gesucht. Dabe
 \[
 \frac{\partial{z}}{\partial{y}} > h_y
 \]
-wobei $h_y$ für die minimale erwartete Änderung in $y$-Richtung steht. Im Anschluss wird die $min_x$- und $max_y$-Koordinate der gefundenen Limits folgendermassen angeglichen:
+wobei $h_y$ für die minimale erwartete Änderung in $y$-Richtung steht. Im Anschluss werden die $min_x$- und $max_y$-Koordinaten der gefundenen Limits folgendermassen angeglichen:
 \[
 min_{(x,y)} = 10\cdot\Bigl\lfloor\frac{min_{(x,y)}}{10}+0.5\Bigr\rfloor
 \]
@@ -108,13 +108,13 @@ y = K_{PR}\left(e + \frac{1}{T_n}\int{edt} + T_v\dot{e}\right)
 wobei $y$ dem zu korrigierenden Winkelwert in Grad entspricht. Die Parameter $T_v$, $T_n$ und $K_{PR}$ müssen für die Feineinstellung justierbar sein. Dies soll für die Debugphase über eine auf dem Notebook betriebene Software geschehen.
 \\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
-In den bisher durchgeführten Tests konnten die Bilder der Kamera mit einer Framerate von 10 - 20 Bilder auf dem Minicomputer verarbeitet werden. Die Lichteinflüsse haben sich dabei als handelbar präsentiert, wenn die Beleuchtung mindestens der im Testgebäude vorhandenen Standardbeleuchtung entspricht. Hellere Lichtverhältnisse haben sich positiv auf die Kantenerkennung ausgewirkt.\\
+In den bisher durchgeführten Tests konnten die Bilder der Kamera mit einer Framerate von 10 - 20 Bilder auf dem Minicomputer verarbeitet werden. Die Lichteinflüsse haben sich dabei als handhabbar präsentiert, wenn die Beleuchtung mindestens der im Testgebäude vorhandenen Standardbeleuchtung entspricht. Hellere Lichtverhältnisse haben sich positiv auf die Kantenerkennung ausgewirkt.\\
 Die Parallelisierung hat sich ebenfalls erfolgreich testen lassen, gemeinsam mit der Objekterkennung, allerdings nur auf dem Notebook aufgrund einer defekten Testkamera.
 \\[0.2cm]
 \underline{\textbf{Fahrbahnerkennung Unterstützung}}
 \\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
-Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird die Erkennung an den Flexsensor übergeben, der mit dem seitlichen Abstand zum Trottoir die Fahrspur halten soll.\\[0.2cm]
+Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven, dann wird die Erkennung an den Flexsensor übergeben, der mit dem seitlichen Abstand zum Trottoir die Fahrspur halten soll.\\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
 \begin{figure}[H]
 	\centering
@@ -125,7 +125,7 @@ Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven wird d
 Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sensor gebogen wird. \\[0.2cm]
 %
 \textbf{Begründung}\\[0.2cm]
-Für die Distanzmessung zum Trottoir wurden noch andere Sensoren (Ultraschall und Infrarot -Sensro) in Betracht gezogen. Jedoch sind die Ultraschallsensoren zu unpräzise und die Infrarotsensoren haben Mühe mit der schwarzen Oberfläche des Trottoirs. Beides wurde mit einem Funktionsmuster ausgetestet. Der Flexsensor hat bei beiden diesen Punkten bessere Eigenschaften.\\[0.2cm]
+Für die Distanzmessung zum Trottoir wurden noch andere Sensoren (Ultraschall und Infrarot-Sensor) in Betracht gezogen. Jedoch sind die Ultraschall-Sensoren zu unpräzise und die Infrarot-Sensoren haben Mühe mit der schwarzen Oberfläche des Trottoirs. Beides wurde mit einem Funktionsmuster ausgetestet. Der Flexsensor hat bei beiden diesen Punkten bessere Eigenschaften.\\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
 Diese Kennlinie stellt den Widerstandswert in Funktion von dem Biegewinkel dar.
 \begin{figure}[H]
