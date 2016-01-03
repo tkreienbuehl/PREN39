@@ -5,6 +5,7 @@
 \usepackage{textcomp}
 \usepackage{lmodern}
 \usepackage[ngerman]{babel}
+\usepackage{tocbibind}
 \usepackage{enumerate}
 \usepackage{xcolor}
 \usepackage{pdfpages}
@@ -22,6 +23,13 @@
 
 \newcommand{\code}[1]{\texttt{#1}}
 
+\renewcommand*{\listoffigures}{%
+  \begingroup
+  \tocchapter
+  \tocfile{\listfigurename}{lof}
+  \endgroup
+}
+
 \geometry{left=3cm, top=3cm, bottom=3cm, right=2cm}
 
 \hypersetup{
@@ -32,7 +40,7 @@
 }
 
 \pagestyle{scrheadings}
-\ihead{PREN1 Gruppe 39}\ohead{Konzeptvarianten} 
+\ihead{PREN1 Gruppe 39}\ohead{Gesamtkonzept} 
 \ifoot{\today} \ofoot{Seite \thepage\ von {\hypersetup{linkcolor=black}\pageref{LastPage}}}
 
 % Einrücken zu Beginn von neuem Absatz unterdrücken

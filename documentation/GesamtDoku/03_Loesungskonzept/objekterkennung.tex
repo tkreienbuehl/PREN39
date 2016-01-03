@@ -18,6 +18,7 @@ Sobald die ersten Bilder mit der Kamera aufgenommen wurden, werden diese laufend
 \caption{Aktivitätendiagramm Obkjekterkennung: Container und Entleerungsbecken}
 \label{fig:activityContainer}
 \end{figure}
+\newpage
 Die Erkennung läuft dabei immer gleich ab. Als erstes wird das Bild mit OpenCV nach der entsprechenden Farbe gefiltert. Sprich: Es wird nur nach Grün-, Blau- und Weisstönen gesucht. Anschliessend werden mit Hilfe einer Konturerkennung störende und falsche Objekte entfernt. Mit der Höhe dieser Objekte kann dann ausgerechnet werden, wie weit das Objekt  noch entfernt ist. Diese Distanzberechnung liefert nur ein ungefähres Ergebnis. Ist das Objekt zu weit entfernt, wird der zentrale Controller nicht informiert. Ansonsten wird eine Meldung an den Controller gesendet, welche die Objektart und Distanz enthält.
 \\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
@@ -65,7 +66,7 @@ Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gle
 Da nicht nur angehalten werden muss, wenn ein gegenerisches Fahrzeug an der Kreuzun steht, sondern auch, wenn es sich von rechts nähert, muss der zu überprüfende Bereich eine gewisse Grösse haben. Der ungefähre Bereich, welcher abgesucht werden soll, ist in der folgenden Grafik markiert:
 \begin{figure}[H]%Position festigen
 \centering
-\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/rechtsvortritt_bereich.jpg}
+\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/rechtsvortritt_bereich.jpg}
 \caption{Abgedeckter Bereich beim Rechtsvortritt}
 \label{fig:bereichRechtsvortritt}
 \end{figure}
@@ -94,7 +95,7 @@ Die \glqq{Rechtsvortritterkennung detailliert}\grqq{} hat die Aufgabe das Fahrze
 \textbf{Komponentenbeschrieb}\\[0.2cm]
 \begin{figure} [H]
 	\centering
-	\includegraphics[width=0.25\textwidth]{03_Loesungskonzept/pictures/ultraschallsensor.png}
+	\includegraphics[width=0.23\textwidth]{03_Loesungskonzept/pictures/ultraschallsensor.png}
 	\caption{Getesteter Ultraschallsensor (Quelle: www.generationrobots.com)}
 	%http://www.generationrobots.com/2653-large_default/ultraschallsensor-hc-sr04.jpg
 \end{figure}
@@ -109,6 +110,5 @@ Der Ultraschallsensor wurde bereits erfolgreich an das Freedomboard angeschlosse
 Damit das Schüttgut im Entleerungsbecken entleert werden kann, muss das Entleerungsbecken richtig detektiert werden können. \\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
 Die Container und Fahrbahnerkennung benötigen bereits Sensoren. Dies wären der Flexsensor und der Infrarotsensor. Für die Detektion des Entleerungsbehälters ist kein weiterer Sensor mehr nötig. Die Detektion ist mit beiden Sensoren möglich. Bei Tests mit den beiden Sensoren wird sich zeigen, welcher dieser beiden besser geeignet ist.\\[0.2cm]
-\newpage
 \textbf{Begründung}\\[0.2cm]
 Die Einsparung von Sensoren entlastet das Budget und spart zusätzlichen Implementierungsaufwand.\\[0.2cm]
