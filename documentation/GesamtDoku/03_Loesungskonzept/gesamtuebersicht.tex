@@ -14,8 +14,9 @@ Wie die obige Darstellung zeigt, besteht zwischen allen Komponenten ein enges Zu
 \includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/Verteilungsdiagramm.png}
 \caption{Schnittstellenübersicht}
 \label{fig:Verteilungsdiagramm}
-\end{figure}\flushleft
+\end{figure}
 In Abbildung \ref{fig:Verteilungsdiagramm} wird eine detaillierte Ansicht der Komponenten dargestellt, insbesondere was die Schnittstellen betrifft. So ist erkennbar, dass der Mikrocontroller sowohl als Hauptknoten fungiert und auch als Schnittstelle für analoge wie digitale Signale dient.
+\newpage
 \subsubsection{Regelkreise}
 \underline{\textbf{Geschwindigkeitsregelung}}\\[0.2cm]
 Damit das Fahrzeug mit einer konstanten Geschwindigkeit fahren kann, muss ein Regler eingebaut werden.
@@ -24,7 +25,7 @@ Damit das Fahrzeug mit einer konstanten Geschwindigkeit fahren kann, muss ein Re
 	\includegraphics[width=1\textwidth]{03_Loesungskonzept/pictures/Gesch_Regelung.png}
 	\label{Regelung_Gesch}
 	\caption{Grober Antriebsregelkreis}
-\end{figure}\flushleft
+\end{figure}
 %In Abbildung \ref{Regelung_Gesch} 
 Hier ist der grobe Regelkreis des Antriebs zu sehen. Der Sollwert wird vom Minicomputer vorgegeben und an das Mikrocontrollerboard weitergeleitet. In diesem wird dann die Regelung implementiert. Der Regelausgang ist ein PWM\footnote{PWM= Pulsweiten Moduliertes Signal}-Signal, welches die Geschwindigkeit des Antriebsmotors bestimmt. Die Drehzahl des Antriebmotors wird über einen Encoder zurück in den Mikrocontroller gelesen. Der Encoder misst die Drehzahl am Ausgang des DC-Antriebsmotors.\\[0.2cm]
 \underline{\textbf{Lenkregelung}}\\[0.2cm]
@@ -34,6 +35,6 @@ Damit des Fahrzeug auf der Strecke bleiben kann, braucht es einen Regelkreis fü
 	\includegraphics[width=1\textwidth]{03_Loesungskonzept/pictures/Lenk_Regelung.png}
 	\label{Regelung_Lenken}
 	\caption{Grober Steuerungs Regelkreis }
-\end{figure}\flushleft
+\end{figure}
 %Wie in Abbildung \ref{Regelung_Lenken} 
 Wie hier zu sehen ist, befindet sich der Regler auf dem Minicomputer. Der Regelausgang wird über UART\footnote{UART= Serielles Kommunikationsprotokoll} auf das Mikrocontrollerboard weitergeleitet. Dieses ändert darauf hin das PWM Signal zu Servo. Die Positionsdetektion wird über die Kamera/Flexsensor realisiert. Das ist nur eine Übersicht über den Regelkreis.

@@ -7,15 +7,16 @@ Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden 
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
 \caption{Bild nach Kantenerkennung}
 \label{fig:edges}
-\end{figure}\flushleft
+\end{figure}
 Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die eigentliche Korrektur soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden dabei vom Controller berechnet, und in Grad an das Mikrocontrollerboard weitergegeben.\\[0.2cm]
+\newpage
 \textbf{Komponentenbeschrieb}
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
 \caption{Aktivitätendiagramm Fahrbahnerkennung}
 \label{fig:activityRoute}
-\end{figure}\flushleft
+\end{figure}
 Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Die erhaltenen Bilder werden vor der Analyse auf ein Format von 320x230 Pixel verkleinert. Für die Kantenerkennung ein Bild zeilenwiese durchlaufen und die Änderungsrate der Graustufe des nächsten Pixels rechts davon ($x$-Richtung) und aus der darüberliegenden Zeile ($y$-Richtung) betrachtet. Überschreitet diese den Filterwert, wird eine Kante erkannt und auch deren Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
 Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen, die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.
 \begin{figure}[H]%Position festigen
@@ -23,7 +24,7 @@ Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrba
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/graphPicture.png}
 \caption{Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}
 \label{fig:grayscale}
-\end{figure}\flushleft
+\end{figure}
 Da die Fahrbahn keine sprunghaften Änderungen aufweisen kann, wird die kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Lücken werden geschlossen, indem in Richtung des letzten Elementes fortgefahren wird.\\
 Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor durch einen Bogen, entsprechend dem eingeschlagenen Radius der Lenkung, ersetzt und mit dem Sollradius der Fahrbahn abgeglichen. Die Abweichung wird dann über die Tangentenfunktion in einen Winkel umgewandelt, um für die Regelung nur einen Wertetyp auswerten zu müssen. Da die Kurven, insbesondere auf der Innenbahn, sehr eng sind, verliert die Kamera die Fahrbahn aus der Sicht. Um dieses Problem zu lösen wird die Kamera beim Kurveneingang auf einen festgelegten und konstanten Winkel gedreht, der dann wiederum in der Regelung beachtet werden muss. Am Ende der Kurvenfahrt wird die Kamera wieder auf die Null-Grad-Position zurückgeschwenkt. Nebst der besseren Fahrbahnsicht werden auch Objekte auf diese Weise früher erkannt.
 \begin{figure}[H]
@@ -37,7 +38,7 @@ Für die Amschliessende Suche der Ideallinie wird von den gefundenen Kanten die 
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/maxEdge.png}
 \caption{Erste Kante rechts der Mitte}
 \label{fig:kantenr}
-\end{figure}\flushleft
+\end{figure}
 \textbf{Begründung}\\[0.2cm]
 Mit der beschriebenen Vorgehensweise kann der Aufwand pro Bild gegenüber OpenCV deutlich reduziert werden, da die Operationen ausschliesslich für die Fahrbahnerkennung erstellt werden. Die Tests haben die Realisierbarkeit dieser Vorgehensweise als machbar und fexibel aufgezeigt.\\[0.2cm]
 \textbf{Berechnungen}\\[0.2cm]
@@ -111,6 +112,7 @@ wobei $y$ dem zu korrigierenden Winkelwert in Grad entspricht. Die Parameter $T_
 In den bisher durchgeführten Tests konnten die Bilder der Kamera mit einer Framerate von 10 - 20 Bilder auf dem Minicomputer verarbeitet werden. Die Lichteinflüsse haben sich dabei als handhabbar präsentiert, wenn die Beleuchtung mindestens der im Testgebäude vorhandenen Standardbeleuchtung entspricht. Hellere Lichtverhältnisse haben sich positiv auf die Kantenerkennung ausgewirkt.\\
 Die Parallelisierung hat sich ebenfalls erfolgreich testen lassen, gemeinsam mit der Objekterkennung, allerdings nur auf dem Notebook aufgrund einer defekten Testkamera.
 \\[0.2cm]
+\newpage
 \underline{\textbf{Fahrbahnerkennung Unterstützung}}
 \\[0.2cm]
 \textbf{Funktionsbeschrieb}\\[0.2cm]
@@ -121,7 +123,7 @@ Wird die Fahrbahn auf einer Seite ganz verloren, speziell in engen Kurven, dann 
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flexsensor.jpg}
 	\label{fig:Flexsensor}
 	\caption{Flexsensor}
-\end{figure}\flushleft%
+\end{figure}%
 Der Flexsensor ändert seinen Widerstandswert abhängig davon, wie stark der Sensor gebogen wird. \\[0.2cm]
 %
 \textbf{Begründung}\\[0.2cm]
@@ -133,7 +135,7 @@ Diese Kennlinie stellt den Widerstandswert in Funktion von dem Biegewinkel dar.
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Flex_Biegungskennline.png}
 	\label{fig:Flex_R_Kennlinie}
 	\caption{Widerstand in Funktion des Biegewinkels}
-\end{figure}\flushleft
+\end{figure}
 %
 Mit dieser Widerstandsänderung kann auf die Distanz geschlossen werden. Die Berechnung oder Auswertung welcher Widerstandswert zu welcher Distanz passt muss noch im PREN2 gemacht werden. Der Widerstandswert des Flexsensors kann über einen einfachen Spannungsteiler und einem AD-Wandler eingelesen werden.
 Ein Risiko besteht darin, dass der Flexsensor auf das Trottoir springt, anstatt sich zu biegen. Jedoch sollte dies durch eine optimale Positionierung vermieden werden können.\\[0.2cm]

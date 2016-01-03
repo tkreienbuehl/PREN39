@@ -18,7 +18,6 @@ Sobald die ersten Bilder mit der Kamera aufgenommen wurden, werden diese laufend
 \caption{Aktivitätendiagramm Obkjekterkennung: Container und Entleerungsbecken}
 \label{fig:activityContainer}
 \end{figure}
-\flushleft
 Die Erkennung läuft dabei immer gleich ab. Als erstes wird das Bild mit OpenCV nach der entsprechenden Farbe gefiltert. Sprich: Es wird nur nach Grün-, Blau- und Weisstönen gesucht. Anschliessend werden mit Hilfe einer Konturerkennung störende und falsche Objekte entfernt. Mit der Höhe dieser Objekte kann dann ausgerechnet werden, wie weit das Objekt  noch entfernt ist. Diese Distanzberechnung liefert nur ein ungefähres Ergebnis. Ist das Objekt zu weit entfernt, wird der zentrale Controller nicht informiert. Ansonsten wird eine Meldung an den Controller gesendet, welche die Objektart und Distanz enthält.
 \\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
@@ -33,7 +32,6 @@ Die Containererkennung wurde bereits soweit getestet, dass grüne und blaue Cont
 \caption{erfolgreicher Testversuch}
 \label{fig:erfolgreicher Testversuch}
 \end{figure}
-\flushleft
 Auch bei aufgenommenen Bildern, welche gleichfarbige Container mit unterschiedlichen Lichtverhältnissen zeigen, konnten die Container korrekt erkannt werden:
 \begin{figure}[H]%Position festigen
 \centering
@@ -41,7 +39,6 @@ Auch bei aufgenommenen Bildern, welche gleichfarbige Container mit unterschiedli
 \caption{unterschiedliche Helligkeiten}
 \label{fig:unterschiedliche Helligkeiten}
 \end{figure} \\
-\flushleft
 Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls zum Beispiel im Hintergrund ein Objekt steht, welches eine grüne oder blaue Farbe hat und dessen Masse einem Container entsprechen könnten, kann es zu einer Fehlerkennung kommen. Folgendes Bild zeigt einen solchen Fall:
 \begin{figure}[H]%Position festigen
 \centering
@@ -49,7 +46,6 @@ Bei den Testversuchen wurden jedoch auch Probleme und Risiken aufgedeckt. Falls 
 \caption{fehlerhafter Testversuch}
 \label{fig:fehlerhafter Testversuch}
 \end{figure} \\
-\flushleft
 Um solche Fälle möglichst zu vermeiden, wird versucht den abzusuchenden Bereich einzuschränken, sodass nur solche Bildbereiche untersucht werden, wo sich auch wirklich ein Container befinden könnte. 
 \\[0.2cm]
 \underline{\textbf{Rechtsvortritt}}
@@ -65,7 +61,7 @@ Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gle
 \caption{Aktivitätendiagramm Obkjekterkennung: Rechtsvortritt}
 \label{fig:activityRechtsvortritt}
 \end{figure} \\
-\flushleft
+\newpage
 Da nicht nur angehalten werden muss, wenn ein gegenerisches Fahrzeug an der Kreuzun steht, sondern auch, wenn es sich von rechts nähert, muss der zu überprüfende Bereich eine gewisse Grösse haben. Der ungefähre Bereich, welcher abgesucht werden soll, ist in der folgenden Grafik markiert:
 \begin{figure}[H]%Position festigen
 \centering
@@ -74,7 +70,6 @@ Da nicht nur angehalten werden muss, wenn ein gegenerisches Fahrzeug an der Kreu
 \label{fig:bereichRechtsvortritt}
 \end{figure}
 \\
-\flushleft
 \textbf{Begründung}\\[0.2cm]
 Bei der Vortrittserkennung kann nicht nach Farben oder Konturen gesucht werden, da keine Angaben vorhanden sind, wie das gegnerische Fahrzeug aussieht. Daher ist es nötig, dass erkennt werden kann, ob ein definierter Strassenabschnitt verdeckt ist oder nicht. Falls der Abschnitt verdeckt ist, heisst das, dass sich ein Fahrzeug darauf befindet, welches Vortritt hat.
 \subsubsection{Objekterkennung präzise}
@@ -88,7 +83,6 @@ Die Containererkennung wird mit Hilfe von Distanzsensoren realisiert. Dafür sin
 	\includegraphics[width=0.35\textwidth]{03_Loesungskonzept/pictures/InfrarotContainererkennung.png}
 	\caption{Beispielhafte Containererkennung mit einem Infrarotsensor}
 \end{figure}
-\flushleft
 \textbf{Begründung}\\[0.2cm]
 Die Positionierung mit einem Infrarotsensor ist die ideale Lösung. Sie ist einfach zu realisieren im Vergleich zu einer Kamera oder einem Farbesensor und präziserer als ein Ultraschallsensor.\\[0.2cm]
 \textbf{Testergebnisse}\\[0.2cm]
@@ -104,7 +98,6 @@ Die \glqq{Rechtsvortritterkennung detailliert}\grqq{} hat die Aufgabe das Fahrze
 	\caption{Getesteter Ultraschallsensor (Quelle: www.generationrobots.com)}
 	%http://www.generationrobots.com/2653-large_default/ultraschallsensor-hc-sr04.jpg
 \end{figure}
-\flushleft
 Diese Aufgabe wird mit einem Ultraschallsensor gelöst. \\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Ein Ultraschallsensor ist für unter fünf Franken zu haben und erfüllt mit seinem grossen Abstrahlwinkel und seiner Reichweite die geforderten Bedingungen. Zudem ist die Anbindung an das Freedomboard gut möglich.\\[0.2cm]
@@ -116,5 +109,6 @@ Der Ultraschallsensor wurde bereits erfolgreich an das Freedomboard angeschlosse
 Damit das Schüttgut im Entleerungsbecken entleert werden kann, muss das Entleerungsbecken richtig detektiert werden können. \\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
 Die Container und Fahrbahnerkennung benötigen bereits Sensoren. Dies wären der Flexsensor und der Infrarotsensor. Für die Detektion des Entleerungsbehälters ist kein weiterer Sensor mehr nötig. Die Detektion ist mit beiden Sensoren möglich. Bei Tests mit den beiden Sensoren wird sich zeigen, welcher dieser beiden besser geeignet ist.\\[0.2cm]
+\newpage
 \textbf{Begründung}\\[0.2cm]
 Die Einsparung von Sensoren entlastet das Budget und spart zusätzlichen Implementierungsaufwand.\\[0.2cm]

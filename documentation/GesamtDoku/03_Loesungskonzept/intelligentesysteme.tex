@@ -12,7 +12,7 @@ Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinz
 	\centering
 	\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/grobablauf.png}
 	\caption{Aktivitätendiagramm Grobablauf}
-\end{figure}\flushleft
+\end{figure}
 Der Zustand des Fahrzeuges wird im Model gespeichert und steht allen Prozessen zur Verfügung. Die Datenstruktur ist dabei so aufgebaut, dass keine Zugriffskonflikte entstehen sollten.\\
 Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container, hat dieser Priorität vor dem normalen Fahren und das Mikrocontroller-Board erhält die entsprechenden Anweisungen.\\[0.2cm]
 \textbf{Komponentenbeschrieb}\\[0.2cm]
@@ -30,7 +30,7 @@ Der Mini-Computer beinhaltet die Logik- und Ablaufsteuerung, nimmt Bilder von de
 	\centering
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/raspberrypi2.png}
 	\caption{Raspberry Pi2 Model B (Quelle:http://pcworld.com/)}
-\end{figure}\flushleft
+\end{figure}
 Das Raspberry Pi2 bietet mit einem 900MHz Quadcore Prozessor, einem eigenem Grafikchip und 1GB Ram viel Leistung und ist ideal geeignet.\\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Dem Team war von Anfang an klar, dass die Bildverarbeitung viele Ressourcen verbrauchen wird. Gleichzeitig darf der Energieverbrauch die Kapazität eines Akkus nicht übersteigen. Das Raspberry Pi2 besitzt genügend Leistung und ist trotzdem sparsam. Mit einem Quadcore und 1GB RAM ist es ausreichend leistungsfähig um Bilder zeitig zu verarbeiten. Zusätzlich ist es einfach zu verwalten und zu bedienen, da es über ein eigenes Betriebssystem verfügt.
@@ -38,13 +38,14 @@ Dem Team war von Anfang an klar, dass die Bildverarbeitung viele Ressourcen verb
 \subsubsection{Mikrocontroller-Board}
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Das Mikrocontrollerboard bildet die Schnittstelle zwischen der Hardware (Motoren und Sensoren) und dem Minicomputer. Das Mikrocontrollerboard übernimmt die Ansteuerung und Auswertung der einzelnen Komponenten und stellt die verarbeiteten Informationen dem Minicomputer über eine Schnittstelle zur Verfügung.\\[0.2cm]
+\newpage
 \textbf{Komponentenbeschrieb}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/freedomboard.png}
 	\caption{Freedomboard KL25 von Freescale (Quelle:http://ch.farnell.com/)}
 	%http://ch.farnell.com/productimages/standard/de_DE/freescalesemiconductor-frdm-kl25z-40.jpg
-\end{figure}\flushleft
+\end{figure}
 Als Mikrocontrollersystem wurde das Freedomboard KL25Z von Freescale ausgewählt. Das Entwicklungsgsboard bietet vieles, wie ausreichend I/O's, AD Wandler und Timerausgänge. Das Board wird mit der Programmiersprache C programmiert.\\[0.2cm]
 \textbf{Begründung}\\[0.2cm]
 Das Board überzeugt durch eine gute Rechenperformance zu einem kleinen Preis. Das Hauptargument für das Freedomboard ist die einfache Programmierung. Für viele Komponenten wie Servos oder Ultraschalsensoren steht ein Tool namens ProcessorExpert zu Verfügung. Dieses Tool ermöglicht eine relativ einfache Anbindung solcher Komponenten. Dies spart sehr viel Entwicklungsaufwand.
@@ -57,5 +58,5 @@ Das Tool ProcessorExpert bietet eine Komponente FreeRTOS an. Das ist ein Betrieb
 	\centering
 	\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/MC_Tasks.png}
 	\caption{Übersicht MC Tasks}
-\end{figure}\flushleft
+\end{figure}
 Die Implementierung der Tasks wird im Modul Produkteentwicklung zwei (PREN2) umgesetzt.
