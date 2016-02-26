@@ -8,7 +8,6 @@ using namespace std;
 class PrenController {
 
 public:
-
 	enum states {
 		RUNNING = 1,
 		ERROR = -1,
