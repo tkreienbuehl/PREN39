@@ -1,0 +1,110 @@
+% !TEX root = morphkasten.tex
+
+\section{Rechtsvortritt}
+
+
+%##############
+\subsection{Sensor}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{fig/RechtsvortrittSensor.png}
+	\caption{Mögliche Rechtsvortritt Erkennung}
+\end{figure}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth} | p{0.5\textwidth}}
+
+
+ \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
+	 
+\begin{itemize}
+\item Relativ einfach zu Realisieren
+\item Beispielanwendungen für MC Boards vorhanden 
+\end{itemize}
+
+ 
+ &
+ 
+\begin{itemize}
+\item Relativ enges Sichtfeld
+\item Keine Unterscheidung zwischen verschiedenen Objekten möglich
+\item Zusätzliche Hardware nötig
+\end{itemize}
+
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
+
+
+ \textbf{Risiken} & \\ \hline
+	 
+\begin{itemize}
+\item Container oder andere Objekte versperren die Sicht (vor der Kreuzung)
+\item Schnelle Fahrzeuge werden eventuell nicht richtig erkannt
+\end{itemize}
+
+
+ 
+\end{tabular}
+\end{table}
+
+\pagebreak
+
+
+%##############
+\subsection{Bilderkennung}
+
+\begin{figure}[h!]%Position festigen
+\centering
+\includegraphics[width=0.7\textwidth]{fig/rechtsvortritt_bilderkennung.png}
+\caption{Bilderkennung Rechtsvortritt}
+\label{fig:Bilderkennung Rechtsvortritt}
+\end{figure}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth} | p{0.5\textwidth}}
+
+
+ \textbf{Vorteile} & \textbf{Nachteile} \\ \hline
+	 
+\begin{itemize}
+\item Stoppen durch Vorausplanen möglich
+\item Unterschiede berechnen, wie sich das andere Fahrzeug bewegt
+\end{itemize}
+
+ 
+ &
+ 
+\begin{itemize}
+\item Genaue Definition nötig, was ein Fahzeug an der Kreuzung beim Rechtsvortritt ist
+\item Bildverarbeitung sehr aufwändig
+\item Rechenintensiv
+\end{itemize}
+
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
+
+
+\textbf{Risiken} & \\ \hline
+	 
+\begin{itemize}
+\item Fahrzeug wird auch an anderen Stellen erkannt
+\item Andere Gegenstände könnten als Fahrzeug interpretiert werden
+
+\end{itemize}
+&
+\begin{itemize}
+\item Minicomputer kann Bilder nicht in verlangter Geschwindigkeit verarbeiten
+\item Hohe Anforderung an die Softwareentwicklung
+\end{itemize}
+ 
+\end{tabular}
+\end{table}
+
+\pagebreak

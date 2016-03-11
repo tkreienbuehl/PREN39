@@ -13,7 +13,6 @@ using namespace std;
 
 class RouteFinder {
 public:
-
 	RouteFinder(PrenController* controller, PictureCreator* picCreator);
 	~RouteFinder();
 

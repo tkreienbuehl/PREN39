@@ -23,6 +23,7 @@ void* ObjectFinder::staticEntryPoint(void* threadId) {
 void ObjectFinder::RunProcess() {
 
 	cv::Mat origImage;
+	cv::Mat croppedImage;
 	cv::Mat hsvImage;
 	cv::Mat filteredImageGreen;
 	cv::Mat filteredImageBlue;
@@ -33,14 +34,18 @@ void ObjectFinder::RunProcess() {
 
 		origImage = *m_PicCreator->GetImage();
 
+		//origImage = createImage("/home/patbrant/Pictures/pren/street_distance2.jpg");
+
 		if ( !origImage.empty()) {
-			hsvImage = convertImageToHSV(origImage);
+			cv::Rect areaToCrop(0, 0, origImage.cols / 2, origImage.rows);
+			croppedImage = origImage(areaToCrop);
+			hsvImage = convertImageToHSV(croppedImage);
 			filteredImageGreen = filterColorInImage("green", hsvImage);
 			filteredImageBlue = filterColorInImage("blue", hsvImage);
 			contoursGreen = findContainersInImage(filteredImageGreen);
 			contoursBlue = findContainersInImage(filteredImageBlue);
 			contours = mergeContours(contoursGreen, contoursBlue);
-			m_MarkedImage = markFindContoursInImage(contours, origImage);
+			m_MarkedImage = markFindContoursInImage(contours, croppedImage);
 
 			cout << "Picture worked" << endl;
 		}
@@ -55,7 +60,7 @@ cv::Mat ObjectFinder::createImage(cv::String filename) {
 	}
 
 	cv::Mat origImage;
-	cv::Size size(600, 430);
+	cv::Size size(900, 675);
 	resize(srcImage, origImage, size);
 
 	return origImage;
@@ -89,7 +94,6 @@ vector<vector<cv::Point> > ObjectFinder::findContainersInImage(
 	vector<cv::Vec4i> hierarchy;
 	cv::findContours(imageToFindContainer, contours, hierarchy, CV_RETR_TREE,
 			CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-
 	return contours;
 }
 
@@ -103,7 +107,6 @@ vector<vector<cv::Point> > ObjectFinder::mergeContours(
 	contours.insert(contours.end(), contours2.begin(), contours2.end());
 
 	return contours;
-
 }
 
 cv::Mat ObjectFinder::markFindContoursInImage(

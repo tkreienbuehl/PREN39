@@ -1,0 +1,59 @@
+Pseudo Code!!!
+#include <iostream>
+
+#include <queue>
+
+#include <string>
+
+
+
+using namespace std;
+
+int main ()
+{
+
+		device = /dev/ttyUSB0; //Anschluss an welchem Freescale Board angeschlossen ist.
+		queue <string> Befehle;
+
+		//Befehle senden
+		send(string Befehl){
+			sendTo(device, Befehl);
+		}
+		
+		//Befehle empfangen
+		while(true){
+			Befehle.push(listenTo(device));
+		}
+
+		//Befehle verarbeiten
+		while(Befehle.size > 0){
+			string currentBefehl = Befehle.pop();
+
+			switch(currentBefehl)
+			case le: leFunktion();
+			case an: anFunktion();
+			...
+			default: system.out.print("Unbekannter Befehl);
+		}
+	
+}
+
+RPI -> Freescale
+Lenkung		(+- Werte für Links/Rechts)					\nle 100 (Zahl der neuen Umdrehung/Schrittzahl)
+Antrieb		(+- Werte für Vorwärts/Rückwerts)				\nan 100
+Beschleunigung	(+- Werte für Beschleunigung/Bremsen, oder FIXE ANGABEN)	\nbe 100
+Knickarm	(+- Werte für Ausfahren/Einfahren)				\nkn 100
+Greifer		(+- Werte für Greifen/Loslassen)				\ngr 100
+Klappe Behälter	(Befehl ohne Parameter)						\nkl
+
+
+Freescale -> RPI
+Rückmeldung Lenkung		(+- Werte für Links/Rechts)					\nrle 100 (Zahl der neuen Umdrehung/Schrittzahl)
+Rückmeldung Antrieb		(+- Werte für Vorwärts/Rückwerts)				\nran 100
+Rückmeldung Beschleunigung	(+- Werte für Beschleunigung/Bremsen, oder FIXE ANGABEN)	\nrbe 100
+Rückmeldung Knickarm		(+- Werte für Ausfahren/Einfahren)				\nrkn 100
+Rückmeldung Greifer		(+- Werte für Greifen/Loslassen)				\nrgr 100
+Rückmeldung Klappe Behälter	(Befehl ohne Parameter)						\nrkl true/false
+
+Ultraschall			(+- Werte als Abstand, - als "Kein Objekt")			\nrul 10	(Zahl als cm, falls möglich)
+Flexsensor			(+- Werte als Abstand, - als "Kein Randstein")			\nrfl 2		(Zahl als cm, falls möglich)

@@ -1,0 +1,13 @@
+The next step was to connect the KL25z to the Raspberry Pi.
+I set it up with a program which would read and write characters using "standard input" and "standard output" on the KL25z (as well as flashing an LED when characters arrive) and checked that it was working with my development PC.
+By default, standard input and output are mapped to a virtual serial port using the same USB connector as the mass storage drive for loading software, which is pretty neat, and allows the KL25z to be easily controlled by any USB host.
+
+I plugged the USB cable into the Raspberry Pi and saw that the KL25z started up and began flashing its LED.
+I then needed to connect the Pi to its USB serial port. I had some worries about this, but (unusually) they were unfounded.
+The USB serial device was immediately detected. A bit of looking in /dev showed up a new device /dev/ttyACM0.
+I looked around for software to act as a serial terminal and found lots of people recommending "screen", so I installed it with sudo apt-get install screen and then typed screen /dev/ttyAMC0.
+My entered characters were echoed back to me and the LED changed colour just as I had hoped.
+
+Getting out of "screen" was another matter.
+Pretty much whetever I typed was just passed through to the KL25z.
+The manual recommends Ctrl-A ? to show a list of commands, and with a bit of looking I found Ctrl-A \, but not after I had accidentally created several other windows and got in a bit of a pickle.

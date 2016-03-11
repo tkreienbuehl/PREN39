@@ -31,7 +31,6 @@ public:
 	void stopProcess();
 
 private:
-
 	void RunProcess();
 	vector<vector<cv::Point> > contoursGreen;
 	vector<vector<cv::Point> > contoursBlue;

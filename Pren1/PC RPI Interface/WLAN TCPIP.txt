@@ -1,0 +1,10 @@
+RPI als TCP Server
+PC als TCP Client
+
+SSH 22
+
+Pseudocode
+
+//Server
+
+//Client

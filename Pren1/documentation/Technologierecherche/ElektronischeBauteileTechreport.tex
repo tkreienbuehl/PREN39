@@ -1,0 +1,135 @@
+% !TEX root = Dokumentation.tex
+\section{Mikrocontroller-Board}
+\subsection{Anforderungen}
+\begin{itemize}
+\item Schnittstelle zu möglichem Boardcomputer (UART,I2C,SPI,Ethernet)
+\item Gute Rechenperformance (besser mehr als zu wenig)
+\item AD Wandler 
+\item Möglichst Kostengünstig (Richtpreis 20Fr.)
+\end{itemize}
+
+
+\subsection{Tinkerforge}
+%%Tinkerforge bietet ein vielseitiges System aus Mikrocontrollern, Sensoren, Treiber und weiteren Baugruppen an. Diese Funktionen sind jeweils in Module aufgeteilt, welche Modular hinzufügbar sind. Diese Module kommunizieren einerseits untereinander und andererseits mit einem Hauptsteuerelement. Dieses kann ein PC oder aber auch ein Linux basierter Minirechner sein (wie zum Beispiel das Beaglebone oder Freedomboard).\\\\%%
+\textbf {Vorteile}
+\begin{itemize}
+\item Einfache und modulare Schnittstelle zum Boardcomputer
+\item Einfach erweiterbar mit zusätzlichen Modulen (z.B Sensoren)
+\item Viele benötigte Module Vorhanden: Schrittmotoren, Distanzsensoren, Liniensensoren und Farbsensoren\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Grosser Aufwand für eigene Module(Abhängigkeit zu Tinkerforge)
+\end{itemize}
+%%Mögliche Kostenberechnung: 1x Hauptmodul: 50, 2x Distanzsensoren: 10, Linesensor: 10, 2x Schrittmotoren: 100, Diverses:10. Gesamt: 180 Euro.%%
+
+%%\begin{figure}[ht]
+%%	\centering									
+%%	\includegraphics{TinkerforgeUebersicht.jpg}
+%%	\caption{Ein möglicher Aufbau des Tinkerfoge Systems. Hier mit einem Ultraschallsensor.}
+%%	\label{fig1}
+%%	%Quelle: http://www.heise.de/make/meldung/Modul-Baukasten-Tinkerforge-Abnabelung-vom-PC-dank-RED-Brick-2490601.html
+%%\end{figure}
+
+\subsection{HCS08 Devlopperboard}
+%http://ch.farnell.com/freescale-semiconductor/dc9s08qe32/tochterplatine-f-r-demoqe32/dp/1692128
+\textbf {Vorteile}
+\begin{itemize}
+\item Positive Erfahrungen im MC Modul (Einarbeitung in die Grundfunktionen entfällt)
+\item Starterkit von der Hochschule erhältlich \\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Begrenzte Rechenpower
+\end{itemize}
+
+\subsection{Arduinoboard}
+%http://www.ti.com/ww/en/launchpad/launchpads-connected.html#tabs
+\textbf {Vorteile}
+\begin{itemize}
+\item Im Preisrahmen, ein Board gibt es ab 20Fr.-
+\item Sehr grosse Community
+\item Einfache Programmierung\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Besitzt ein Betriebsystem $\Rightarrow$ weniger Hardware nahe
+\end{itemize}
+
+\subsection{Freedomboard}
+\textbf {Vorteile}
+\begin{itemize}
+\item Im Preisrahmen, ein Board gibt es ab 20Fr.-
+\item Wurde an der Hochschule bereits eingesetzt.(Mögliche Ansprechpersonen)
+\item Einfache Programmierung\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Besitzt ein Betriebsystem $\Rightarrow$ weniger Hardware nahe
+\end{itemize}
+
+\section{Distanzsensoren}
+\subsection{Anforderungen}
+\begin{itemize}
+\item Einfaches auslesen der Daten muss möglich sein
+\item Genaue Positionsdaten, je nach Anforderungen +/- 1mm
+\item Preis darf 10Fr. nicht übersteigen
+\item Möglichst Störungsunabhängig
+\item Distanz 0.5 - 10cm (je nach Einsatz)
+\item Möglichst eindeutige Aussage (geringer Streuungswinkel)
+\end{itemize}
+
+\subsection{Ultraschallsensoren}
+%Ultraschalsensoren werden häufig als Bewegungsmelder eingesetzt. 
+%http://www.miniinthebox.com/de/ultraschall-modul-hc-sr04-entfernung-messumformer-sensor-fuer-arduino-201211270080054_p478889.html
+\textbf {Vorteile}
+\begin{itemize}
+\item Erschwinglich, ein Sensor kostet ungefähr 5.Fr
+\item Unempfindlich auf Störeinflüsse (Ausser andere Ultraschallsensoren)
+\item Grosse Distanz (>10cm)\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Kann nicht als als Liniensensor eingesetzt werden
+\item Keine klaren Grenzen (relativ grosser Abstrahlwinkel)
+\end{itemize}
+
+\subsection{Infrarotsensoren}
+%http://rn-wissen.de/wiki/index.php?title=CNY70
+\textbf {Vorteile}
+\begin{itemize}
+\item Kostengünstig (Sensor und Empfänger kosten zusammen 1.7Fr)
+\item Kann als Liniensensor und Rad-Encoder eingesetzt werden.
+\item Eher klaren Grenzen (kleiner Abstrahlwinkel)\\
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Benötigt zwei AD Eingänge
+\item Sind empfindlich auf UV-Licht
+\item Geringe Reichweite (je nach Typ nur bis 5mm)
+\item Als Liniensensor: Nicht senkrechtes Abtasten ist problematisch
+\end{itemize}
+
+%\subsection{TOF}
+
+\section{Farbsensoren}
+% LAB-Farbsensor, True-Color-Sensor oder RGB-Sensor. Auch Druckmarkensensor 
+\subsection{Anforderungen}
+\begin{itemize}
+\item Einfaches auslesen der Daten muss möglich sein
+\item Genaue Farberkennung (Unterschied Gelb zwischen Blau und Grün muss möglich sein)
+\item Preis darf 10Fr. nicht übersteigen
+\item Distanz mindestens 5cm
+\end{itemize}
+
+\subsection{Eigenschaften}
+
+\textbf {Vorteile}
+\begin{itemize}
+\item Im Preisrahmen, ein Farbsensor kostet ungefähr 10.-
+\end{itemize}
+\textbf {Nachteile}
+\begin{itemize}
+\item Benötigt  AD Eingänge
+
+\end{itemize}
