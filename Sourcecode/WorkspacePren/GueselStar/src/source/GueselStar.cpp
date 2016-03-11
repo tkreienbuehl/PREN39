@@ -44,8 +44,9 @@ int main() {
 	controller->start();
 
 	picViewer->stopViewer();
+	usleep(5000);
 	objectFinder->stopProcess();
-	usleep(1000);
+	usleep(5000);
 
 	delete picViewer;
 	delete rtFinder;
@@ -53,7 +54,7 @@ int main() {
 
 	picCreator->StopRecording();
 
-	usleep(1000);
+	usleep(5000);
 
 	delete picCreator;
 	delete controller;

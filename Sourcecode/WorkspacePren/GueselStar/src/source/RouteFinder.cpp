@@ -4,7 +4,7 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 : MINLENGTH(10), MINYDIFF(3), NROFLINES(20) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
-	m_GradMat = nullptr;
+	m_GradMat = NULL;
 	m_State = false;
 }
 
