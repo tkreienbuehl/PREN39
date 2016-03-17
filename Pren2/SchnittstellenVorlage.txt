@@ -1,0 +1,19 @@
+Ultraschall		Frd => Rasp	Ul {}		distance cm		periodisch all 0.3s
+Infrarot?
+Flexsensor1 und ev 2	Frd =>Rasp	Fldist1 {}	distance mm		periodisch all 0.2s
+StatusAuf		Rasp=>Frd	StA {}		distance cm
+			Frd=>Rasp	StD
+StatusAb		Rasp=>Frd	StA {}		distance cm
+			Frd=>Rasp	StD			
+Regelparameter?
+DC Motor		Rasp =>Frd	DCDr {}	{}	cm pro sekunde	 hard/Soft wenn nötig
+			Response DCDr new		cm pro sekunde		wenn encoder say o
+Lenkungsservo		Rasp =>Frd	LeSer		pbd
+Kameraservo		Rasp =>Frd	SERVO? pos {}	einlenkungs pos 
+Behälterentladung?	Rasp => Frd	Entl		Entladungstrigger
+Debug Messages?	Frd => Rasp	DBG {}	„String für File“?
+NochDa			Frd => Rasp	There					periodisch all 0.5s
+			Rasp => Frd	Ja			DC stop
+Start			Rasp=>Frd	StartFrd
+			Frd=> Rasp	Ready
+Stop			Rasp=> Frd	Stop
