@@ -32,12 +32,12 @@ void ObjectFinder::RunProcess() {
 
 	while (m_state) {
 
-		origImage = *m_PicCreator->GetImage();
+		//origImage = *m_PicCreator->GetImage();
 
-		//origImage = createImage("/home/patbrant/Pictures/pren/street_distance2.jpg");
+		origImage = createImage("/home/patbrant/Pictures/pren/street_distance1.jpg");
 
 		if ( !origImage.empty()) {
-			cv::Rect areaToCrop(0, 0, origImage.cols / 2, origImage.rows);
+			cv::Rect areaToCrop(origImage.cols / 2, 0, origImage.cols / 2, origImage.rows);
 			croppedImage = origImage(areaToCrop);
 			hsvImage = convertImageToHSV(croppedImage);
 			filteredImageGreen = filterColorInImage("green", hsvImage);
@@ -83,6 +83,9 @@ cv::Mat ObjectFinder::convertImageToHSV(cv::Mat rgbImage) {
 	} else if (color == "blue") {
 		cv::inRange(imageToFilter, cv::Scalar(10, 140, 90),
 				cv::Scalar(20, 255, 255), filteredImage);
+	} else if (color == "yellow") {
+		cv::inRange(imageToFilter, cv::Scalar(20, 100, 100),
+				cv::Scalar(38, 255, 255), filteredImage);
 	}
 
 	return filteredImage;
@@ -119,9 +122,18 @@ cv::Mat ObjectFinder::markFindContoursInImage(
 		cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
-		if (boundRect[i].height > boundRect[i].width && boundRect[i].height > 50) {
+		if (boundRect[i].height > boundRect[i].width && boundRect[i].height > 150) {
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
 					cv::Scalar(0, 255, 0), 2, 8, 0);
+
+			int distanceToContainer = 280 * 216 / boundRect[i].height;
+
+			 std::ostringstream stringConverter;
+			 stringConverter << distanceToContainer;
+			 std::string distanceString = stringConverter.str();
+
+			putText(markedImage, "Distance to Container: " + distanceString + "mm", cvPoint(30,30),
+					CV_FONT_HERSHEY_PLAIN, 1.5, cvScalar(200,200,250), 1, CV_AA);
 		}
 	}
 
