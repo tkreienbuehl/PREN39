@@ -40,7 +40,7 @@
 }
 
 \pagestyle{scrheadings}
-\ihead{PREN1 Gruppe 39}\ohead{Gesamtkonzept} 
+\ihead{PREN2 Gruppe 39}\ohead{UART Interface Spec} 
 \ifoot{\today} \ofoot{Seite \thepage\ von {\hypersetup{linkcolor=black}\pageref{LastPage}}}
 
 % Einrücken zu Beginn von neuem Absatz unterdrücken
@@ -63,23 +63,37 @@ Das Senden von Daten wird ebenfalls über Funktionsgerechte Send-Methoden von de
 \section{Methodendefinitionen}
 \subsection{UART-Methodenstrings}
 \begin{tabular}{|l|l|l|l|l|} \hline
-Aktor                 & Richtung    & String     & Übergabewert              & Bemerkungen \\\hline\hline
-Ultraschall           & Frd => Rasp & Ul {}      & distance cm               & periodisch all 0.3s \\\hline
-Flexsensor1 und ev 2  & Frd =>Rasp  & Fldist1 {} & distance mm               & periodisch all 0.2s \\\hline
-StatusAuf             & Rasp=>Frd   & StA {}     & distance cm               & \\
-                      & Frd=>Rasp   & StD        & abgeschlossen             & Wenn Aufladevorgang abgeschlossen \\\hline
-StatusAb	              & Rasp=>Frd   & StA {}     & distance cm               & \\
-                      & Frd=>Rasp   & StD        & abgeschlossen             & Wenn Entleeren abgeschlossen\\\hline
-DC Motor	              & Rasp=>Frd   & DCDr{}{}   & cm pro sekunde	, hard/Soft & wenn nötig \\
-Response DCDr new     & Frd=>Rasp   & DCDr{}{}   & cm pro sekunde            & wenn encoder say o \\\hline
-Lenkungsservo         & Rasp=>Frd   & LeSer{}    & pbd                       & \\\hline
-Kameraservo           & Rasp=>Frd   & CamPos{}   & einlenkungs pos           & \\\hline
-Behälterentladung     & Rasp=>Frd   & Entl       & Entladungstrigger         & \\\hline
-Debug Messages        & Frd=>Rasp   & DBG{}      & Debugmeldung              & \\\hline
-NochDa                & Frd=>Rasp   & There      & Flag                      & periodisch all 0.5s \\
-                      & Rasp=>Frd   & Ja         & Erhalten?                 & Wenn nein => DC stop \\\hline
-Start                 & Rasp=>Frd   & StartFrd   &                           & Hochfahren und init \\
-                      & Frd=>Rasp   & Ready      &                           & \\\hline
-Stop	                  & Rasp=>Frd   & Stop       &                           & Programm beenden \\\hline
+Aktion/Aktor         & Richtung     & String,[params] & Übergabewert              & Bemerkungen \\\hline\hline
+Ultraschall          & Frd$\to$Rasp & Ul,int          & distance cm               & periodisch all 0.3s \\\hline
+Flexsensor1 und ev 2 & Frd$\to$Rasp & Fldist1,int     & distance mm               & periodisch all 0.2s \\\hline
+StatusAuf            & Rasp$\to$Frd & StA,int         & distance cm               & \\
+                     & Frd$\to$Rasp & StD             &                           & Wenn  abgeschlossen \\\hline
+StatusAb	             & Rasp$\to$Frd & StA,int         & distance cm               & \\
+                     & Frd$\to$Rasp & StD             &                           & Wenn abgeschlossen\\\hline
+DC Motor	             & Rasp$\to$Frd & DCDr,int,int    & cm pro sek.,modus         & Modi: hard/soft \\
+                     & Frd$\to$Rasp & DCDr,int        & cm pro sek.               & wenn encoder say o \\\hline
+Lenkungsservo        & Rasp$\to$Frd & LeSer,int       & pbd                       & \\\hline
+Kameraservo          & Rasp$\to$Frd & CamPos,int      & Kamera pos                & \\\hline
+Debug Messages       & Frd$\to$Rasp & DBG,char[]      & Meldung                   & \\\hline
+NochDa               & Frd$\to$Rasp & There           & Flag                      & periodisch all 0.5s \\
+                     & Rasp$\to$Frd & Ja              & Erhalten?                 & Wenn nein $\to$ DC stop \\\hline
+Start                & Rasp$\to$Frd & StartFrd        &                           & Hochfahren und init \\
+                     & Frd$\to$Rasp & Ready           &                           & \\\hline
+Stop	                 & Rasp$\to$Frd & Stop            &                           & Programm beenden \\\hline
 \end{tabular}
+\subsection{Methodenübersicht \code{UARTReciever}}
+\begin{itemize}
+\item \code{int getFlexDistance(void)} Methode, die den Abstand des Flexsensors zurückgibt.
+\item \code{int getEngineSpeed(void)} Methode, die des Antriebsmotors aktuelle Geschwindigkeit zurückgibt.
+\item \code{int getUltraDist(void)} Methode liefert die kürzeste Distanz des Ultraschallsensors zurück.
+\end{itemize}
+\subsection{Methodenübersicht \code{UARTSender}}
+\begin{itemize}
+\item \code{void sendStartCmd(void)} Methode, die das Freedom Board aktiviert und alle Aktoren in Ausgangsposition bringt.
+\item \code{void sendStopCmd(void)} Methode, welche dem Freedom Board das Ende des Programms signalisiert.
+\item \code{void setCameraPos(CameraStatesE pos)} Methode dreht die Kamera auf die gewünschte Position. Übergabewerte: \code{CAM\_STRAIGHT} = gerade, \code{CAM\_CHECK\_STREET} für Rechtsvortritt, \code{CAM\_TURN\_RIGHT} = Rechtskurve und \code{CAM\_TURN\_LEFT} = Linkskurve.
+\item \code{void setEngineSpeed(int speed, EngineModesE mode = SOFT)} Methode setzt den Motor auf die gewünschte Geschwindigkeit, der Modus kann zwischen \code{SOFT} (default) und \code{HARD} gewählt werden. \code{HARD} = Notfall.
+\item \code{void setContainerFound(int distance)} Methode teilt dem Mikrocontroller mit, einen Container gefunden zu haben. Übergabeparameter: Abstand zum Container.
+\item \code{void setTargetFieldFound(int distance)}  Methode teilt dem Mikrocontroller mit, das Ziel gefunden zu haben. Übergabeparameter: Abstand zum Zielfeld.
+\end{itemize}
 \end{document}

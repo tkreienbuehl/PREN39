@@ -5,5 +5,20 @@
  *      Author: tobias
  */
 
-//#include "../header/PictureCreator.hpp"
+#include "PictureCreator_test.hpp"
 
+PictureCreatorTest::PictureCreatorTest() {
+
+	myTestVar = 0;
+
+}
+
+
+PictureCreatorTest::~PictureCreatorTest() {
+
+}
+
+
+int PictureCreatorTest::GetValue() {
+	return myTestVar;
+}

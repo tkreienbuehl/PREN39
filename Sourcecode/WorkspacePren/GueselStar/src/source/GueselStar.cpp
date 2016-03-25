@@ -1,6 +1,13 @@
+#include <gtest/gtest.h>
 #include "../header/GueselStar.hpp"
+#include "../test/PictureCreator_test.hpp"
 
-int main() {
+int main(int argc, char** argv) {
+
+	//PictureCreatorTest* myTest = PictureCreatorTest();
+
+	//testing::InitGoogleTest(&argc, argv);
+	//int testResult = RUN_ALL_TESTS();
 
 	pthread_t threads[4];
 	XInitThreads();
