@@ -36,7 +36,7 @@ void PictureCreator::StartRecording() {
 	cout << "Start recording pictures" << endl;
 	m_State = true;
 
-	CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
+	CvCapture* capture = cvCaptureFromCAM(0);
 
 	if(!capture) {
 		cout << "No camera detected" << endl;
