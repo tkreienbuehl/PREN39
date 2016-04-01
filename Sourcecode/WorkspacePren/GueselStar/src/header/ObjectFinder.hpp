@@ -27,7 +27,7 @@ public:
 
 	static void* staticEntryPoint(void* threadId);
 
-	cv::Mat getImgae();
+	cv::Mat* getImage();
 	void stopProcess();
 
 private:

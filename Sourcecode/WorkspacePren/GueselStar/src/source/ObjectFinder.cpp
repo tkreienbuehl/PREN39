@@ -38,7 +38,7 @@ void ObjectFinder::RunProcess() {
 
 		if ( !(*origImage).empty()) {
 			cv::Rect areaToCrop((*origImage).cols / 2, 0, (*origImage).cols / 2, (*origImage).rows);
-			croppedImage = origImage(areaToCrop);
+			*croppedImage = (*origImage)(areaToCrop);
 			hsvImage = convertImageToHSV(croppedImage);
 			filteredImageGreen = filterColorInImage("green", hsvImage);
 			filteredImageBlue = filterColorInImage("blue", hsvImage);
@@ -76,16 +76,16 @@ cv::Mat* ObjectFinder::convertImageToHSV(cv::Mat* rgbImage) {
 cv::Mat* ObjectFinder::filterColorInImage(cv::String color,
 		cv::Mat* imageToFilter) {
 
-	cv::Mat filteredImage;
+	cv::Mat* filteredImage;
 	if (color == "green") {
 		cv::inRange(*imageToFilter, cv::Scalar(38, 65, 10), cv::Scalar(75, 255, 255),
-				filteredImage);
+				*filteredImage);
 	} else if (color == "blue") {
 		cv::inRange(*imageToFilter, cv::Scalar(10, 140, 90),
-				cv::Scalar(20, 255, 255), filteredImage);
+				cv::Scalar(20, 255, 255), *filteredImage);
 	} else if (color == "yellow") {
 		cv::inRange(*imageToFilter, cv::Scalar(20, 100, 100),
-				cv::Scalar(38, 255, 255), filteredImage);
+				cv::Scalar(38, 255, 255), *filteredImage);
 	}
 
 	return filteredImage;
@@ -93,17 +93,17 @@ cv::Mat* ObjectFinder::filterColorInImage(cv::String color,
 
 vector<vector<cv::Point> >* ObjectFinder::findContainersInImage(
 	cv::Mat* imageToFindContainer) {
-	vector<vector<cv::Point> > contours;
+	vector<vector<cv::Point> >* contours;
 	vector<cv::Vec4i> hierarchy;
-	cv::findContours(*imageToFindContainer, contours, hierarchy, CV_RETR_TREE,
+	cv::findContours(*imageToFindContainer, *contours, hierarchy, CV_RETR_TREE,
 			CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 	return contours;
 }
 
 vector<vector<cv::Point> >* ObjectFinder::mergeContours(
-	vector<vector<cv::Point>>* contours1,
-	vector<vector<cv::Point>>* contours2) {
-	vector<vector<cv::Point>>* contours;
+	vector<vector<cv::Point> >* contours1,
+	vector<vector<cv::Point> >* contours2) {
+	vector<vector<cv::Point> >* contours;
 
 	(*contours).reserve((*contours1).size() + (*contours2).size());
 	(*contours).insert((*contours).end(), (*contours1).begin(), (*contours1).end());
@@ -140,7 +140,7 @@ cv::Mat* ObjectFinder::markFindContoursInImage(
 	return markedImage;
 }
 
-cv::Mat ObjectFinder::getImgae() {
+cv::Mat* ObjectFinder::getImage() {
 	return m_MarkedImage;
 }
 

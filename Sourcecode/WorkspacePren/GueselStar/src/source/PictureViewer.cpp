@@ -35,7 +35,7 @@
 			if (!fltImage.empty()) {
 				cv::imshow("The Image", fltImage);
 				cv::imshow("The Source gray Image", *m_rtFinder->getGrayImage());
-				cv::imshow("Object Detection", m_objectFinder->getImgae());
+				cv::imshow("Object Detection", *m_objectFinder->getImage());
 				cv::waitKey(0);
 			}
 		}
