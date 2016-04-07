@@ -5,7 +5,8 @@
 
 using namespace std;
 
-ObjectFinder::ObjectFinder(PrenController* controller ,PictureCreator* picCreator) {
+ObjectFinder::ObjectFinder(PrenController* controller,
+		PictureCreator* picCreator) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_state = false;
@@ -32,22 +33,31 @@ void ObjectFinder::RunProcess() {
 
 	while (m_state) {
 
+		if(1==0) { //ultraschall
+			m_Controller->stopCar();
+		}
+		else {
+
+
 		//origImage = *m_PicCreator->GetImage();
 
-		origImage = createImage("/home/patbrant/Pictures/pren/street_distance1.jpg");
+			origImage = createImage(
+					"/home/patbrant/Pictures/pren/street_distance1.jpg");
 
-		if ( !origImage.empty()) {
-			cv::Rect areaToCrop(origImage.cols / 2, 0, origImage.cols / 2, origImage.rows);
-			croppedImage = origImage(areaToCrop);
-			hsvImage = convertImageToHSV(croppedImage);
-			filteredImageGreen = filterColorInImage("green", hsvImage);
-			filteredImageBlue = filterColorInImage("blue", hsvImage);
-			contoursGreen = findContainersInImage(filteredImageGreen);
-			contoursBlue = findContainersInImage(filteredImageBlue);
-			contours = mergeContours(contoursGreen, contoursBlue);
-			m_MarkedImage = markFindContoursInImage(contours, croppedImage);
+			if (!origImage.empty()) {
+				cv::Rect areaToCrop(origImage.cols / 2, 0, origImage.cols / 2,
+						origImage.rows);
+				croppedImage = origImage(areaToCrop);
+				hsvImage = convertImageToHSV(croppedImage);
+				filteredImageGreen = filterColorInImage("green", hsvImage);
+				filteredImageBlue = filterColorInImage("blue", hsvImage);
+				contoursGreen = findContainersInImage(filteredImageGreen);
+				contoursBlue = findContainersInImage(filteredImageBlue);
+				contours = mergeContours(contoursGreen, contoursBlue);
+				m_MarkedImage = markFoundContoursInImage(contours, croppedImage);
 
-			cout << "Picture worked" << endl;
+				cout << "Picture worked" << endl;
+			}
 		}
 	}
 }
@@ -71,15 +81,15 @@ cv::Mat ObjectFinder::convertImageToHSV(cv::Mat rgbImage) {
 
 	cvtColor(rgbImage, HSVImage, CV_RGB2HSV);
 	return HSVImage;
-	}
+}
 
-	cv::Mat ObjectFinder::filterColorInImage(cv::String color,
+cv::Mat ObjectFinder::filterColorInImage(cv::String color,
 		cv::Mat imageToFilter) {
 
 	cv::Mat filteredImage;
 	if (color == "green") {
-		cv::inRange(imageToFilter, cv::Scalar(38, 65, 10), cv::Scalar(75, 255, 255),
-				filteredImage);
+		cv::inRange(imageToFilter, cv::Scalar(38, 65, 10),
+				cv::Scalar(75, 255, 255), filteredImage);
 	} else if (color == "blue") {
 		cv::inRange(imageToFilter, cv::Scalar(10, 140, 90),
 				cv::Scalar(20, 255, 255), filteredImage);
@@ -92,7 +102,7 @@ cv::Mat ObjectFinder::convertImageToHSV(cv::Mat rgbImage) {
 }
 
 vector<vector<cv::Point> > ObjectFinder::findContainersInImage(
-	cv::Mat imageToFindContainer) {
+		cv::Mat imageToFindContainer) {
 	vector<vector<cv::Point> > contours;
 	vector<cv::Vec4i> hierarchy;
 	cv::findContours(imageToFindContainer, contours, hierarchy, CV_RETR_TREE,
@@ -101,8 +111,8 @@ vector<vector<cv::Point> > ObjectFinder::findContainersInImage(
 }
 
 vector<vector<cv::Point> > ObjectFinder::mergeContours(
-	vector<vector<cv::Point> > contours1,
-	vector<vector<cv::Point> > contours2) {
+		vector<vector<cv::Point> > contours1,
+		vector<vector<cv::Point> > contours2) {
 	vector<vector<cv::Point> > contours;
 
 	contours.reserve(contours1.size() + contours2.size());
@@ -112,8 +122,8 @@ vector<vector<cv::Point> > ObjectFinder::mergeContours(
 	return contours;
 }
 
-cv::Mat ObjectFinder::markFindContoursInImage(
-	vector<vector<cv::Point> > contours, cv::Mat imageToMarkContainer) {
+cv::Mat ObjectFinder::markFoundContoursInImage(
+		vector<vector<cv::Point> > contours, cv::Mat imageToMarkContainer) {
 
 	vector<vector<cv::Point> > contours_poly(contours.size());
 	vector<cv::Rect> boundRect(contours.size());
@@ -122,18 +132,25 @@ cv::Mat ObjectFinder::markFindContoursInImage(
 		cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
-		if (boundRect[i].height > boundRect[i].width && boundRect[i].height > 150) {
+		if (boundRect[i].height > boundRect[i].width
+				&& boundRect[i].height > 150) {
+
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
 					cv::Scalar(0, 255, 0), 2, 8, 0);
 
 			int distanceToContainer = 280 * 216 / boundRect[i].height;
 
-			 std::ostringstream stringConverter;
-			 stringConverter << distanceToContainer;
-			 std::string distanceString = stringConverter.str();
+			m_Controller->containerDetected(distanceToContainer);
 
-			putText(markedImage, "Distance to Container: " + distanceString + "mm", cvPoint(30,30),
-					CV_FONT_HERSHEY_PLAIN, 1.5, cvScalar(200,200,250), 1, CV_AA);
+			std::ostringstream stringConverter;
+			stringConverter << distanceToContainer;
+			std::string distanceString = stringConverter.str();
+
+			putText(markedImage,
+					"Distance to Container: " + distanceString + "mm",
+					cvPoint(30, 30),
+					CV_FONT_HERSHEY_PLAIN, 1.5, cvScalar(200, 200, 250), 1,
+					CV_AA);
 		}
 	}
 

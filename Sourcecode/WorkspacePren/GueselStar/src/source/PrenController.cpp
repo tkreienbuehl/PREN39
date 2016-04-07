@@ -40,3 +40,12 @@ int PrenController::stopProgram() {
 	cout << "Controller stopped " << endl;
 	return m_State;
 }
+
+void PrenController::stopCar() {
+
+}
+
+void PrenController::containerDetected(int distance) {
+
+	cout << "Container detected" << endl;
+}

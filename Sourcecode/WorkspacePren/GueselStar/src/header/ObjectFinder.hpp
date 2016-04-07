@@ -22,7 +22,7 @@ public:
 	cv::Mat convertImageToHSV(cv::Mat rgbImage);
 	cv::Mat filterColorInImage(cv::String color, cv::Mat imageToFilter);
 	vector<vector<cv::Point> > findContainersInImage(cv::Mat imageToFindContainer);
-	cv::Mat markFindContoursInImage(vector<vector<cv::Point> > contours, cv::Mat imageToMarkContainer);
+	cv::Mat markFoundContoursInImage(vector<vector<cv::Point> > contours, cv::Mat imageToMarkContainer);
 	vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1, vector<vector<cv::Point> > contours2);
 
 	static void* staticEntryPoint(void* threadId);

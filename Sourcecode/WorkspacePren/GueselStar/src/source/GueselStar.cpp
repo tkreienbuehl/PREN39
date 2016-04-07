@@ -4,10 +4,8 @@
 
 int main(int argc, char** argv) {
 
-	//PictureCreatorTest* myTest = PictureCreatorTest();
-
-	//testing::InitGoogleTest(&argc, argv);
-	//int testResult = RUN_ALL_TESTS();
+	testing::InitGoogleTest(&argc, argv);
+	int testResult = RUN_ALL_TESTS();
 
 	pthread_t threads[4];
 	XInitThreads();

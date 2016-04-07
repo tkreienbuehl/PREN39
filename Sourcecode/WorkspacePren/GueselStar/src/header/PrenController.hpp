@@ -21,6 +21,8 @@ public:
 
 	void start(void);
 	void setState(states state);
+	void containerDetected(int distance);
+	void stopCar();
 
 private:
 	void runProgram(void);
