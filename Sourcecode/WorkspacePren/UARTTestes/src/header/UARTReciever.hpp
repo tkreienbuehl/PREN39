@@ -1,15 +1,12 @@
 #pragma once
 
-#include <iostream>
-#include <unistd.h>
-#include <fcntl.h>
-#include <termios.h>
+#include "UARTHandler.hpp"
 
 using namespace std;
 
 class UARTReciever {
 public:
-	UARTReciever(int uart0_filestream);
+	UARTReciever(UARTHandler* handler);
 	~UARTReciever();
 
 	int getFlexDistance();
@@ -24,6 +21,7 @@ private:
 	void startRecording();
 	void sendDebugAlert(std::string message);
 
+	UARTHandler m_handler;
 	int m_uart0_filestream;
 	bool m_active;
 	int m_FlexDistance, m_EngineSpeed, m_UltraDist;

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <iostream>
+#include "UARTHandler.hpp"
 
 using namespace std;
 
 class UARTSender {
 public:
 
-	UARTSender(int uart0_filestream);
+	UARTSender(UARTHandler* handler);
 	~UARTSender();
 
 	enum CameraStatesE {
@@ -29,7 +29,13 @@ public:
 	void setContainerFound(int distance);
 	void setTargetFieldFound(int distance);
 
+	//To test UART
+	void blinkLed(int on);
+
 private:
+	bool writeStreamToPort(unsigned char* strPtr, int size);
+
+	UARTHandler m_handler;
 	int m_uart0_filestream;
 
 };
