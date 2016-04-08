@@ -63,23 +63,24 @@ Das Senden von Daten wird ebenfalls über Funktionsgerechte Send-Methoden von de
 \section{Methodendefinitionen}
 \subsection{UART-Methodenstrings}
 \begin{tabular}{|l|l|l|l|l|} \hline
-Aktion/Aktor         & Richtung     & String,[params] & Übergabewert              & Bemerkungen \\\hline\hline
-Ultraschall          & Frd$\to$Rasp & Ul,int          & distance cm               & periodisch all 0.3s \\\hline
-Flexsensor1 und ev 2 & Frd$\to$Rasp & Fldist1,int     & distance mm               & periodisch all 0.2s \\\hline
-StatusAuf            & Rasp$\to$Frd & StA,int         & distance cm               & \\
-                     & Frd$\to$Rasp & StD             &                           & Wenn  abgeschlossen \\\hline
-StatusAb	             & Rasp$\to$Frd & StA,int         & distance cm               & \\
-                     & Frd$\to$Rasp & StD             &                           & Wenn abgeschlossen\\\hline
-DC Motor	             & Rasp$\to$Frd & DCDr,int,int    & cm pro sek.,modus         & Modi: hard/soft \\
-                     & Frd$\to$Rasp & DCDr,int        & cm pro sek.               & wenn encoder say o \\\hline
-Lenkungsservo        & Rasp$\to$Frd & LeSer,int       & pbd                       & \\\hline
-Kameraservo          & Rasp$\to$Frd & CamPos,int      & Kamera pos                & \\\hline
-Debug Messages       & Frd$\to$Rasp & DBG,char[]      & Meldung                   & \\\hline
-NochDa               & Frd$\to$Rasp & There           & Flag                      & periodisch all 0.5s \\
-                     & Rasp$\to$Frd & Ja              & Erhalten?                 & Wenn nein $\to$ DC stop \\\hline
-Start                & Rasp$\to$Frd & StartFrd        &                           & Hochfahren und init \\
-                     & Frd$\to$Rasp & Ready           &                           & \\\hline
-Stop	                 & Rasp$\to$Frd & Stop            &                           & Programm beenden \\\hline
+Aktion/Aktor         & Richtung     & String,[params]    & Übergabewert              & Bemerkungen \\\hline\hline
+Ultraschall          & Frd$\to$Rasp & Ul,uint16          & distance cm               & periodisch all 0.3s \\\hline
+Flexsensor1 und ev 2 & Frd$\to$Rasp & Fld1,uint8         & distance mm               & periodisch all 0.2s \\\hline
+StatusAuf            & Rasp$\to$Frd & StA d,uint8        & distance mm               & \\
+                     & Frd$\to$Rasp & StAf               &                           & Wenn  abgeschlossen \\\hline
+StatusAb	             & Rasp$\to$Frd & StE e,uint16       & distance mm               & \\
+                     & Frd$\to$Rasp & StEf               &                           & Wenn abgeschlossen\\\hline
+DC Motor             & Rasp$\to$Frd & DCDr d,uint8,uint8 & mm pro sek.,modus         & Modi: hard/soft \\
+                     & Frd$\to$Rasp & DCDr,uint8         & mm pro sek.               & wenn encoder say o \\\hline
+Lenkungsservo        & Rasp$\to$Frd & LeS ,uint8         & abs Winkel (0=127)        & \\\hline
+Kameraservo          & Rasp$\to$Frd & CamP p,uint8       & Kamera pos                & \\\hline
+Debug Messages       & Frd$\to$Rasp & DBG,char[]         & Meldung                   & \\\hline
+NochDa               & Frd$\to$Rasp & There              & Flag                      & periodisch all 0.5s \\
+                     & Rasp$\to$Frd & Ja                 & Erhalten?                 & Wenn nein $\to$ DC stop \\\hline
+Start                & Rasp$\to$Frd & StartFrd           &                           & Hochfahren und init \\
+                     & Frd$\to$Rasp & Ready              &                           & \\\hline
+Stop	                 & Rasp$\to$Frd & Stop               &                           & Programm beenden \\
+	                 & Frd$\to$Rasp & Stop               &                           & Programm beendet \\ \hline
 \end{tabular}
 \subsection{Methodenübersicht \code{UARTReciever}}
 \begin{itemize}
