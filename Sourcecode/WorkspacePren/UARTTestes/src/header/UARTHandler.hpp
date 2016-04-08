@@ -11,6 +11,8 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <memory>
+#include <stdint.h>
+#include <cstdlib>
 
 using namespace std;
 

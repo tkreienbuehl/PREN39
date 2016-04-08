@@ -22,20 +22,24 @@ public:
 		HARD = 1
 	};
 
-	void sendStartCmd();
-	void sendStopCmd();
-	void setCameraPos(CameraStatesE pos);
-	void setEngineSpeed(int speed, EngineModesE mode = SOFT);
-	void setContainerFound(int distance);
-	void setTargetFieldFound(int distance);
+	bool sendStartCmd();
+	bool sendStopCmd();
+	bool setCameraPos(CameraStatesE pos);
+	bool setEngineSpeed(uint8_t speed, EngineModesE mode = SOFT);
+	bool setContainerFound(uint16_t distance);
+	bool setTargetFieldFound(uint16_t distance);
+	bool setSteering(uint8_t steeringAng);
+	bool stillThereResponse(void);
 
 	//To test UART
 	void blinkLed(int on);
 
 private:
-	bool writeStreamToPort(unsigned char* strPtr, int size);
+	bool writeStreamToPort(const char* strPtr, unsigned int size);
+	bool writeCharToPort(const char* ch);
 
 	UARTHandler m_handler;
 	int m_uart0_filestream;
+	const static unsigned short waitTime = 10000;
 
 };

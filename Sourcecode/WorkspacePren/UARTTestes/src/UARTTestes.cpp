@@ -23,7 +23,11 @@ int main() {
 	UARTHandler* handler = new UARTHandler();
 	char ifName[] = "/dev/ttyACM3";
 	handler->openSerialIF(ifName);
-	handler->setUartConfig(handler->FULL_SPEED);
+	if (!handler->setUartConfig(handler->FULL_SPEED)) {
+		cout << "configuration failed" << endl;
+		delete handler;
+		return -1;
+	}
 
 	UARTReciever* reciever = new UARTReciever(handler);
 
@@ -32,17 +36,25 @@ int main() {
 		cout << "Error:unable to create thread," << rc << endl;
 		return(-1);
 	}
-	usleep(10000);
+	usleep(1000);
 
 	int cnt = 0;
 	UARTSender* sender = new UARTSender(handler);
+	sender->sendStartCmd();
 	while (cnt<=100) {
 		sender->blinkLed(cnt % 2);
+		sender->setCameraPos(sender->CAM_TURN_LEFT);
+		sender->setEngineSpeed(160, sender->SOFT);
+		sender->setSteering(127);
+		sender->setContainerFound(213);
+		sender->setTargetFieldFound(343);
+		sender->stillThereResponse();
 		cnt++;
 	}
+	sender->sendStopCmd();
 
 	reciever->stopReading();
-	usleep(100000);
+	usleep(1000);
 
 	delete reciever;
 	delete sender;

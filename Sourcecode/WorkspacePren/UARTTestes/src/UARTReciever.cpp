@@ -6,6 +6,14 @@ UARTReciever::UARTReciever(UARTHandler* handler) {
 	m_UltraDist = 0;
 	m_uart0_filestream = handler->getFileStream();
 	m_active = false;
+	m_startCmd = "StartFrd";
+	m_ultraCmd = "Ul";
+	m_camCmd = "CamP";
+	m_debug = "DBG";
+	m_flex1Cmd = "Fld1";
+	m_ContDoneCmd = "StAf";
+	m_unloadDoneCmd = "StEf";
+	m_DCengCmd = "DCDr";
 }
 
 UARTReciever::~UARTReciever() {
@@ -18,12 +26,14 @@ void UARTReciever::startRecording() {
 
 void UARTReciever::stopReading() {
 	m_active = false;
+	cout << "Stop command recieved" << endl;
 }
 
 void UARTReciever::readAndPlotData() {
 
 	while(m_active) {
 			//----- CHECK FOR ANY RX BYTES -----
+		//cout << "reading..." << endl;
 		if (m_uart0_filestream != -1) {
 			unsigned char rx_buffer[256];
 			unsigned char rchar[1];
@@ -54,12 +64,35 @@ void UARTReciever::readAndPlotData() {
 			}
 			if (i > 0) {
 				rx_buffer[i] = '\0';
-				cout << rx_buffer << endl;
+				std::string str(reinterpret_cast<const char*>(rx_buffer));
+				decodeRecievedString(str);
 			}
 		}
-		usleep(2000);
 	}
+	cout << "UART-Recorder stopped" << endl;
 
+}
+
+void UARTReciever::decodeRecievedString(std::string message) {
+	if (message.find("*** Failed") != std::string::npos) {
+		decodeUnknownCommandError(message);
+	}
+	else if (message.find("Ul") != std::string::npos) {
+
+	}
+}
+
+void UARTReciever::decodeUnknownCommandError(std::string message) {
+	int start = message.find("*** Failed");
+	message.replace(start, 4 , "");
+	cout << message << endl;
+}
+
+void UARTReciever::decodeUltraValue(std::string message) {
+	int start = message.find("Ul");
+	message.replace(start, 3, "");
+	int value = atoi(message.c_str());
+	cout << message << endl;
 }
 
 void* UARTReciever::staticEntryPoint(void* threadId) {

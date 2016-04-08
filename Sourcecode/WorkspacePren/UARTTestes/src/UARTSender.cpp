@@ -8,26 +8,51 @@ UARTSender::~UARTSender() {
 
 }
 
-void UARTSender::sendStartCmd() {
-
-}
-void UARTSender::sendStopCmd() {
-
-}
-void UARTSender::setCameraPos(CameraStatesE pos) {
-
+bool UARTSender::sendStartCmd() {
+	return writeStreamToPort("\rStartFrd\r\n\0", 12);
 }
 
-void UARTSender::setEngineSpeed(int speed, EngineModesE mode) {
-
+bool UARTSender::sendStopCmd() {
+	return writeStreamToPort("\rStop\r\n\0", 8);
 }
 
-void UARTSender::setContainerFound(int distance) {
-
+bool UARTSender::setCameraPos(CameraStatesE pos) {
+	char stream[10];
+	int length = 0;
+	length = sprintf(stream,"\rCamP p %d\r\n", pos);
+	return writeStreamToPort(stream, length);
 }
 
-void UARTSender::setTargetFieldFound(int distance) {
+bool UARTSender::setEngineSpeed(uint8_t speed, EngineModesE mode) {
+	char stream[30];
+	int length = 0;
+	length = sprintf(stream,"\rDCDr d %d %d", speed, mode);
+	return writeStreamToPort(stream, length);
+}
 
+bool UARTSender::setContainerFound(uint16_t distance) {
+	char stream[20];
+	int length = 0;
+	length = sprintf(stream,"\rStA d %d", distance);
+	return writeStreamToPort(stream, length);
+}
+
+bool UARTSender::setTargetFieldFound(uint16_t distance) {
+	char stream[20];
+	int length = 0;
+	length = sprintf(stream,"\rStE d %d", distance);
+	return writeStreamToPort(stream, length);
+}
+
+bool UARTSender::setSteering(uint8_t steeringAng) {
+	char stream[20];
+	int length = 0;
+	length = sprintf(stream,"\rLeS p %d", steeringAng);
+	return writeStreamToPort(stream, length);
+}
+
+bool UARTSender::stillThereResponse(void) {
+	return writeStreamToPort("\rJa\r\n\0", 6);
 }
 
 //To test UART
@@ -37,14 +62,14 @@ void UARTSender::blinkLed(int on) {
 	{
 
 		if (on==1) {
-			unsigned char str[] = "LED1 on\r\n\0";;
+			char str[] = "\rLED1 on\r\n\0";
 			int check = sizeof(str) / sizeof(char);
 
 			writeStreamToPort(str, check);
 
 		}
 		else {
-			unsigned char str[] = "LED1 off\r\n\0";
+			char str[] = "\rLED1 off\r\n\0";
 			int check = sizeof str;
 
 			writeStreamToPort(str, check);
@@ -53,25 +78,25 @@ void UARTSender::blinkLed(int on) {
 	}
 }
 
-bool UARTSender::writeStreamToPort(unsigned char* strPtr, int size) {
+bool UARTSender::writeStreamToPort(const char* strPtr, unsigned int size) {
 
-	usleep(50000);
-	int count = write(m_uart0_filestream, "\r" , 1);
+	bool isOk = true;
+	isOk = writeCharToPort("\r");
+	for (unsigned int i = 0; i< size; i++) {
+		isOk = writeCharToPort(&strPtr[i]);
+	}
+	isOk = writeCharToPort("\0");
+	return isOk;
+}
+
+bool UARTSender::writeCharToPort(const char* ch) {
+
+	usleep(waitTime);
+	int count = write(m_uart0_filestream, ch , 1);
 	if (count < 0)
 	{
 		cout << "UART TX error\n" << endl;
 		return false;
 	}
-
-	for (int i = 0; i<= size; i++) {
-		usleep(50000);
-		count = write(m_uart0_filestream, &strPtr[i] , 1);
-		if (count < 0)
-		{
-			cout << "UART TX error\n" << endl;
-			return false;
-		}
-	}
-
 	return true;
 }

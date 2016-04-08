@@ -14,7 +14,7 @@
 	}
 
 	bool UARTHandler::openSerialIF(char* ifName) {
-		m_uart0_filestream = open(ifName, O_RDWR | O_NOCTTY | O_NONBLOCK);	//Open in non blocking read/write mode
+		m_uart0_filestream = open(ifName, O_RDWR | O_NONBLOCK);	//Open in non blocking read/write mode
 		if (m_uart0_filestream == -1)
 		{
 			cout << "Error - Unable to open UART.  Ensure it is not in use by another application and you have permission to use" << endl;
@@ -46,5 +46,5 @@
 			return false;
 		}
 		tcsetattr(m_uart0_filestream, TCSAFLUSH, &options);
-		return false;
+		return true;
 	}
