@@ -63,6 +63,9 @@ void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
     		}
     	}
     }
+    // Fahrtrichtungsvektor
+    cv::line(m_FltImg,cv::Point(m_FltImg.cols/2,m_FltImg.rows), cv::Point(m_FltImg.cols/2,m_FltImg.rows/2),cv::Scalar(255,0,0), 2);
+
 }
 
 void RouteFinder::approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row) {
@@ -118,12 +121,12 @@ void RouteFinder::calcAverageLimit(int* upperLimit, int* lowerLimit) {
 	cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
 }
 
-cv::Mat* RouteFinder::getGrayImage() {
-	return &m_GrayImg;
+cv::Mat RouteFinder::getGrayImage() {
+	return m_GrayImg;
 }
 
-cv::Mat* RouteFinder::getFilteredImage() {
-	return &m_FltImg;
+cv::Mat RouteFinder::getFilteredImage() {
+	return m_FinalFltImg;
 }
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
@@ -137,7 +140,7 @@ int RouteFinder::runProcess() {
 	ostringstream nrStream;
 
 	cout << "Start" << endl;
-    for(int i = 0; i<20000; i++) {
+    for(int i = 0; i<4000; i++) {
 
         image = *m_PicCreator->GetImage();
 
@@ -151,6 +154,7 @@ int RouteFinder::runProcess() {
 			m_GradMat = GradientMat::getInstance(static_cast<short>(reducedImg.rows), static_cast<short>(reducedImg.cols));
 			outputMat(&grayImg, &m_FltImg);
 			m_GrayImg = grayImg;
+			m_FinalFltImg = m_FltImg;
         }
         else {
         	i--;
