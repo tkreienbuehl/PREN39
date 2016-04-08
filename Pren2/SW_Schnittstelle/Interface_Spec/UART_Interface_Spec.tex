@@ -66,13 +66,13 @@ Das Senden von Daten wird ebenfalls über Funktionsgerechte Send-Methoden von de
 Aktion/Aktor         & Richtung     & String,[params]    & Übergabewert              & Bemerkungen \\\hline\hline
 Ultraschall          & Frd$\to$Rasp & Ul,uint16          & distance cm               & periodisch all 0.3s \\\hline
 Flexsensor1 und ev 2 & Frd$\to$Rasp & Fld1,uint8         & distance mm               & periodisch all 0.2s \\\hline
-StatusAuf            & Rasp$\to$Frd & StA d,uint8        & distance mm               & \\
+StatusAuf            & Rasp$\to$Frd & StA d,uint16       & distance mm               & \\
                      & Frd$\to$Rasp & StAf               &                           & Wenn  abgeschlossen \\\hline
-StatusAb	             & Rasp$\to$Frd & StE e,uint16       & distance mm               & \\
+StatusAb	             & Rasp$\to$Frd & StE d,uint16       & distance mm               & \\
                      & Frd$\to$Rasp & StEf               &                           & Wenn abgeschlossen\\\hline
 DC Motor             & Rasp$\to$Frd & DCDr d,uint8,uint8 & mm pro sek.,modus         & Modi: hard/soft \\
                      & Frd$\to$Rasp & DCDr,uint8         & mm pro sek.               & wenn encoder say o \\\hline
-Lenkungsservo        & Rasp$\to$Frd & LeS ,uint8         & abs Winkel (0=127)        & \\\hline
+Lenkungsservo        & Rasp$\to$Frd & LeS p,uint8        & abs Winkel (0=127)        & \\\hline
 Kameraservo          & Rasp$\to$Frd & CamP p,uint8       & Kamera pos                & \\\hline
 Debug Messages       & Frd$\to$Rasp & DBG,char[]         & Meldung                   & \\\hline
 NochDa               & Frd$\to$Rasp & There              & Flag                      & periodisch all 0.5s \\
@@ -90,11 +90,20 @@ Stop	                 & Rasp$\to$Frd & Stop               &                     
 \end{itemize}
 \subsection{Methodenübersicht \code{UARTSender}}
 \begin{itemize}
-\item \code{void sendStartCmd(void)} Methode, die das Freedom Board aktiviert und alle Aktoren in Ausgangsposition bringt.
-\item \code{void sendStopCmd(void)} Methode, welche dem Freedom Board das Ende des Programms signalisiert.
-\item \code{void setCameraPos(CameraStatesE pos)} Methode dreht die Kamera auf die gewünschte Position. Übergabewerte: \code{CAM\_STRAIGHT} = gerade, \code{CAM\_CHECK\_STREET} für Rechtsvortritt, \code{CAM\_TURN\_RIGHT} = Rechtskurve und \code{CAM\_TURN\_LEFT} = Linkskurve.
-\item \code{void setEngineSpeed(int speed, EngineModesE mode = SOFT)} Methode setzt den Motor auf die gewünschte Geschwindigkeit, der Modus kann zwischen \code{SOFT} (default) und \code{HARD} gewählt werden. \code{HARD} = Notfall.
-\item \code{void setContainerFound(int distance)} Methode teilt dem Mikrocontroller mit, einen Container gefunden zu haben. Übergabeparameter: Abstand zum Container.
-\item \code{void setTargetFieldFound(int distance)}  Methode teilt dem Mikrocontroller mit, das Ziel gefunden zu haben. Übergabeparameter: Abstand zum Zielfeld.
+\item \code{bool sendStartCmd(void)} Methode, die das Freedom Board aktiviert und alle Aktoren in Ausgangsposition bringt. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool sendStopCmd(void)} Methode, welche dem Freedom Board das Ende des Programms signalisiert.  Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setCameraPos(CameraStatesE pos)} Methode dreht die Kamera auf die gewünschte Position. Übergabewerte: \code{CAM\_STRAIGHT} = gerade, \code{CAM\_CHECK\_STREET} für Rechtsvortritt, \code{CAM\_TURN\_RIGHT} = Rechtskurve und \code{CAM\_TURN\_LEFT} = Linkskurve. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setEngineSpeed(uint8\_t speed, EngineModesE mode = SOFT)} Methode setzt den Motor auf die gewünschte Geschwindigkeit, der Modus kann zwischen \code{SOFT} (default) und \code{HARD} gewählt werden. \code{HARD} = Notfall. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setContainerFound(uint16\_t distance)} Methode teilt dem Mikrocontroller mit, einen Container gefunden zu haben. Übergabeparameter: Abstand zum Container. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setTargetFieldFound(uint16\_t distance)}  Methode teilt dem Mikrocontroller mit, das Ziel gefunden zu haben. Übergabeparameter: Abstand zum Zielfeld. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setSteering(uint8\_t steeringAng)}  Methode teilt dem Mikrocontroller mit, das auf einen bestimmten Winkel gelenkt werden soll. 0 Grad = 127 aufgrund des unsigned Typen. Übergabeparameter: Winkel, auf den die Lenkung gestellt werden soll. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool stillThereResponse(void)} Methode sendet ein Ja auf die Frage, ob die Verbindung noch steht.  Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
 \end{itemize}
 \end{document}
