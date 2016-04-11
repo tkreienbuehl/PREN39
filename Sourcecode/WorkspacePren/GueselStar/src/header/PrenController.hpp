@@ -21,7 +21,7 @@ public:
 
 	void start(void);
 	void setState(states state);
-	void containerDetected(int distance);
+	void setContainerFound(int distance);
 	void stopCar();
 
 private:

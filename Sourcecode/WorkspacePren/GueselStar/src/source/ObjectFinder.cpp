@@ -39,14 +39,16 @@ void ObjectFinder::RunProcess() {
 		else {
 
 
-		//origImage = *m_PicCreator->GetImage();
+		cv::Mat image = *m_PicCreator->GetImage();
 
-			origImage = createImage(
-					"/home/patbrant/Pictures/pren/street_distance1.jpg");
+			//origImage = createImage(
+					//"/home/patbrant/Pictures/pren/street_distance1.jpg");
 
+		origImage = image.clone();
 			if (!origImage.empty()) {
 				cv::Rect areaToCrop(origImage.cols / 2, 0, origImage.cols / 2,
 						origImage.rows);
+
 				croppedImage = origImage(areaToCrop);
 				hsvImage = convertImageToHSV(croppedImage);
 				filteredImageGreen = filterColorInImage("green", hsvImage);
@@ -140,7 +142,7 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 
 			int distanceToContainer = 280 * 216 / boundRect[i].height;
 
-			m_Controller->containerDetected(distanceToContainer);
+			m_Controller->setContainerFound(distanceToContainer);
 
 			std::ostringstream stringConverter;
 			stringConverter << distanceToContainer;
@@ -149,7 +151,7 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 			putText(markedImage,
 					"Distance to Container: " + distanceString + "mm",
 					cvPoint(30, 30),
-					CV_FONT_HERSHEY_PLAIN, 1.5, cvScalar(200, 200, 250), 1,
+					CV_FONT_HERSHEY_PLAIN, 1.0, cvScalar(200, 200, 250), 1,
 					CV_AA);
 		}
 	}

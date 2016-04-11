@@ -32,7 +32,6 @@ void PrenController::runProgram() {
 		usleep(300);
 	}
 	cout << "exiting Controller" << endl;
-
 }
 
 int PrenController::stopProgram() {
@@ -45,7 +44,7 @@ void PrenController::stopCar() {
 
 }
 
-void PrenController::containerDetected(int distance) {
+void PrenController::setContainerFound(int distance) {
 
 	cout << "Container detected" << endl;
 }

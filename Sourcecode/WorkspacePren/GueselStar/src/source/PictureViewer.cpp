@@ -28,6 +28,7 @@
 
 		cout << "Viever online" << endl;
 		cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
+		int i = 0;
 		while (m_state) {
 
 			fltImage = *m_rtFinder->getFilteredImage();
@@ -36,8 +37,14 @@
 				cv::imshow("The Image", fltImage);
 				cv::imshow("The Source gray Image", *m_rtFinder->getGrayImage());
 				cv::imshow("Object Detection", m_objectFinder->getImage());
-				cv::waitKey(0);
+/*
+				cv::imwrite("/tmp/imgflt_" + i, fltImage);
+				cv::imwrite("/tmp/imggrey_" + i, *m_rtFinder->getGrayImage());
+				cv::imwrite("/tmp/imgobj_" + i, m_objectFinder->getImage());
+*/
+				cv::waitKey(1000);
 			}
 		}
+		cv::waitKey(0);
 
 	}
