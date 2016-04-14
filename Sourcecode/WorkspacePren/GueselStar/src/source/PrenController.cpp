@@ -75,8 +75,16 @@ void PrenController::setVehicleInCrossing() {
 
 bool PrenController:: checkObjectOnLane(void) {
 
-	// ask MC-Board
-	return false;
+	bool objectOnLane = false;
+	int distance = 0;
+
+	// ask MC-Board for distance
+
+	if(distance < 10) {
+		objectOnLane = true;
+	}
+
+	return objectOnLane;
 
 }
 
