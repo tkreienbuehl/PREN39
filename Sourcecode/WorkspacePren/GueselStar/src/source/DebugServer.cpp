@@ -84,7 +84,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 		else if (message.find("getObjectImage") != message.npos) {
 			cv::Mat image = m_objectFinder->getImage();
 			if (!image.empty()) {
-				prepareAndSendImage(newSocketfd, image);
+				//prepareAndSendImage(newSocketfd, image);
 			}
 		}
 		else if (message.find("getGrayImage") != message.npos) {

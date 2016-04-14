@@ -28,10 +28,9 @@
 
 		cout << "Viever online" << endl;
 		cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
-		int i = 0;
 		while (m_state) {
 
-			fltImage = *m_rtFinder->getFilteredImage();
+			//fltImage = *m_rtFinder->getFilteredImage();
 
 			if (!fltImage.empty()) {
 				cv::imshow("The Image", fltImage);

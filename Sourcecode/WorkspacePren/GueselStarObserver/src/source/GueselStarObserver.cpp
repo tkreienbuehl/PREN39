@@ -18,6 +18,8 @@ int GueselStarObserver::connectToServer(std::string hostName) {
 	int portNr;
 	socketAddressIn_t serverAddress;
 	hostEnt_t* server;
+	struct in_addr ipAddr;
+
 
 	portNr = PORT_TO_PI;
 	m_socketForward = socket(AF_INET, SOCK_STREAM, 0);
@@ -26,7 +28,8 @@ int GueselStarObserver::connectToServer(std::string hostName) {
 		return -1;
 	}
 
-	server = gethostbyname(hostName.c_str());
+	inet_pton(AF_INET, "127.0.0.1", &ipAddr);
+	server = gethostbyaddr(&ipAddr,sizeof(ipAddr), AF_INET);
 	if (server == NULL) {
 		cout << "ERROR no such host or can't resolve name to IP" << endl;
 		return -1;
@@ -69,6 +72,7 @@ int GueselStarObserver::connectToServer(std::string hostName) {
 			close(m_socketForward);
 			loop = false;
 		}
+		usleep(10000);
 	}
 
 	close(m_socketForward);
@@ -83,7 +87,6 @@ int GueselStarObserver::sendMessageRecieveImage(string* message) {
 	char buffer[256];
 	bzero(buffer,256);
 
-	usleep(10000);
 	int n = write(m_socketForward, message->c_str(), message->length());
 	if (n < 0) {
 		cout << "ERROR writing to socket" << endl;
@@ -136,7 +139,7 @@ void GueselStarObserver::getGrayImageFromServer() {
 	int height = 240, width = 320;
 	cv::Mat img = cv::Mat::zeros( height, width, CV_8UC1);
 	int  imgSize = img.total()*img.elemSize();
-	cout << imgSize << endl;
+	//cout << imgSize << endl;
 	uchar sockData[imgSize];
 
 	for (int i = 0; i < imgSize; i += imgSize) {
