@@ -110,7 +110,7 @@ void GueselStarObserver::getFilteredImageFromServer() {
 	int height = 240, width = 320;
 	cv::Mat img = cv::Mat::zeros( height, width, CV_8UC1);
 	int  imgSize = img.total()*img.elemSize();
-	cout << imgSize << endl;
+	//cout << imgSize << endl;
 	uchar sockData[imgSize];
 
 	for (int i = 0; i < imgSize; i += imgSize) {
