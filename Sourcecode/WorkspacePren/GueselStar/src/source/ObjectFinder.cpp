@@ -34,7 +34,6 @@ void ObjectFinder::RunProcess() {
 	while (m_state) {
 
 		if(1==0) { //ultraschall
-			m_Controller->stopCar();
 		}
 		else {
 
@@ -59,6 +58,8 @@ void ObjectFinder::RunProcess() {
 				m_MarkedImage = markFoundContoursInImage(contours, croppedImage);
 
 				cout << "Picture worked" << endl;
+
+				usleep(1000);
 			}
 		}
 	}

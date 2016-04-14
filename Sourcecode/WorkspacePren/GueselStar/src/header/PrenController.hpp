@@ -20,9 +20,18 @@ public:
 	~PrenController();
 
 	void start(void);
+	void stop(void);
 	void setState(states state);
 	void setContainerFound(int distance);
-	void stopCar();
+	void setCrossingFound(int distance);
+	void setTargetFieldFound(int distance);
+	void setLaneLost();
+	void setSteeringAngle(int angle);
+	void setVehicleInCrossing();
+	bool checkObjectOnLane(void);
+	int getFlexDistance(void);
+	int getEngineSpeed(void);
+
 
 private:
 	void runProgram(void);

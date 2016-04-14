@@ -40,11 +40,54 @@ int PrenController::stopProgram() {
 	return m_State;
 }
 
-void PrenController::stopCar() {
+void PrenController::setContainerFound(int distance) {
+
+	// inform MC-Board
+	cout << "Crossing ahead: Distance to Container: " << distance << endl;
+}
+void PrenController::setCrossingFound(int distance) {
+
+	// inform MC-Board
+	cout << "Crossing ahead: Distance to Crossing: " << distance << endl;
+}
+
+void PrenController::setTargetFieldFound(int distance) {
+
+	// inform MC-Board
+	cout << "Targetfield ahead: Distance to Tagetfield: " << distance << endl;
+}
+
+
+void PrenController::setLaneLost() {
+
+	// inform MC-Board
+}
+
+void PrenController::setSteeringAngle(int angle) {
+
+	// inform MC-Board: adjust
+}
+
+void PrenController::setVehicleInCrossing() {
+
+	// inform MC-Board: wait
+}
+
+bool PrenController:: checkObjectOnLane(void) {
+
+	// ask MC-Board
+	return false;
 
 }
 
-void PrenController::setContainerFound(int distance) {
+int PrenController::getFlexDistance(void) {
 
-	cout << "Container detected" << endl;
+	// ask MC-Board
+	return 0;
+}
+
+int PrenController::getEngineSpeed(void) {
+
+	// ask MC-Board
+	return 0;
 }
