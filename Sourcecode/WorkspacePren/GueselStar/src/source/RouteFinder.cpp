@@ -12,10 +12,10 @@ RouteFinder::~RouteFinder() {
 	delete m_GradMat;
 }
 
-std::string RouteFinder::formatFileName(std::string fileStr, int nr) {
+std::string RouteFinder::formatFileName(std::string fileStr, unsigned short nr) {
 	ostringstream nrStream;
 	nrStream << nr;
-	int start = fileStr.find("000");
+	unsigned short start = fileStr.find("000");
 	cout << nrStream.str() << endl;
 	fileStr.replace(start,3,nrStream.str().c_str(),nrStream.str().length());
 	cout << fileStr << endl;
@@ -27,14 +27,10 @@ void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
     // accept only char type matrices
     CV_Assert(mat->depth() == CV_8U);
 
-    int channels = mat->channels();
     short xDiff, yDiff;
-    int upperLimit, lowerLimit;
-
-    short i,j;
-
-    int nRows = mat->rows;
-    int nCols = mat->cols * channels;
+    unsigned short upperLimit, lowerLimit, i,j;
+    unsigned short nRows = mat->rows;
+    unsigned short nCols = mat->cols * mat->channels();
 
     for(i = 1; i < nRows; ++i) {
         for (j = 0; j < nCols-1; ++j) {
@@ -42,17 +38,15 @@ void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
         	yDiff = static_cast<short>(mat->at<uchar>(i-1,j)) - static_cast<short>(mat->at<uchar>(i,j));
         	Gradient grad(xDiff,yDiff);
         	m_GradMat->setValue(i,j,grad);
-        	if (abs(m_GradMat->getValue(i,j).getLength()) > MINLENGTH && m_GradMat->getValue(i,j).getYValue() > MINYDIFF) {
+        	if (abs(m_GradMat->getValue(i,j).getLength()) > MINLENGTH
+        			&& m_GradMat->getValue(i,j).getYValue() > MINYDIFF) {
         		changesMat->at<uchar>(i,j) = 255;
-        	}
-        	else {
-        		changesMat->at<uchar>(i,j) = 0;
         	}
         }
     }
     i = nRows-1;
-    upperLimit = -100;
-    lowerLimit = -100;
+    upperLimit = 0;
+    lowerLimit = 0;
     for( i = nRows-3; i > 0; i--) {
     	if (i > nRows - NROFLINES) {
     		approxLimit(changesMat, &upperLimit, &lowerLimit, i);
@@ -64,19 +58,20 @@ void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
     	}
     }
     // Fahrtrichtungsvektor
-    cv::line(m_FltImg,cv::Point(m_FltImg.cols/2,m_FltImg.rows), cv::Point(m_FltImg.cols/2,m_FltImg.rows/2),cv::Scalar(255,0,0), 2);
+    cv::line(*changesMat,cv::Point(changesMat->cols/2,changesMat->rows),
+    		cv::Point(changesMat->cols/2,changesMat->rows/2),cv::Scalar(255,0,0), 2);
 
 }
 
-void RouteFinder::approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row) {
+void RouteFinder::approxLimit(cv::Mat* mat, unsigned short* upperLimit, unsigned short* lowerLimit, unsigned short row) {
 
-	int val;
+	unsigned short val;
 	bool minim = false;
 	for ( int j = mat->cols/2; j <  mat->cols-1; j++) {
-		val = static_cast<int>(mat->at<uchar>(row,j));
+		val = static_cast<unsigned short>(mat->at<uchar>(row,j));
 		if (val == 255) {
 			if (minim == false) {
-				*upperLimit = 10*(static_cast<int>(j/10)+0.5);
+				*upperLimit = j;
 				minim = true;
 			}
 			else {
@@ -86,10 +81,10 @@ void RouteFinder::approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, in
 	}
 	minim = false;
 	for (int j = mat->cols/2; j > 0; j--) {
-		val = static_cast<int>(mat->at<uchar>(row,j));
+		val = static_cast<unsigned short>(mat->at<uchar>(row,j));
 		if (val == 255) {
 			if (minim == false) {
-				*lowerLimit = 10*(static_cast<int>(j/10)+0.5);
+				*lowerLimit = j;
 				minim = true;
 			}
 			else {
@@ -97,28 +92,22 @@ void RouteFinder::approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, in
 			}
 		}
 	}
-	//cout << " min: " << *lowerLimit << " max: " << *upperLimit << endl;
-	minVals.push_back(*lowerLimit);
-	maxVals.push_back(*upperLimit);
+	m_minVals.push_back(*lowerLimit);
+	m_maxVals.push_back(*upperLimit);
 }
 
-void RouteFinder::calcAverageLimit(int* upperLimit, int* lowerLimit) {
+void RouteFinder::calcAverageLimit(unsigned short* upperLimit, unsigned short* lowerLimit) {
 
-	int minVal = 0, maxVal = 0, nrs;
-	nrs = minVals.size();
+	bubbleSort(&m_minVals);
+	bubbleSort(&m_maxVals);
 
-	while (!minVals.empty()) {
-		minVal += minVals.back();
-		minVals.pop_back();
-		maxVal += maxVals.back();
-		maxVals.pop_back();
-	}
+	*lowerLimit = m_minVals.at(8);
+	*upperLimit = m_maxVals.at(8);
 
-	if (nrs > 0) {
-		*upperLimit = maxVal / nrs;
-		*lowerLimit = minVal / nrs;
-	}
-	cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
+	//cout << "**********************************************" << endl;
+	m_minVals.clear();
+	m_maxVals.clear();
+	//cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
 }
 
 cv::Mat RouteFinder::getGrayImage() {
@@ -140,7 +129,7 @@ int RouteFinder::runProcess() {
 	ostringstream nrStream;
 
 	cout << "Start" << endl;
-    for(int i = 0; i<4000; i++) {
+    for(int i = 0; i<8000; i++) {
 
         image = *m_PicCreator->GetImage();
 
@@ -149,12 +138,11 @@ int RouteFinder::runProcess() {
 			cv::resize(image, reducedImg, reducedImg.size(),0.5,0.5,cv::INTER_LANCZOS4);
 			cv::cvtColor(reducedImg,grayImg,CV_BGR2GRAY);
 
-			cv::Mat diffsPic(reducedImg.rows, reducedImg.cols, cv::DataType<uchar>::type);
-			m_FltImg = diffsPic;
+			cv::Mat fltImg = cv::Mat::zeros(reducedImg.rows, reducedImg.cols, CV_8UC1);
 			m_GradMat = GradientMat::getInstance(static_cast<short>(reducedImg.rows), static_cast<short>(reducedImg.cols));
-			outputMat(&grayImg, &m_FltImg);
+			outputMat(&grayImg, &fltImg);
 			m_GrayImg = grayImg;
-			m_FinalFltImg = m_FltImg;
+			m_FinalFltImg = fltImg;
         }
         else {
         	i--;
@@ -166,5 +154,19 @@ int RouteFinder::runProcess() {
 	cout << bye << endl;
 
 	return 0;
+
+}
+
+void RouteFinder::bubbleSort(std::vector<unsigned short>* vals) {
+	unsigned short i, j, tmp;
+	for (i=0 ; i<vals->size(); i++) {
+		for (j=0; j<vals->size()-(i+1) ; j++) {
+			if (vals->at(j+1) < vals->at(j)) {
+				tmp = vals->at(j);
+				vals->at(j) = vals->at(j+1);
+				vals->at(j+1) = tmp;
+			}
+		}
+	}
 
 }

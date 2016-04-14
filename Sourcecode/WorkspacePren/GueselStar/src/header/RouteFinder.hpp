@@ -16,10 +16,10 @@ public:
 	RouteFinder(PrenController* controller, PictureCreator* picCreator);
 	~RouteFinder();
 
-	std::string formatFileName(std::string fileStr, int nr);
+	std::string formatFileName(std::string fileStr, unsigned short nr);
 	void outputMat(cv::Mat* mat, cv::Mat* changesMat);
-	void approxLimit(cv::Mat* mat, int* upperLimit, int* lowerLimit, int row);
-	void calcAverageLimit(int* upperLimit, int* lowerLimit);
+	void approxLimit(cv::Mat* mat, unsigned short* upperLimit, unsigned short* lowerLimit, unsigned short row);
+	void calcAverageLimit(unsigned short* upperLimit, unsigned short* lowerLimit);
 
 	cv::Mat getGrayImage();
 	cv::Mat getFilteredImage();
@@ -28,9 +28,10 @@ public:
 
 private:
 	int runProcess();
+	void bubbleSort(std::vector<unsigned short>* vals);
 
-	vector<int>minVals;
-	vector<int>maxVals;
+	vector<unsigned short>m_minVals;
+	vector<unsigned short>m_maxVals;
 	const short MINLENGTH;
 	const short MINYDIFF;
 	const short NROFLINES;
@@ -39,7 +40,6 @@ private:
 	PrenController* m_Controller;
 	bool m_State;
 	cv::Mat m_GrayImg;
-	cv::Mat m_FltImg;
 	cv::Mat m_FinalFltImg;
 
 };

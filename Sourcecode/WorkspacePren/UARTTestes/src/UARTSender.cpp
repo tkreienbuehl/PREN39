@@ -9,11 +9,11 @@ UARTSender::~UARTSender() {
 }
 
 bool UARTSender::sendStartCmd() {
-	return writeStreamToPort("\rStartFrd\r\n\0", 12);
+	return writeStreamToPort("\rStartFrd a\r\n\0", 14);
 }
 
 bool UARTSender::sendStopCmd() {
-	return writeStreamToPort("\rStop\r\n\0", 8);
+	return writeStreamToPort("\rStop a\r\n\0", 10);
 }
 
 bool UARTSender::setCameraPos(CameraStatesE pos) {
@@ -52,7 +52,7 @@ bool UARTSender::setSteering(uint8_t steeringAng) {
 }
 
 bool UARTSender::stillThereResponse(void) {
-	return writeStreamToPort("\rJa\r\n\0", 6);
+	return writeStreamToPort("\rJa a\r\n\0", 8);
 }
 
 //To test UART

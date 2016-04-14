@@ -7,7 +7,7 @@
 
 #include "ObjectFinderTest.hpp"
 
-
+/*
 TEST(ObjectFinder, ImageLoadingSuccess) {
 
 	ObjectFinder* objectFinder = new ObjectFinder(NULL, NULL);
@@ -62,3 +62,5 @@ TEST(ObjectFinder, markFoundContainersInImage) {
 	EXPECT_TRUE(cv::countNonZero(markedImage!=original) == 0);
 
 }
+
+*/
