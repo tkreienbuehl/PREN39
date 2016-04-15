@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
 	PictureViewer* picViewer = new PictureViewer(rtFinder, objectFinder);
 	DebugServer* debugServer = new DebugServer(rtFinder, objectFinder);
 
+
 	rc = pthread_create(&threads[0], NULL, PictureCreator::staticEntryPoint, picCreator);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;

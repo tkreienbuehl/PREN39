@@ -89,8 +89,10 @@ cv::Mat ObjectFinder::filterColorInImage(cv::String color,
 
 	cv::Mat filteredImage;
 	if (color == "green") {
-		cv::inRange(imageToFilter, cv::Scalar(38, 65, 10),
+		cv::inRange(imageToFilter, cv::Scalar(m_Controller->getPrenConfig()->GREEN_RANGE_H_LOW, m_Controller->getPrenConfig()->GREEN_RANGE_S_LOW, m_Controller->getPrenConfig()->GREEN_RANGE_V_LOW),
 				cv::Scalar(75, 255, 255), filteredImage);
+		/*cv::inRange(imageToFilter, cv::Scalar(38, 65, 10),
+						cv::Scalar(75, 255, 255), filteredImage);*/
 	} else if (color == "blue") {
 		cv::inRange(imageToFilter, cv::Scalar(10, 140, 90),
 				cv::Scalar(20, 255, 255), filteredImage);

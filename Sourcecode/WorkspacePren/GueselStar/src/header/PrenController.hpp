@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <unistd.h>
+#include "PrenConfiguration.hpp"
+
 
 using namespace std;
 
@@ -31,11 +33,11 @@ public:
 	bool checkObjectOnLane(void);
 	int getFlexDistance(void);
 	int getEngineSpeed(void);
-
+	PrenConfiguration* getPrenConfig(void);
 
 private:
 	void runProgram(void);
 	int stopProgram(void);
+	PrenConfiguration* prenConfig;
 	states m_State;
-
 };

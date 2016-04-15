@@ -2,11 +2,17 @@
 
 
 PrenController::PrenController() {
+	prenConfig = new PrenConfiguration();
 	m_State = STOPPED;
 }
 
 PrenController::~PrenController() {
 
+}
+
+PrenConfiguration* PrenController::getPrenConfig(void) {
+
+	return prenConfig;
 }
 
 void PrenController::start() {
