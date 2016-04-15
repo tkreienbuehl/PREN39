@@ -57,8 +57,6 @@ void ObjectFinder::RunProcess() {
 				contours = mergeContours(contoursGreen, contoursBlue);
 				m_MarkedImage = markFoundContoursInImage(contours, croppedImage);
 
-				cout << "Picture worked" << endl;
-
 				usleep(1000);
 			}
 		}
