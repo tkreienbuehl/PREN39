@@ -1,11 +1,13 @@
 #include "../header/RouteFinder.hpp"
 
 RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
-: MINLENGTH(10), MINYDIFF(3), NROFLINES(20) {
+: MINLENGTH(10), MINYDIFF(3), NROFLINES(20), MAX_PIX_DIFF(10) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
 	m_State = false;
+	m_leftRoutePos = 0;
+	m_rightRoutePos = 0;
 }
 
 RouteFinder::~RouteFinder() {
@@ -22,7 +24,7 @@ std::string RouteFinder::formatFileName(std::string fileStr, unsigned short nr) 
 	return fileStr;
 }
 
-void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
+void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
 
     // accept only char type matrices
     CV_Assert(mat->depth() == CV_8U);
@@ -30,7 +32,7 @@ void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
     short xDiff, yDiff;
     unsigned short upperLimit, lowerLimit, i,j;
     unsigned short nRows = mat->rows;
-    unsigned short nCols = mat->cols * mat->channels();
+    unsigned short nCols = mat->cols* mat->channels();
 
     for(i = 1; i < nRows; ++i) {
         for (j = 0; j < nCols-1; ++j) {
@@ -44,6 +46,7 @@ void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
         	}
         }
     }
+
     i = nRows-1;
     upperLimit = 0;
     lowerLimit = 0;
@@ -57,9 +60,46 @@ void RouteFinder::outputMat(cv::Mat* mat, cv::Mat* changesMat) {
     		}
     	}
     }
+    routeLocker(changesMat,upperLimit, lowerLimit, i);
+
+}
+
+void RouteFinder::routeLocker(cv::Mat* edgeImg,
+		unsigned short upperLimit,
+		unsigned short lowerLimit,
+		unsigned short row) {
+
+	if ((m_leftRoutePos == 0 && m_rightRoutePos == 0) ||
+			(compareTolerance(m_leftRoutePos,lowerLimit) && compareTolerance(m_rightRoutePos,upperLimit))) {
+		m_leftRoutePos = lowerLimit;
+		m_rightRoutePos = upperLimit;
+	}
     // Fahrtrichtungsvektor
-    cv::line(*changesMat,cv::Point(changesMat->cols/2,changesMat->rows),
-    		cv::Point(changesMat->cols/2,changesMat->rows/2),cv::Scalar(255,0,0), 2);
+    cv::line(*edgeImg,cv::Point(edgeImg->cols/2,edgeImg->rows),
+    		cv::Point(edgeImg->cols/2,edgeImg->rows/2),cv::Scalar(255,0,0), 2);
+	cv::circle(*edgeImg, cv::Point(m_leftRoutePos,edgeImg->rows-5), 3, cv::Scalar(255,0,0),2);
+	cv::circle(*edgeImg, cv::Point(m_rightRoutePos,edgeImg->rows-5), 3, cv::Scalar(255,0,0),2);
+}
+
+void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
+	int middle;
+	for (short i = edgeImg->rows; i > 10 ; i-=5 ) {
+		for (short j = m_leftRoutePos-40 ; j< m_leftRoutePos+40; j++) {
+			if (edgeImg->at<uchar>(i,j) == 255) {
+				if (compareTolerance(m_leftRoutePos, j)) {
+					//cv::circle(*edgeImg, cv::Point(i,j), 3, cv::Scalar(255,0,0),2);
+				}
+			}
+		}
+		for (short j = m_rightRoutePos-40 ; j< m_rightRoutePos+40; j++) {
+			if (edgeImg->at<uchar>(i,j) == 255) {
+				if (compareTolerance(m_rightRoutePos, j)) {
+					//cv::circle(*edgeImg, cv::Point(i,j), 3, cv::Scalar(255,0,0),2);
+				}
+			}
+		}
+		middle = static_cast<unsigned short>((m_leftRoutePos+m_rightRoutePos)/2);
+	}
 
 }
 
@@ -140,7 +180,8 @@ int RouteFinder::runProcess() {
 
 			cv::Mat fltImg = cv::Mat::zeros(reducedImg.rows, reducedImg.cols, CV_8UC1);
 			m_GradMat = GradientMat::getInstance(static_cast<short>(reducedImg.rows), static_cast<short>(reducedImg.cols));
-			outputMat(&grayImg, &fltImg);
+			edgeDetection(&grayImg, &fltImg);
+			calcDriveDirection(&fltImg);
 			m_GrayImg = grayImg;
 			m_FinalFltImg = fltImg;
         }
@@ -169,4 +210,11 @@ void RouteFinder::bubbleSort(std::vector<unsigned short>* vals) {
 		}
 	}
 
+}
+
+bool RouteFinder::compareTolerance(unsigned short refVal, unsigned short compVal) {
+	if (abs(abs(refVal)-abs(compVal)) < MAX_PIX_DIFF) {
+		return true;
+	}
+	return false;
 }

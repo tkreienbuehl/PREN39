@@ -38,22 +38,13 @@ int main(int argc, char** argv) {
 	}
 	usleep(100);
 
-	/*
+
 	rc = pthread_create(&threads[2], NULL, ObjectFinder::staticEntryPoint, objectFinder);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;
 		exit(-1);
 	}
 	usleep(100);
-	*/
-
-	/*
-	rc = pthread_create(&threads[3], NULL, PictureViewer::startThread, picViewer);
-	if (rc) {
-		cout << "Error:unable to create thread," << rc << endl;
-		exit(-1);
-	}
-	*/
 
 	rc = pthread_create(&threads[4], NULL, DebugServer::startDebugServer, debugServer);
 	if (rc) {

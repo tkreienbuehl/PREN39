@@ -17,7 +17,9 @@ public:
 	~RouteFinder();
 
 	std::string formatFileName(std::string fileStr, unsigned short nr);
-	void outputMat(cv::Mat* mat, cv::Mat* changesMat);
+	void edgeDetection(cv::Mat* mat, cv::Mat* changesMat);
+	void routeLocker(cv::Mat* edgeImg, unsigned short upperLimit, unsigned short lowerLimit, unsigned short row);
+	void calcDriveDirection(cv::Mat* edgeImg);
 	void approxLimit(cv::Mat* mat, unsigned short* upperLimit, unsigned short* lowerLimit, unsigned short row);
 	void calcAverageLimit(unsigned short* upperLimit, unsigned short* lowerLimit);
 
@@ -29,17 +31,20 @@ public:
 private:
 	int runProcess();
 	void bubbleSort(std::vector<unsigned short>* vals);
+	bool compareTolerance(unsigned short refVal, unsigned short compVal);
 
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
 	const short MINLENGTH;
 	const short MINYDIFF;
 	const short NROFLINES;
+	const short MAX_PIX_DIFF;
 	GradientMat* m_GradMat;
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;
 	bool m_State;
 	cv::Mat m_GrayImg;
 	cv::Mat m_FinalFltImg;
+	unsigned short m_leftRoutePos, m_rightRoutePos;
 
 };

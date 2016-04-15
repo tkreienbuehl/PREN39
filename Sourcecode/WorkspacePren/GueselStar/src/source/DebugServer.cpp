@@ -63,11 +63,11 @@ void DebugServer::runningServer() {
 
 void DebugServer::requestHandler(int newSocketfd) {
 
-	char buffer[256];
+	char buffer[50];
 
 	while (m_running) {
-		bzero(buffer,256);
-		int n = read(newSocketfd, buffer, 255);
+		bzero(buffer,50);
+		int n = read(newSocketfd, buffer, 49);
 		if (n < 0) {
 			cout << "ERROR reading from socket" << endl;
 		}
@@ -101,6 +101,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 			}
 			msg.clear();
 		}
+
 		//cout << message << endl;
 		message.clear();
 	}

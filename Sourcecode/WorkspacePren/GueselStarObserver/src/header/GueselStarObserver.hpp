@@ -25,13 +25,14 @@ private:
 	typedef struct sockaddr_in socketAddressIn_t;
 	typedef struct sockaddr socketAddress_t;
 	typedef struct hostent hostEnt_t;
+	typedef struct in_addr ipAddress_t;
 
-	int connectToServer(string hostname);
+	int connectToServer(string ipAddr);
 	int sendMessageRecieveImage(string* message);
-	void getFilteredImageFromServer();
-	void getGrayImageFromServer();
+	void getFilteredImageFromServer(cv::Mat& img);
+	void getGrayImageFromServer(cv::Mat& img);
 
-	static const short PORT_TO_PI = 4001;
+	static const short PORT_TO_PI = 14001;
 	int m_socketForward;
 
 };

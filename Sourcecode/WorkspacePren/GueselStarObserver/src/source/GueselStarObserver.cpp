@@ -1,4 +1,4 @@
-#include "../header/GueselStatObserver.hpp"
+#include "../header/GueselStarObserver.hpp"
 
 int main(int argc, char** argv) {
 
@@ -7,19 +7,19 @@ int main(int argc, char** argv) {
 }
 
 GueselStarObserver::GueselStarObserver() {
-	connectToServer("localhost");
+	//connectToServer("10.10.0.1");
+	connectToServer("127.0.0.1");
 }
 
 GueselStarObserver::~GueselStarObserver() {
 
 }
 
-int GueselStarObserver::connectToServer(std::string hostName) {
+int GueselStarObserver::connectToServer(std::string ipAddr) {
 	int portNr;
 	socketAddressIn_t serverAddress;
 	hostEnt_t* server;
-	struct in_addr ipAddr;
-
+	ipAddress_t ipAddress;
 
 	portNr = PORT_TO_PI;
 	m_socketForward = socket(AF_INET, SOCK_STREAM, 0);
@@ -28,19 +28,24 @@ int GueselStarObserver::connectToServer(std::string hostName) {
 		return -1;
 	}
 
-	inet_pton(AF_INET, "127.0.0.1", &ipAddr);
-	server = gethostbyaddr(&ipAddr,sizeof(ipAddr), AF_INET);
+	cout << "Connecting to server..." << endl;
+	inet_pton(AF_INET, ipAddr.c_str(), &ipAddress);
+	server = gethostbyaddr(&ipAddress,sizeof(ipAddress), AF_INET);
 	if (server == NULL) {
 		cout << "ERROR no such host or can't resolve name to IP" << endl;
 		return -1;
 	}
 	bzero(reinterpret_cast<char*>(&serverAddress), sizeof serverAddress);
 	serverAddress.sin_family = AF_INET;
-	bcopy(reinterpret_cast<char*>(server->h_addr), reinterpret_cast<char*>(&serverAddress.sin_addr.s_addr), server->h_length );
+	bcopy(reinterpret_cast<char*>(server->h_addr),
+			reinterpret_cast<char*>(&serverAddress.sin_addr.s_addr),
+			server->h_length );
 	serverAddress.sin_port = htons(portNr);
 	if (connect(m_socketForward, reinterpret_cast<socketAddress_t*>(&serverAddress), sizeof(serverAddress)) < 0) {
 		cout << "ERROR connecting" << endl;
 	}
+	cout << "connected to server" << endl;
+	usleep(100000);
 
 	string message;
 
@@ -50,6 +55,7 @@ int GueselStarObserver::connectToServer(std::string hostName) {
 	cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
 
 	while (loop) {
+		usleep(50000);
 		switch (selector) {
 		case 0:
 			message = "getFilteredImage";
@@ -66,13 +72,12 @@ int GueselStarObserver::connectToServer(std::string hostName) {
 		else {
 			selector++;
 		}
-
+		cv::waitKey(10);
 		if (sendMessageRecieveImage(&message) < 0) {
 			cout << "Connection aborted" << endl;
 			close(m_socketForward);
 			loop = false;
 		}
-		usleep(10000);
 	}
 
 	close(m_socketForward);
@@ -84,31 +89,36 @@ int GueselStarObserver::connectToServer(std::string hostName) {
 
 int GueselStarObserver::sendMessageRecieveImage(string* message) {
 
-	char buffer[256];
-	bzero(buffer,256);
+	cv::Mat grayImg, fltImg, objImg;
 
 	int n = write(m_socketForward, message->c_str(), message->length());
 	if (n < 0) {
 		cout << "ERROR writing to socket" << endl;
 		return -1;
 	}
-	usleep(800);
+	//usleep(1000);
 	if (message->find("getFilteredImage") != message->npos) {
-		getFilteredImageFromServer();
+		getFilteredImageFromServer(fltImg);
+		if (!fltImg.empty()) {
+			cv::imshow("The filtered Image", fltImg);
+		}
 	}
 	else if (message->find("getObjectImage") != message->npos) {
 	}
 	else if (message->find("getGrayImage") != message->npos) {
-		getGrayImageFromServer();
+		getGrayImageFromServer(grayImg);
+		if (!grayImg.empty()) {
+			cv::imshow("The gray Image", grayImg);
+		}
 	}
 	message->clear();
 	return 0;
 }
 
-void GueselStarObserver::getFilteredImageFromServer() {
+void GueselStarObserver::getFilteredImageFromServer(cv::Mat& img) {
 
 	int height = 240, width = 320;
-	cv::Mat img = cv::Mat::zeros( height, width, CV_8UC1);
+	img = cv::Mat::zeros( height, width, CV_8UC1);
 	int  imgSize = img.total()*img.elemSize();
 	//cout << imgSize << endl;
 	uchar sockData[imgSize];
@@ -125,19 +135,14 @@ void GueselStarObserver::getFilteredImageFromServer() {
 			img.at<uchar>(i,j) = sockData[ptr];
 			ptr++;
 		}
-	}
-
-	if (!img.empty()) {
-		cv::imshow("The filtered Image", img);
-		cv::waitKey(10);
 	}
 
 }
 
-void GueselStarObserver::getGrayImageFromServer() {
+void GueselStarObserver::getGrayImageFromServer(cv::Mat& img) {
 
 	int height = 240, width = 320;
-	cv::Mat img = cv::Mat::zeros( height, width, CV_8UC1);
+	img = cv::Mat::zeros( height, width, CV_8UC1);
 	int  imgSize = img.total()*img.elemSize();
 	//cout << imgSize << endl;
 	uchar sockData[imgSize];
@@ -147,18 +152,12 @@ void GueselStarObserver::getGrayImageFromServer() {
 			cout << "ERROR" << endl;
 		}
 	}
-
 	int ptr=0;
 	for (int i = 0;  i < img.rows; i++) {
 		for (int j = 0; j < img.cols; j++) {
 			img.at<uchar>(i,j) = sockData[ptr];
 			ptr++;
 		}
-	}
-
-	if (!img.empty()) {
-		cv::imshow("The gray Image", img);
-		cv::waitKey(10);
 	}
 
 }
