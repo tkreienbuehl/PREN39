@@ -47,7 +47,7 @@ void DebugServer::runningServer() {
 
 	clientLength = sizeof(clientAddress);
 	newSocketfd = accept(socketfd, reinterpret_cast<socketAddress_t*>(&clientAddress), &clientLength);
-
+	usleep(1000);
 	cout << "server connected" << endl;
 
 	if (newSocketfd < 0) {

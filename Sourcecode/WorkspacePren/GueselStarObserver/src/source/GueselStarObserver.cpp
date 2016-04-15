@@ -55,7 +55,7 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 	cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
 
 	while (loop) {
-		usleep(50000);
+		usleep(100000);
 		switch (selector) {
 		case 0:
 			message = "getFilteredImage";
