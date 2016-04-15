@@ -61,16 +61,19 @@ void PrenController::setTargetFieldFound(int distance) {
 void PrenController::setLaneLost() {
 
 	// inform MC-Board
+	cout << "RouterFinder lost Lane" << endl;
 }
 
 void PrenController::setSteeringAngle(int angle) {
 
 	// inform MC-Board: adjust
+	cout << "set new angle" << angle << endl;
 }
 
 void PrenController::setVehicleInCrossing() {
 
 	// inform MC-Board: wait
+	cout << "Vehicle in Crossing";
 }
 
 bool PrenController:: checkObjectOnLane(void) {
