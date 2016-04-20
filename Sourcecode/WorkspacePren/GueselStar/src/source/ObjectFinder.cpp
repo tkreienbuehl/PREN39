@@ -90,17 +90,13 @@ cv::Mat ObjectFinder::filterColorInImage(cv::String color,
 	cv::Mat filteredImage;
 	if (color == "green") {
 		cv::inRange(imageToFilter, cv::Scalar(m_Controller->getPrenConfig()->GREEN_RANGE_H_LOW, m_Controller->getPrenConfig()->GREEN_RANGE_S_LOW, m_Controller->getPrenConfig()->GREEN_RANGE_V_LOW),
-				cv::Scalar(75, 255, 255), filteredImage);
+				cv::Scalar(m_Controller->getPrenConfig()->GREEN_RANGE_H_HIGH, m_Controller->getPrenConfig()->GREEN_RANGE_S_HIGH, m_Controller->getPrenConfig()->GREEN_RANGE_V_HIGH), filteredImage);
 		/*cv::inRange(imageToFilter, cv::Scalar(38, 65, 10),
 						cv::Scalar(75, 255, 255), filteredImage);*/
 	} else if (color == "blue") {
-		cv::inRange(imageToFilter, cv::Scalar(10, 140, 90),
-				cv::Scalar(20, 255, 255), filteredImage);
-	} else if (color == "yellow") {
-		cv::inRange(imageToFilter, cv::Scalar(20, 100, 100),
-				cv::Scalar(38, 255, 255), filteredImage);
+		cv::inRange(imageToFilter, cv::Scalar(m_Controller->getPrenConfig()->BLUE_RANGE_H_LOW, m_Controller->getPrenConfig()->BLUE_RANGE_S_LOW, m_Controller->getPrenConfig()->BLUE_RANGE_V_LOW),
+						cv::Scalar(m_Controller->getPrenConfig()->BLUE_RANGE_H_HIGH, m_Controller->getPrenConfig()->BLUE_RANGE_S_HIGH, m_Controller->getPrenConfig()->BLUE_RANGE_V_HIGH), filteredImage);
 	}
-
 	return filteredImage;
 }
 
@@ -141,7 +137,7 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
 					cv::Scalar(0, 255, 0), 2, 8, 0);
 
-			int distanceToContainer = 280 * 216 / boundRect[i].height;
+			int distanceToContainer = m_Controller->getPrenConfig()->REFERENCE_DISTANCE * m_Controller->getPrenConfig()->REFERENCE_HEIGHT / boundRect[i].height;
 
 			m_Controller->setContainerFound(distanceToContainer);
 
