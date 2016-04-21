@@ -4,9 +4,9 @@ using namespace std;
 
 PrenConfiguration::PrenConfiguration() {
 
-	config4cpp::Configuration *  cfg = config4cpp::Configuration::create();
-	    const char *     scope = "";
-	    const char *     configFile = "conf/PrenConfig.conf";
+	config4cpp::Configuration*  cfg = config4cpp::Configuration::create();
+	    const char*     scope = "";
+	    const char*     configFile = "conf/PrenConfig.conf";
 
 	    try {
 	        cfg->parse(configFile);
