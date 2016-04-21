@@ -21,27 +21,45 @@
 
 	void PictureViewer::runProcess() {
 
-		cv::Mat fltImage;
+		cv::Mat fltImage, objectImg;
+		PrenConfiguration conf;
 
-		usleep(2000000);
+		usleep(1000000);
 		m_state = true;
+		uint64_t imgNr = 0;
 
 		cout << "Viever online" << endl;
-		cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
+		if (!conf.IS_ON_PI) {
+			cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
+			cout << "window is opening" << endl;
+		}
 		while (m_state) {
 
 			fltImage = m_rtFinder->getFilteredImage();
 
 			if (!fltImage.empty()) {
-				cv::imshow("The Image", fltImage);
-				cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
-				//cv::imshow("Object Detection", m_objectFinder->getImage());
-/*
-				cv::imwrite("/tmp/imgflt_" + i, fltImage);
-				cv::imwrite("/tmp/imggrey_" + i, *m_rtFinder->getGrayImage());
-				cv::imwrite("/tmp/imgobj_" + i, m_objectFinder->getImage());
-*/
-				cv::waitKey(1000);
+				if (conf.IS_ON_PI) {
+					char str[20];
+					bzero(str,20);
+					sprintf(str,"/tmp/fltImg_%i.jpg",imgNr);
+					cv::imwrite(str, fltImage);
+
+					bzero(str,20);
+					sprintf(str,"/tmp/imggrey_%i.jpg",imgNr);
+					cv::imwrite(str, m_rtFinder->getGrayImage());
+
+					bzero(str,20);
+					sprintf(str,"/tmp/imgobj_%i.jpg",imgNr);
+					cv::imwrite(str, m_objectFinder->getImage());
+					imgNr++;
+				}
+				else {
+					cv::imshow("The Image", fltImage);
+					cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
+					objectImg =  m_objectFinder->getImage();
+					cv::imshow("Object Detection", objectImg);
+					cv::waitKey(150);
+				}
 			}
 		}
 		cv::waitKey(0);

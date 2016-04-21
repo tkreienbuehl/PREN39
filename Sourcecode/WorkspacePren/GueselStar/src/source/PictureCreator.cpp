@@ -10,6 +10,7 @@
 PictureCreator::PictureCreator(PrenController* controller) {
 	m_Controller = controller;
 	m_State = false;
+	pthread_mutex_init(&m_mutex, NULL);
 }
 
 PictureCreator::~PictureCreator() {
@@ -46,8 +47,10 @@ void PictureCreator::StartRecording() {
 	cout << "running :)" << endl;
 	while (m_State) {
 	    IplImage* iplImg = cvQueryFrame( capture );
+		pthread_mutex_lock(&m_mutex);
 	    m_TheImage = cv::cvarrToMat(iplImg);
-	    usleep(10);
+		pthread_mutex_unlock(&m_mutex);
+	    usleep(5);
 
         if( m_TheImage.empty() ) {
         	cout << "Image is empty" << endl;

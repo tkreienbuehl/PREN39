@@ -12,6 +12,9 @@ PrenConfiguration::PrenConfiguration() {
 	        cfg->parse(configFile);
 	        START_LOCAL_VIEW = strcmp(cfg->lookupString(scope, "START_LOCAL_VIEW"),"TRUE") == 0 ? true : false;
 	        IS_DEBUG = strcmp(cfg->lookupString(scope, "IS_DEBUG"),"TRUE") == 0 ? true : false;
+	        IS_ON_PI = strcmp(cfg->lookupString(scope, "IS_ON_PI"),"TRUE") == 0 ? true : false;
+
+	        cout << "Auf PI?: " << IS_ON_PI << endl;
 
 	        BLUE_RANGE_H_LOW = atoi(cfg->lookupString(scope, "BLUE_RANGE_H_LOW"));
 	        BLUE_RANGE_H_HIGH = atoi(cfg->lookupString(scope, "BLUE_RANGE_H_HIGH"));

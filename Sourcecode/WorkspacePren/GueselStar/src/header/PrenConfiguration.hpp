@@ -27,6 +27,7 @@ public:
 	int MAX_DISTANCE_TO_OBJECT_CROSSING;
 	int REFERENCE_HEIGHT;
 	int REFERENCE_DISTANCE;
+	bool IS_ON_PI;
 
 private:
 };

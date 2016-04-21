@@ -34,4 +34,5 @@ private:
     cv::Mat m_TheImage;
     bool m_State;
     PrenController* m_Controller;
+    pthread_mutex_t m_mutex;
 };

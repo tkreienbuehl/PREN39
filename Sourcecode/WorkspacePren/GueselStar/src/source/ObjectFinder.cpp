@@ -10,6 +10,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_state = false;
+	pthread_mutex_init(&m_mutex,NULL);
 }
 
 ObjectFinder::~ObjectFinder() {
@@ -28,6 +29,7 @@ void ObjectFinder::RunProcess() {
 	cv::Mat hsvImage;
 	cv::Mat filteredImageGreen;
 	cv::Mat filteredImageBlue;
+	cv::Mat resultImage;
 
 	m_state = true;
 
@@ -55,9 +57,11 @@ void ObjectFinder::RunProcess() {
 				contoursGreen = findContainersInImage(filteredImageGreen);
 				contoursBlue = findContainersInImage(filteredImageBlue);
 				contours = mergeContours(contoursGreen, contoursBlue);
-				m_MarkedImage = markFoundContoursInImage(contours, croppedImage);
-
-				usleep(1000);
+				resultImage = markFoundContoursInImage(contours, croppedImage);
+				pthread_mutex_lock(&m_mutex);
+				m_MarkedImage = resultImage;
+				pthread_mutex_unlock(&m_mutex);
+				usleep(10);
 			}
 		}
 	}
