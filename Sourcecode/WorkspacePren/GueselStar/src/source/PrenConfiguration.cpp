@@ -11,7 +11,8 @@ PrenConfiguration::PrenConfiguration() {
 	    try {
 	        cfg->parse(configFile);
 	        START_LOCAL_VIEW = strcmp(cfg->lookupString(scope, "START_LOCAL_VIEW"),"TRUE") == 0 ? true : false;
-	        START_LOCAL_VIEW = strcmp(cfg->lookupString(scope, "IS_DEBUG"),"TRUE") == 0 ? true : false;
+	        IS_DEBUG = strcmp(cfg->lookupString(scope, "IS_DEBUG"),"TRUE") == 0 ? true : false;
+
 	        BLUE_RANGE_H_LOW = atoi(cfg->lookupString(scope, "BLUE_RANGE_H_LOW"));
 	        BLUE_RANGE_H_HIGH = atoi(cfg->lookupString(scope, "BLUE_RANGE_H_HIGH"));
 	        BLUE_RANGE_S_LOW = atoi(cfg->lookupString(scope, "BLUE_RANGE_S_LOW"));

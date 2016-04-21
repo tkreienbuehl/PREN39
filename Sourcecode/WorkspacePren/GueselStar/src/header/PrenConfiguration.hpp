@@ -29,5 +29,4 @@ public:
 	int REFERENCE_DISTANCE;
 
 private:
-
 };
