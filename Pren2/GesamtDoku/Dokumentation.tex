@@ -1,0 +1,55 @@
+\documentclass[a4paper, 10pt, fleqn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{tocbibind}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{scrpage2}
+\usepackage{lastpage}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{float}
+\restylefloat{figure}
+\lstset{language=[ansi]C++}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\renewcommand*{\listoffigures}{%
+  \begingroup
+  \tocchapter
+  \tocfile{\listfigurename}{lof}
+  \endgroup
+}
+
+\geometry{left=3cm, top=3cm, bottom=3cm, right=2cm}
+
+\hypersetup{
+    colorlinks,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=black
+}
+
+\pagestyle{scrheadings}
+\ihead{PREN1 Gruppe 39}\ohead{Gesamtkonzept} 
+\ifoot{\today} \ofoot{Seite \thepage\ von {\hypersetup{linkcolor=black}\pageref{LastPage}}}
+
+% Einrücken zu Beginn von neuem Absatz unterdrücken
+\setlength{\parindent}{0pt}
+
+
+\begin{document}
+\input{00_titlepage.tex}
+\tableofcontents
+\clearpage
+\input{04_Projektmanagement/BASE_projektmanagement.tex}
+\end{document}

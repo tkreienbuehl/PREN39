@@ -10,6 +10,7 @@ public:
 	PrenConfiguration();
 	~PrenConfiguration();
 	bool START_LOCAL_VIEW;
+	bool IS_DEBUG;
 	int BLUE_RANGE_H_LOW;
 	int BLUE_RANGE_H_HIGH;
 	int BLUE_RANGE_S_LOW;

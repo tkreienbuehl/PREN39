@@ -54,11 +54,15 @@ int main(int argc, char** argv) {
 			cout << "Error:unable to create thread," << rc << endl;
 			exit(-1);
 		}
-	}
-	rc = pthread_create(&threads[4], NULL, DebugServer::startDebugServer, debugServer);
-	if (rc) {
-		cout << "Error:unable to create thread," << rc << endl;
-		exit(-1);
+	} else {
+
+		if(controller->getPrenConfig()->IS_DEBUG) {
+			rc = pthread_create(&threads[4], NULL, DebugServer::startDebugServer, debugServer);
+			if (rc) {
+				cout << "Error:unable to create thread," << rc << endl;
+				exit(-1);
+			}
+		}
 	}
 
 	usleep(100);

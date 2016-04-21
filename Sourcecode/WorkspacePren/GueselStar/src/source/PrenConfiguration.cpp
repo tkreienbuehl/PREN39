@@ -11,6 +11,7 @@ PrenConfiguration::PrenConfiguration() {
 	    try {
 	        cfg->parse(configFile);
 	        START_LOCAL_VIEW = strcmp(cfg->lookupString(scope, "START_LOCAL_VIEW"),"TRUE") == 0 ? true : false;
+	        START_LOCAL_VIEW = strcmp(cfg->lookupString(scope, "IS_DEBUG"),"TRUE") == 0 ? true : false;
 	        BLUE_RANGE_H_LOW = atoi(cfg->lookupString(scope, "BLUE_RANGE_H_LOW"));
 	        BLUE_RANGE_H_HIGH = atoi(cfg->lookupString(scope, "BLUE_RANGE_H_HIGH"));
 	        BLUE_RANGE_S_LOW = atoi(cfg->lookupString(scope, "BLUE_RANGE_S_LOW"));
@@ -27,6 +28,7 @@ PrenConfiguration::PrenConfiguration() {
 			MAX_DISTANCE_TO_OBJECT_CROSSING = atoi(cfg->lookupString(scope, "MAX_DISTANCE_TO_OBJECT_CROSSING"));
 			REFERENCE_HEIGHT = atoi(cfg->lookupString(scope, "REFERENCE_HEIGHT"));
 			REFERENCE_DISTANCE = atoi(cfg->lookupString(scope, "REFERENCE_DISTANCE"));
+			cfg->destroy();
 	    } catch(const config4cpp::ConfigurationException & ex) {
 	        cerr << ex.c_str() << endl;
 	        cfg->destroy();
