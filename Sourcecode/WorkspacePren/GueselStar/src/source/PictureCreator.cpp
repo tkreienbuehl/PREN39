@@ -50,7 +50,7 @@ void PictureCreator::StartRecording() {
 	cout << "running :)" << endl;
 	while (m_State) {
 	    IplImage* iplImg = cvQueryFrame( capture );
-	    m_TheImage = cv::cvarrToMat(iplImg);
+	    cv::Mat capturedImage =  cv::cvarrToMat(iplImg);
 	    usleep(5);
 
         if( m_TheImage.empty() ) {

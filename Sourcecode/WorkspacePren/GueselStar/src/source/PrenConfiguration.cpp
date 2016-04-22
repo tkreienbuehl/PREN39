@@ -27,7 +27,6 @@ PrenConfiguration::PrenConfiguration() {
 		MAX_DISTANCE_TO_OBJECT_CROSSING = parser.readIntParam("MAX_DISTANCE_TO_OBJECT_CROSSING");
 		REFERENCE_HEIGHT = parser.readIntParam("REFERENCE_HEIGHT");
 		REFERENCE_DISTANCE = parser.readIntParam("REFERENCE_DISTANCE");
-
 }
 
 PrenConfiguration::~PrenConfiguration() {

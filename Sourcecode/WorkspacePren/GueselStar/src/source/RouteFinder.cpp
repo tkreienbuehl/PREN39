@@ -171,7 +171,7 @@ void* RouteFinder::staticEntryPoint(void* threadId) {
 }
 
 int RouteFinder::runProcess() {
-	cv::Mat grayImg, reducedImg, image;
+	cv::Mat grayImg, image;
 	ostringstream nrStream;
 
 	cout << "Start" << endl;
@@ -181,11 +181,9 @@ int RouteFinder::runProcess() {
 
         if (!image.empty()) {
 
-			cv::resize(image, reducedImg, reducedImg.size(),0.5,0.5,cv::INTER_LANCZOS4);
-			cv::cvtColor(reducedImg,grayImg,CV_BGR2GRAY);
-
-			cv::Mat fltImg = cv::Mat::zeros(reducedImg.rows, reducedImg.cols, CV_8UC1);
-			m_GradMat = GradientMat::getInstance(static_cast<short>(reducedImg.rows), static_cast<short>(reducedImg.cols));
+			cv::cvtColor(image,grayImg,CV_BGR2GRAY);
+			cv::Mat fltImg = cv::Mat::zeros(image.rows, image.cols, CV_8UC1);
+			m_GradMat = GradientMat::getInstance(static_cast<short>(image.rows), static_cast<short>(image.cols));
 			edgeDetection(&grayImg, &fltImg);
 			calcDriveDirection(&fltImg);
 			m_GrayImg = grayImg;
