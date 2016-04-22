@@ -156,6 +156,10 @@ void RouteFinder::calcAverageLimit(unsigned short& upperLimit, unsigned short& l
 	//cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
 }
 
+cv::Mat RouteFinder::getOriginalImage() {
+	return m_PicCreator->GetImage();
+}
+
 cv::Mat RouteFinder::getGrayImage() {
 	return m_GrayImg;
 }
@@ -175,7 +179,7 @@ int RouteFinder::runProcess() {
 	ostringstream nrStream;
 
 	cout << "Start" << endl;
-    for(int i = 0; i<8000; i++) {
+    for(int i = 0; i<100000; i++) {
 
         image = m_PicCreator->GetImage();
 

@@ -23,6 +23,7 @@ public:
 	void approxLimit(cv::Mat* mat, unsigned short& upperLimit, unsigned short& lowerLimit, unsigned short row);
 	void calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit);
 
+	cv::Mat getOriginalImage();
 	cv::Mat getGrayImage();
 	cv::Mat getFilteredImage();
 

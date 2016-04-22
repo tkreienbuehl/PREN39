@@ -21,7 +21,7 @@
 
 	void PictureViewer::runProcess() {
 
-		cv::Mat fltImage, objectImg;
+		cv::Mat fltImage, objectImg, origImg;
 		PrenConfiguration conf;
 
 		usleep(1000000);
@@ -37,13 +37,17 @@
 
 			fltImage = m_rtFinder->getFilteredImage();
 
+
 			if (!fltImage.empty()) {
 				if (conf.IS_ON_PI) {
 					char str[20];
 					bzero(str,20);
-					sprintf(str,"/tmp/fltImg_%i.jpg",imgNr);
-					cv::imwrite(str, fltImage);
+					sprintf(str,"/tmp/img_%i.jpg",imgNr);
+					cv::imwrite(str, m_rtFinder->getOriginalImage());
+					//sprintf(str,"/tmp/fltImg_%i.jpg",imgNr);
+					//cv::imwrite(str, fltImage);
 
+					/*
 					bzero(str,20);
 					sprintf(str,"/tmp/imggrey_%i.jpg",imgNr);
 					cv::imwrite(str, m_rtFinder->getGrayImage());
@@ -51,6 +55,7 @@
 					bzero(str,20);
 					sprintf(str,"/tmp/imgobj_%i.jpg",imgNr);
 					cv::imwrite(str, m_objectFinder->getImage());
+					*/
 					imgNr++;
 				}
 				else {
