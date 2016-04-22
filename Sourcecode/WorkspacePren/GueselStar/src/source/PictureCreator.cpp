@@ -23,8 +23,11 @@ void* PictureCreator::staticEntryPoint(void* threadId) {
 	pthread_exit(threadId);
 }
 
-cv::Mat* PictureCreator::GetImage() {
-	return &m_TheImage;
+cv::Mat PictureCreator::GetImage() {
+	pthread_mutex_lock(&m_mutex);
+		cv::Mat retImg = m_TheImage;
+	pthread_mutex_unlock(&m_mutex);
+	return retImg;
 }
 
 void PictureCreator::StopRecording() {
@@ -47,9 +50,7 @@ void PictureCreator::StartRecording() {
 	cout << "running :)" << endl;
 	while (m_State) {
 	    IplImage* iplImg = cvQueryFrame( capture );
-		pthread_mutex_lock(&m_mutex);
 	    m_TheImage = cv::cvarrToMat(iplImg);
-		pthread_mutex_unlock(&m_mutex);
 	    usleep(5);
 
         if( m_TheImage.empty() ) {

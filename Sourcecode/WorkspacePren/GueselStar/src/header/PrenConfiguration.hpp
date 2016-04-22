@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include <config4cpp/Configuration.h>
 #include <stdlib.h>
+#include "ConfigParser.hpp"
 
 using namespace std;
 class PrenConfiguration {

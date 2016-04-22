@@ -40,7 +40,7 @@ void ObjectFinder::RunProcess() {
 		else {
 
 
-		cv::Mat image = *m_PicCreator->GetImage();
+		cv::Mat image = m_PicCreator->GetImage();
 
 			//origImage = createImage(
 					//"/home/patbrant/Pictures/pren/street_distance1.jpg");
@@ -58,9 +58,7 @@ void ObjectFinder::RunProcess() {
 				contoursBlue = findContainersInImage(filteredImageBlue);
 				contours = mergeContours(contoursGreen, contoursBlue);
 				resultImage = markFoundContoursInImage(contours, croppedImage);
-				pthread_mutex_lock(&m_mutex);
 				m_MarkedImage = resultImage;
-				pthread_mutex_unlock(&m_mutex);
 				usleep(10);
 			}
 		}

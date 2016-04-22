@@ -1,13 +1,14 @@
 #include "../header/RouteFinder.hpp"
 
 RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
-: MINLENGTH(10), MINYDIFF(3), NROFLINES(20), MAX_PIX_DIFF(10) {
+: MINLENGTH(10), MINXDIFF(3), MINYDIFF(3), NROFLINES(20), MAX_PIX_DIFF(10), MIN_RT_WIDTH(50) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
 	m_State = false;
 	m_leftRoutePos = 0;
 	m_rightRoutePos = 0;
+	m_rtWidth = 0;
 }
 
 RouteFinder::~RouteFinder() {
@@ -34,14 +35,12 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     unsigned short nRows = mat->rows;
     unsigned short nCols = mat->cols* mat->channels();
 
-    for(i = static_cast<short>(nRows/2); i < nRows; ++i) {
-        for (j = 0; j < nCols-1; ++j) {
-        	xDiff = static_cast<short>(mat->at<uchar>(i,j+1)) - static_cast<short>(mat->at<uchar>(i,j));
-        	yDiff = static_cast<short>(mat->at<uchar>(i-1,j)) - static_cast<short>(mat->at<uchar>(i,j));
+    for(i = static_cast<short>(nRows/2)-10; i < nRows-1; ++i) {
+        for (j = 1; j < nCols-2; ++j) {
+        	xDiff = (static_cast<short>(mat->at<uchar>(i,j+1)) - static_cast<short>(mat->at<uchar>(i,j-1))) / 2;
+        	yDiff = (static_cast<short>(mat->at<uchar>(i-1,j)) - static_cast<short>(mat->at<uchar>(i+1,j))) / 2;
         	Gradient grad(xDiff,yDiff);
-        	//m_GradMat->setValue(i,j,grad);
-        	if (abs(grad.getLength()) > MINLENGTH
-        			&& grad.getYValue() > MINYDIFF) {
+        	if (abs(grad.getLength()) > MINLENGTH) {
         		changesMat->at<uchar>(i,j) = 255;
         	}
         }
@@ -75,6 +74,11 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg,
 		m_leftRoutePos = lowerLimit;
 		m_rightRoutePos = upperLimit;
 	}
+	m_rtWidth = m_rightRoutePos-m_leftRoutePos;
+	if (m_rtWidth < MIN_RT_WIDTH) {
+		m_rightRoutePos = 0;
+		m_leftRoutePos = 0;
+	}
     // Fahrtrichtungsvektor
     cv::line(*edgeImg,cv::Point(edgeImg->cols/2,edgeImg->rows),
     		cv::Point(edgeImg->cols/2,edgeImg->rows/2),cv::Scalar(255,0,0), 2);
@@ -83,7 +87,7 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg,
 }
 
 void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
-	int middle;
+	//int middle;
 	unsigned short rows = edgeImg->rows;
 	for (short i = rows; i > static_cast<short>(rows-rows/4) ; i-=5 ) {
 		for (short j = m_leftRoutePos-(2*MAX_PIX_DIFF) ; j< m_leftRoutePos+(2*MAX_PIX_DIFF); j++) {
@@ -100,7 +104,7 @@ void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
 				}
 			}
 		}
-		middle = static_cast<unsigned short>((m_leftRoutePos+m_rightRoutePos)/2);
+		//middle = static_cast<unsigned short>((m_leftRoutePos+m_rightRoutePos)/2);
 	}
 
 }
@@ -173,7 +177,7 @@ int RouteFinder::runProcess() {
 	cout << "Start" << endl;
     for(int i = 0; i<8000; i++) {
 
-        image = *m_PicCreator->GetImage();
+        image = m_PicCreator->GetImage();
 
         if (!image.empty()) {
 

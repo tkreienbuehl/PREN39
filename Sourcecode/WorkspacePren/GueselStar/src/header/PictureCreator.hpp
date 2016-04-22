@@ -23,7 +23,7 @@ public:
 	PictureCreator(PrenController* controller);
 	~PictureCreator();
 
-	cv::Mat* GetImage();
+	cv::Mat GetImage();
 	void StopRecording();
 
 	static void* staticEntryPoint(void* threadId);

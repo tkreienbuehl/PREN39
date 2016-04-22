@@ -36,7 +36,7 @@ private:
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
 	const short MINLENGTH;
-	const short MINYDIFF;
+	const short MINYDIFF, MINXDIFF, MIN_RT_WIDTH;
 	const short NROFLINES;
 	const short MAX_PIX_DIFF;
 	GradientMat* m_GradMat;
@@ -45,6 +45,6 @@ private:
 	bool m_State;
 	cv::Mat m_GrayImg;
 	cv::Mat m_FinalFltImg;
-	unsigned short m_leftRoutePos, m_rightRoutePos;
+	unsigned short m_leftRoutePos, m_rightRoutePos, m_rtWidth;
 
 };

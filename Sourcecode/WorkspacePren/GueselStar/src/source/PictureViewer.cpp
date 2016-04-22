@@ -56,9 +56,9 @@
 				else {
 					cv::imshow("The Image", fltImage);
 					cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
-					objectImg =  m_objectFinder->getImage();
-					cv::imshow("Object Detection", objectImg);
-					cv::waitKey(150);
+					//objectImg =  m_objectFinder->getImage();
+					//cv::imshow("Object Detection", objectImg);
+					cv::waitKey(10);
 				}
 			}
 		}
