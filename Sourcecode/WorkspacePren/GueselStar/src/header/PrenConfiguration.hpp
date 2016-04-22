@@ -11,6 +11,10 @@ public:
 	~PrenConfiguration();
 	bool START_LOCAL_VIEW;
 	bool IS_DEBUG;
+	bool IS_ON_PI;
+	string TEST_IMG_DIR;
+	string TEST_IMG_FIRST;
+	string TEST_IMG_LAST;
 	int BLUE_RANGE_H_LOW;
 	int BLUE_RANGE_H_HIGH;
 	int BLUE_RANGE_S_LOW;
@@ -27,7 +31,6 @@ public:
 	int MAX_DISTANCE_TO_OBJECT_CROSSING;
 	int REFERENCE_HEIGHT;
 	int REFERENCE_DISTANCE;
-	bool IS_ON_PI;
 
 private:
 };

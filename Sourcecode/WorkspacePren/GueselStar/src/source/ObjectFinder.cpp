@@ -39,7 +39,6 @@ void ObjectFinder::RunProcess() {
 		}
 		else {
 
-
 		cv::Mat image = m_PicCreator->GetImage();
 
 			//origImage = createImage(

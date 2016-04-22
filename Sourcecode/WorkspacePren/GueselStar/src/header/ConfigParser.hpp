@@ -10,7 +10,7 @@ public:
 	~ConfigParser();
 
 	int readIntParam(string paraName);
-
+	string readStringParam(string paraName);
 	bool readBoolParam(string paraName);
 
 private:
