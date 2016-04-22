@@ -26,7 +26,7 @@
 
 		usleep(1000000);
 		m_state = true;
-		uint64_t imgNr = 0;
+		uint32_t imgNr = 0;
 
 		cout << "Viever online" << endl;
 		if (!conf.IS_ON_PI) {
