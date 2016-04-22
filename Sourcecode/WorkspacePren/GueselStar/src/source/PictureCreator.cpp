@@ -51,6 +51,7 @@ void PictureCreator::StartRecording() {
 	while (m_State) {
 	    IplImage* iplImg = cvQueryFrame( capture );
 	    cv::Mat capturedImage =  cv::cvarrToMat(iplImg);
+	    cv::resize(capturedImage, m_TheImage, m_TheImage.size(),0.5,0.5,cv::INTER_LANCZOS4);
 	    usleep(5);
 
         if( m_TheImage.empty() ) {
