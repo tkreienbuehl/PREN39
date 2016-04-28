@@ -15,6 +15,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
 #include <unistd.h>
+#include "PrenConfiguration.hpp"
 
 using namespace std;
 
@@ -31,8 +32,13 @@ public:
 private:
 	void StartRecording(void);
 
+	void RecordFromCam(PrenConfiguration conf);
+
+	void ReadFromFiles(PrenConfiguration conf);
+
     cv::Mat m_TheImage;
     bool m_State;
     PrenController* m_Controller;
     pthread_mutex_t m_mutex;
+
 };

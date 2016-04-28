@@ -36,6 +36,17 @@ void PictureCreator::StopRecording() {
 
 void PictureCreator::StartRecording() {
 
+	PrenConfiguration conf;
+	if (conf.IS_DEBUG && !conf.IS_ON_PI) {
+		ReadFromFiles(conf);
+	}
+	else {
+		RecordFromCam(conf);
+	}
+
+}
+
+void PictureCreator::RecordFromCam(PrenConfiguration conf) {
 	usleep(1000);
 	cout << "Start recording pictures" << endl;
 	m_State = true;
@@ -61,5 +72,31 @@ void PictureCreator::StartRecording() {
 	}
 
 	cvReleaseCapture( &capture );
+}
 
+void PictureCreator::ReadFromFiles(PrenConfiguration conf) {
+	usleep(1000);
+	cout << "Start reading pictures" << endl;
+	m_State = true;
+
+	cout << "running :)" << endl;
+	while (m_State) {
+		for (int i = conf.TEST_IMG_FIRST; i < conf.TEST_IMG_LAST; i++) {
+			string path = conf.TEST_IMG_DIR;
+			char file[20];
+			sprintf(file,"img_%i.jpg",i);
+			path.append(file);
+			cv::Mat capturedImage = cv::imread(path);
+			cout << path << endl;
+			path.clear();
+			if( m_TheImage.empty() ) {
+				cout << "Image is empty" << endl;
+				m_State = false;
+			}
+			else {
+				cv::resize(capturedImage, m_TheImage, m_TheImage.size(),0.5,0.5,cv::INTER_LANCZOS4);
+				usleep(5);
+			}
+		}
+	}
 }
