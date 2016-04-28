@@ -18,7 +18,7 @@ PictureCreator::~PictureCreator() {
 }
 
 void* PictureCreator::staticEntryPoint(void* threadId) {
-	((PictureCreator*)threadId)->StartRecording();
+	reinterpret_cast<PictureCreator*>(threadId)->StartRecording();
 	cout << "Stop recording pictures" << endl;
 	pthread_exit(threadId);
 }
@@ -78,8 +78,6 @@ void PictureCreator::ReadFromFiles(PrenConfiguration conf) {
 	usleep(1000);
 	cout << "Start reading pictures" << endl;
 	m_State = true;
-
-	cout << "running :)" << endl;
 	while (m_State) {
 		for (int i = conf.TEST_IMG_FIRST; i < conf.TEST_IMG_LAST; i++) {
 			string path = conf.TEST_IMG_DIR;
@@ -92,10 +90,11 @@ void PictureCreator::ReadFromFiles(PrenConfiguration conf) {
 			if( m_TheImage.empty() ) {
 				cout << "Image is empty" << endl;
 				m_State = false;
+				break;
 			}
 			else {
 				cv::resize(capturedImage, m_TheImage, m_TheImage.size(),0.5,0.5,cv::INTER_LANCZOS4);
-				usleep(5);
+				usleep(2000);
 			}
 		}
 	}

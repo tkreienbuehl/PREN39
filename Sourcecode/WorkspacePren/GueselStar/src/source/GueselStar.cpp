@@ -72,9 +72,9 @@ int main(int argc, char** argv) {
 	debugServer->stopServer();
 	usleep(1000000);
 	picViewer->stopViewer();
-	usleep(5000);
+	usleep(1000000);
 	objectFinder->stopProcess();
-	usleep(5000);
+	usleep(1000000);
 
 	delete picViewer;
 	delete rtFinder;

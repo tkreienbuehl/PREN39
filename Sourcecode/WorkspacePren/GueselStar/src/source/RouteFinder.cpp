@@ -1,7 +1,7 @@
 #include "../header/RouteFinder.hpp"
 
 RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
-: MINLENGTH(10), MINXDIFF(3), MINYDIFF(3), NROFLINES(20), MAX_PIX_DIFF(10), MIN_RT_WIDTH(50) {
+: MINLENGTH(10), MINXDIFF(4), MINYDIFF(4), NROFLINES(20), MAX_PIX_DIFF(7), MIN_RT_WIDTH(50) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
@@ -9,20 +9,11 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_leftRoutePos = 0;
 	m_rightRoutePos = 0;
 	m_rtWidth = 0;
+	pthread_mutex_init(&m_mutex, NULL);
 }
 
 RouteFinder::~RouteFinder() {
 	delete m_GradMat;
-}
-
-std::string RouteFinder::formatFileName(std::string fileStr, unsigned short nr) {
-	ostringstream nrStream;
-	nrStream << nr;
-	unsigned short start = fileStr.find("000");
-	cout << nrStream.str() << endl;
-	fileStr.replace(start,3,nrStream.str().c_str(),nrStream.str().length());
-	cout << fileStr << endl;
-	return fileStr;
 }
 
 void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
@@ -150,10 +141,8 @@ void RouteFinder::calcAverageLimit(unsigned short& upperLimit, unsigned short& l
 	lowerLimit = m_minVals.at(8);
 	upperLimit = m_maxVals.at(8);
 
-	//cout << "**********************************************" << endl;
 	m_minVals.clear();
 	m_maxVals.clear();
-	//cout << " Average min" << *lowerLimit << " Average max" << *upperLimit << endl;
 }
 
 cv::Mat RouteFinder::getOriginalImage() {
@@ -161,38 +150,44 @@ cv::Mat RouteFinder::getOriginalImage() {
 }
 
 cv::Mat RouteFinder::getGrayImage() {
-	return m_GrayImg;
+	pthread_mutex_lock(&m_mutex);
+		cv::Mat retImg = m_GrayImg;
+	pthread_mutex_unlock(&m_mutex);
+	return retImg;
 }
 
 cv::Mat RouteFinder::getFilteredImage() {
-	return m_FinalFltImg;
+	pthread_mutex_lock(&m_mutex);
+		cv::Mat retImg = m_FinalFltImg;
+	pthread_mutex_unlock(&m_mutex);
+	return retImg;
 }
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
-	((RouteFinder*)threadId)->runProcess();
+	reinterpret_cast<RouteFinder*>(threadId)->runProcess();
 	cout << "Thread ended " << endl;
 	return NULL;
 }
 
 int RouteFinder::runProcess() {
 	cv::Mat grayImg, image;
-	ostringstream nrStream;
 
 	cout << "Start" << endl;
-    for(int i = 0; i<100000; i++) {
+    for(int i = 0; i<25000; i++) {
 
         image = m_PicCreator->GetImage();
 
         if (!image.empty()) {
 
 			cv::cvtColor(image,grayImg,CV_BGR2GRAY);
-			cv::Mat fltImg = cv::Mat::zeros(image.rows, image.cols, CV_8UC1);
-			m_GradMat = GradientMat::getInstance(static_cast<short>(image.rows), static_cast<short>(image.cols));
+			cv::Mat fltImg = cv::Mat::zeros(grayImg.rows, grayImg.cols, CV_8UC1);
 			edgeDetection(&grayImg, &fltImg);
 			calcDriveDirection(&fltImg);
 			m_GrayImg = grayImg;
 			m_FinalFltImg = fltImg;
-			//cout << "image processed nr:" << i << endl;
+			if (i%100 == 0) {
+				cout << "image processed nr:" << i << endl;
+			}
         }
         else {
         	i--;

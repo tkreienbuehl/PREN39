@@ -156,7 +156,10 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 }
 
 cv::Mat ObjectFinder::getImage() {
-	return m_MarkedImage;
+	pthread_mutex_lock(&m_mutex);
+		cv::Mat retImg = m_MarkedImage;
+	pthread_mutex_unlock(&m_mutex);
+	return retImg;
 }
 
 void ObjectFinder::stopProcess() {

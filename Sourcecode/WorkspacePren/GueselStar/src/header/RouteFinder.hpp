@@ -16,7 +16,6 @@ public:
 	RouteFinder(PrenController* controller, PictureCreator* picCreator);
 	~RouteFinder();
 
-	std::string formatFileName(std::string fileStr, unsigned short nr);
 	void edgeDetection(cv::Mat* mat, cv::Mat* changesMat);
 	void routeLocker(cv::Mat* edgeImg, unsigned short upperLimit, unsigned short lowerLimit, unsigned short row);
 	void calcDriveDirection(cv::Mat* edgeImg);
@@ -37,9 +36,11 @@ private:
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
 	const short MINLENGTH;
-	const short MINYDIFF, MINXDIFF, MIN_RT_WIDTH;
+	const short MINXDIFF;
+	const short MINYDIFF;
 	const short NROFLINES;
 	const short MAX_PIX_DIFF;
+	const short MIN_RT_WIDTH;
 	GradientMat* m_GradMat;
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;
@@ -47,5 +48,6 @@ private:
 	cv::Mat m_GrayImg;
 	cv::Mat m_FinalFltImg;
 	unsigned short m_leftRoutePos, m_rightRoutePos, m_rtWidth;
+	pthread_mutex_t m_mutex;
 
 };

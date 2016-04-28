@@ -35,7 +35,12 @@
 		}
 		while (m_state) {
 
-			fltImage = m_rtFinder->getFilteredImage();
+			try {
+				fltImage = m_rtFinder->getFilteredImage();
+			}
+			catch (...) {
+				cout << "Error occured" << endl;
+			}
 
 
 			if (!fltImage.empty()) {
@@ -59,14 +64,30 @@
 					imgNr++;
 				}
 				else {
-					cv::imshow("The Image", fltImage);
-					cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
-					objectImg =  m_objectFinder->getImage();
-					cv::imshow("Object Detection", objectImg);
-					cv::waitKey(50);
+					try {
+						cv::imshow("The Image", fltImage);
+						cv::waitKey(50);
+					}
+					catch (...) {
+						cout << "Error occured" << endl;
+					}
+					try {
+						cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
+						cv::waitKey(20);
+					}
+					catch (...) {
+						cout << "Error occured" << endl;
+					}
+					try {
+						objectImg =  m_objectFinder->getImage();
+						cv::imshow("Object Detection", objectImg);
+						cv::waitKey(150);
+					}
+					catch (...) {
+						cout << "Error occured" << endl;
+					}
+
 				}
 			}
 		}
-		cv::waitKey(0);
-
 	}
