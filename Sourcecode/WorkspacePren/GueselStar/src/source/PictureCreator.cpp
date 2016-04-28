@@ -87,7 +87,7 @@ void PictureCreator::ReadFromFiles(PrenConfiguration conf) {
 			sprintf(file,"img_%i.jpg",i);
 			path.append(file);
 			cv::Mat capturedImage = cv::imread(path);
-			cout << path << endl;
+			m_TheImage = capturedImage;
 			path.clear();
 			if( m_TheImage.empty() ) {
 				cout << "Image is empty" << endl;
