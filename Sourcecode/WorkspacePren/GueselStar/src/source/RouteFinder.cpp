@@ -1,7 +1,7 @@
 #include "../header/RouteFinder.hpp"
 
 RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
-: MINLENGTH(10), MINXDIFF(4), MINYDIFF(4), NROFLINES(20), MAX_PIX_DIFF(7), MIN_RT_WIDTH(50) {
+: MINLENGTH(15), MINXDIFF(4), MINYDIFF(4), NROFLINES(20), MAX_PIX_DIFF(7), MIN_RT_WIDTH(50000) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
@@ -38,7 +38,7 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     }
 
     i = nRows-1;
-    upperLimit = 0;
+    upperLimit = mat->cols;
     lowerLimit = 0;
     for( i = nRows-3; i > 0; i--) {
     	if (i > nRows - NROFLINES) {
@@ -47,7 +47,7 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     	else {
     		if (i == nRows - NROFLINES) {
     			calcAverageLimit(upperLimit, lowerLimit);
-    			//cout << upperLimit << " " << lowerLimit << endl;
+    			cout << lowerLimit << " " << upperLimit << endl;
     		}
     	}
     }
@@ -186,7 +186,7 @@ int RouteFinder::runProcess() {
 			m_GrayImg = grayImg;
 			m_FinalFltImg = fltImg;
 			if (i%100 == 0) {
-				cout << "image processed nr:" << i << endl;
+				//cout << "image processed nr:" << i << endl;
 			}
         }
         else {
