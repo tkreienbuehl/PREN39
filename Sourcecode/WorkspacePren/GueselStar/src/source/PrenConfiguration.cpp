@@ -30,9 +30,15 @@ PrenConfiguration::PrenConfiguration() {
 		MAX_DISTANCE_TO_OBJECT_CROSSING = parser.readIntParam("MAX_DISTANCE_TO_OBJECT_CROSSING");
 		REFERENCE_HEIGHT = parser.readIntParam("REFERENCE_HEIGHT");
 		REFERENCE_DISTANCE = parser.readIntParam("REFERENCE_DISTANCE");
-		P_PART = parser.readIntParam("P-PART");
-		I_PART = parser.readIntParam("I-PART");
-		D_PART = parser.readIntParam("D-PART");
+		P_PART = parser.readUShortParam("P-PART");
+		I_PART = parser.readUShortParam("I-PART");
+		D_PART = parser.readUShortParam("D-PART");
+		MINLENGTH = parser.readUShortParam("MINLENGHT");
+		MINXDIFF = parser.readUShortParam("MINXDIFF");
+		MINYDIFF = parser.readUShortParam("MINYDIFF");
+		NROFLINES = parser.readUShortParam("NROFLINES");
+		MAX_PIX_DIFF = parser.readUShortParam("MAX_PIX_DIFF");
+		MIN_RT_WIDTH = parser.readUShortParam("MIN_RT_WIDTH");
 }
 
 PrenConfiguration::~PrenConfiguration() {

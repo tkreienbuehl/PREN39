@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <stdint.h>
 
 using namespace std;
 
@@ -10,6 +11,7 @@ public:
 	~ConfigParser();
 
 	int readIntParam(string paraName);
+	ushort readUShortParam(string paraName);
 	string readStringParam(string paraName);
 	bool readBoolParam(string paraName);
 

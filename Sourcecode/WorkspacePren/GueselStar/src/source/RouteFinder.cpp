@@ -1,7 +1,13 @@
 #include "../header/RouteFinder.hpp"
 
-RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
-: MINLENGTH(20), MINXDIFF(4), MINYDIFF(4), NROFLINES(20), MAX_PIX_DIFF(25), MIN_RT_WIDTH(200) {
+RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator) {
+	PrenConfiguration conf;
+	MINLENGTH = conf.MINLENGTH;
+	MINXDIFF = conf.MINXDIFF;
+	MINYDIFF = conf.MINYDIFF;
+	NROFLINES = conf.NROFLINES;
+	MAX_PIX_DIFF = conf.MAX_PIX_DIFF;
+	MIN_RT_WIDTH = conf.MIN_RT_WIDTH;
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;

@@ -9,6 +9,7 @@
 #include "GradientMat.hpp"
 #include <unistd.h>
 #include "PIDCalculation.h"
+#include <stdint.h>
 
 using namespace std;
 
@@ -36,12 +37,12 @@ private:
 
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
-	const short MINLENGTH;
-	const short MINXDIFF;
-	const short MINYDIFF;
-	const short NROFLINES;
-	const short MAX_PIX_DIFF;
-	const short MIN_RT_WIDTH;
+	ushort MINLENGTH;
+	ushort MINXDIFF;
+	ushort MINYDIFF;
+	ushort NROFLINES;
+	ushort MAX_PIX_DIFF;
+	ushort MIN_RT_WIDTH;
 	GradientMat* m_GradMat;
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;

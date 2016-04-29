@@ -22,6 +22,20 @@ int ConfigParser::readIntParam(string paraName) {
     return atoi(paraVal.c_str());
 }
 
+ushort ConfigParser::readUShortParam(string paraName) {
+    string str;
+    ifstream file(m_paraFile.c_str());
+    string paraVal;
+    while (getline(file, str)) {
+    	paraVal.clear();
+    	if (str.find(paraName) != string::npos) {
+    		parseParaVal(paraVal, str);
+    		break;
+    	}
+    }
+    return static_cast<ushort>(atoi(paraVal.c_str()));
+}
+
 string ConfigParser::readStringParam(string paraName) {
     string str;
     ifstream file(m_paraFile.c_str());

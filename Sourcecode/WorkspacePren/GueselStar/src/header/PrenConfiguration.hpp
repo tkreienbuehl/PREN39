@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "ConfigParser.hpp"
+#include <stdint.h>
 
 using namespace std;
 class PrenConfiguration {
@@ -31,9 +32,15 @@ public:
 	int MAX_DISTANCE_TO_OBJECT_CROSSING;
 	int REFERENCE_HEIGHT;
 	int REFERENCE_DISTANCE;
-	int P_PART;
-	int I_PART;
-	int D_PART;
+	ushort P_PART;
+	ushort I_PART;
+	ushort D_PART;
+	ushort MINLENGTH;
+	ushort MINXDIFF;
+	ushort MINYDIFF;
+	ushort NROFLINES;
+	ushort MAX_PIX_DIFF;
+	ushort MIN_RT_WIDTH;
 
 private:
 };
