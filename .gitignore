@@ -1,3 +1,9 @@
+
 # .metadata von eclipse-Workspace ignorieren
 Sourcecode/WorkspacePren/.metadata/
 .cproject
+# Config-File ignorieren
+Sourcecode/WorkspacePren/GueselStar/conf/PrenConfig.conf
+Sourcecode/WorkspacePren/GueselStar/.cproject
+Sourcecode/WorkspacePren/UARTTestes/.cproject
+
