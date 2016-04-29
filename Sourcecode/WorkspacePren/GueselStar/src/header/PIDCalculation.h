@@ -8,6 +8,9 @@
 #pragma once
 
 #include "PrenConfiguration.hpp"
+#include <stdint.h>
+
+using namespace std;
 
 class PIDCalculation {
 public:
