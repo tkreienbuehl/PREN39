@@ -31,6 +31,9 @@ public:
 	int MAX_DISTANCE_TO_OBJECT_CROSSING;
 	int REFERENCE_HEIGHT;
 	int REFERENCE_DISTANCE;
+	int P_PART;
+	int I_PART;
+	int D_PART;
 
 private:
 };
