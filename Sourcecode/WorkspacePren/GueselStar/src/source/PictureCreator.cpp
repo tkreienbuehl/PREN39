@@ -94,7 +94,7 @@ void PictureCreator::ReadFromFiles(PrenConfiguration conf) {
 			}
 			else {
 				cv::resize(capturedImage, m_TheImage, m_TheImage.size(),0.5,0.5,cv::INTER_LANCZOS4);
-				usleep(2000);
+				usleep(100000);
 			}
 		}
 	}

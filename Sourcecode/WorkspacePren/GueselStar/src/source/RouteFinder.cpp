@@ -1,13 +1,13 @@
 #include "../header/RouteFinder.hpp"
 
 RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
-: MINLENGTH(15), MINXDIFF(4), MINYDIFF(4), NROFLINES(20), MAX_PIX_DIFF(7), MIN_RT_WIDTH(50000) {
+: MINLENGTH(20), MINXDIFF(4), MINYDIFF(4), NROFLINES(20), MAX_PIX_DIFF(25), MIN_RT_WIDTH(200) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
 	m_State = false;
 	m_leftRoutePos = 0;
-	m_rightRoutePos = 0;
+	m_rightRoutePos = 320;
 	m_rtWidth = 0;
 	pthread_mutex_init(&m_mutex, NULL);
 }
@@ -40,15 +40,14 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     i = nRows-1;
     upperLimit = mat->cols;
     lowerLimit = 0;
-    for( i = nRows-3; i > 0; i--) {
-    	if (i > nRows - NROFLINES) {
-    		approxLimit(changesMat, upperLimit, lowerLimit, i);
+    for( i = nRows-10; i > static_cast<short>(nRows/2); i--) {
+    	if (i%NROFLINES == 0) {
+    		calcAverageLimit(upperLimit, lowerLimit);
+    		cv::circle(*changesMat, cv::Point(lowerLimit,i), 3, cv::Scalar(255,0,0),2);
+    		cv::circle(*changesMat, cv::Point(upperLimit,i), 3, cv::Scalar(255,0,0),2);
     	}
     	else {
-    		if (i == nRows - NROFLINES) {
-    			calcAverageLimit(upperLimit, lowerLimit);
-    			cout << lowerLimit << " " << upperLimit << endl;
-    		}
+    		approxLimit(changesMat, upperLimit, lowerLimit, i);
     	}
     }
     routeLocker(changesMat,upperLimit, lowerLimit, i);
@@ -60,35 +59,33 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg,
 		unsigned short lowerLimit,
 		unsigned short row) {
 
-	if ((m_leftRoutePos == 0 && m_rightRoutePos == 0) ||
+	if ((m_leftRoutePos == 0 && m_rightRoutePos == 320) ||
 			(compareTolerance(m_leftRoutePos,lowerLimit) && compareTolerance(m_rightRoutePos,upperLimit))) {
 		m_leftRoutePos = lowerLimit;
 		m_rightRoutePos = upperLimit;
 	}
 	m_rtWidth = m_rightRoutePos-m_leftRoutePos;
 	if (m_rtWidth < MIN_RT_WIDTH) {
-		m_rightRoutePos = 0;
-		m_leftRoutePos = 0;
+		//m_rightRoutePos = edgeImg->cols;
+		//m_leftRoutePos = 0;
 	}
     // Fahrtrichtungsvektor
     cv::line(*edgeImg,cv::Point(edgeImg->cols/2,edgeImg->rows),
     		cv::Point(edgeImg->cols/2,edgeImg->rows/2),cv::Scalar(255,0,0), 2);
-	cv::circle(*edgeImg, cv::Point(m_leftRoutePos,edgeImg->rows-5), 3, cv::Scalar(255,0,0),2);
-	cv::circle(*edgeImg, cv::Point(m_rightRoutePos,edgeImg->rows-5), 3, cv::Scalar(255,0,0),2);
 }
 
 void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
 	//int middle;
 	unsigned short rows = edgeImg->rows;
-	for (short i = rows; i > static_cast<short>(rows-rows/4) ; i-=5 ) {
-		for (short j = m_leftRoutePos-(2*MAX_PIX_DIFF) ; j< m_leftRoutePos+(2*MAX_PIX_DIFF); j++) {
+	for (short i = rows; i > static_cast<short>(rows/2) ; i-=5 ) {
+		for (short j = m_leftRoutePos-MAX_PIX_DIFF ; j< m_leftRoutePos+MAX_PIX_DIFF; j++) {
 			if (edgeImg->at<uchar>(i,j) == 255) {
 				if (compareTolerance(m_leftRoutePos, j)) {
 					//cv::circle(*edgeImg, cv::Point(j,i), 3, cv::Scalar(255,0,0),2);
 				}
 			}
 		}
-		for (short j = m_rightRoutePos-(2*MAX_PIX_DIFF) ; j< m_rightRoutePos+(2*MAX_PIX_DIFF); j++) {
+		for (short j = m_rightRoutePos-MAX_PIX_DIFF ; j< m_rightRoutePos+MAX_PIX_DIFF; j++) {
 			if (edgeImg->at<uchar>(i,j) == 255) {
 				if (compareTolerance(m_rightRoutePos, j)) {
 					//cv::circle(*edgeImg, cv::Point(i,j), 3, cv::Scalar(255,0,0),2);
