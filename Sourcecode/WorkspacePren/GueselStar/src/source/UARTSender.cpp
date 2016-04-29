@@ -1,4 +1,4 @@
-#include "./header/UARTSender.hpp"
+#include "../header/UARTSender.hpp"
 
 UARTSender::UARTSender(UARTHandler* handler) {
 	m_uart0_filestream = handler->getFileStream();
