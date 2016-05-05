@@ -100,3 +100,13 @@ void* UARTReciever::staticEntryPoint(void* threadId) {
 	cout << "Thread ended " << endl;
 	return NULL;
 }
+
+uint8_t UARTReciever::getFlexDistance() {
+	return 0;
+}
+uint8_t UARTReciever::getEngineSpeed() {
+	return 0;
+}
+uint16_t UARTReciever::getUltraDist() {
+	return 0;
+}

@@ -3,8 +3,9 @@
 #include <iostream>
 #include <unistd.h>
 #include "PrenConfiguration.hpp"
-#include "UARTReciever.hpp"
 #include "UARTSender.hpp"
+#include "UARTReciever.hpp"
+
 
 using namespace std;
 
@@ -43,4 +44,5 @@ private:
 	states m_State;
 	UARTReciever* uartReceiver;
 	UARTSender* uartSender;
+	UARTHandler* handler;
 };
