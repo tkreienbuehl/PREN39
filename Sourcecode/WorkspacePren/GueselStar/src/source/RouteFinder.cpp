@@ -45,13 +45,14 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     }
 
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(*changesMat, lines, 1, CV_PI/180, 50, 50, 10 );
+    cv::HoughLinesP(*changesMat, lines, 1, CV_PI/180, 30, 40, 5 );
     cv::Mat test;
     for( size_t i = 0; i < lines.size(); i++ )
     {
       cv::Vec4i l = lines[i];
-      line(test, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0,0,255), 3, CV_AA);
+      line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
     }
+    //*changesMat = test;
 
     i = nRows-1;
     upperLimit = mat->cols;
@@ -59,7 +60,7 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     for( i = nRows-10; i > (nRows >> 1); i--) {
     	if ((i % NROFLINES) == 0 && m_minVals.size() > 0) {
     		calcAverageLimit(upperLimit, lowerLimit);
-    		cv::circle(*changesMat, cv::Point(lowerLimit,i), 2, cv::Scalar(255,0,0),2);
+    		//cv::circle(*changesMat, cv::Point(lowerLimit,i), 2, cv::Scalar(255),2);
     		//cv::circle(*changesMat, cv::Point(upperLimit,i), 2, cv::Scalar(255,0,0),2);
     	}
     	else {
@@ -87,7 +88,7 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg,
 	}
     // Fahrtrichtungsvektor
     cv::line(*edgeImg,cv::Point((edgeImg->cols >> 1),edgeImg->rows),
-    		cv::Point((edgeImg->cols >> 1),(edgeImg->rows >> 1)),cv::Scalar(255,0,0), 2);
+    		cv::Point((edgeImg->cols >> 1),(edgeImg->rows >> 1)),cv::Scalar(255), 2);
 }
 
 void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
