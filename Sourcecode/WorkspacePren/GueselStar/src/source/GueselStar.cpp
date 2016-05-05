@@ -8,7 +8,15 @@ int main(int argc, char** argv) {
 	testing::InitGoogleTest(&argc, argv);
 	int testResult = RUN_ALL_TESTS();
 
-	cout << testResult << endl;
+	initscr();
+	printw("Welcome");
+	refresh();
+	usleep(1000000);
+	clear();
+	printw("Gueselstar rocks: Tests passed %i <- WOOOHOOOO!!!!", testResult);
+	refresh();
+	usleep(1000000);
+	endwin();
 
 	usleep(1000000);
 

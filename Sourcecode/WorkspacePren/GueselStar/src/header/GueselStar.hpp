@@ -8,3 +8,4 @@
 #include "PictureViewer.hpp"
 #include <iostream>
 #include <unistd.h>
+#include <ncurses.h>

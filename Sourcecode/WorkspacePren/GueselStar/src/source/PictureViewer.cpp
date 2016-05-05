@@ -72,15 +72,15 @@
 						cout << "Error occured" << endl;
 					}
 					try {
-						cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
-						cv::waitKey(20);
+						//cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
+						cv::waitKey(50);
 					}
 					catch (...) {
 						cout << "Error occured" << endl;
 					}
 					try {
-						objectImg =  m_objectFinder->getImage();
-						cv::imshow("Object Detection", objectImg);
+						//objectImg =  m_objectFinder->getImage();
+						//cv::imshow("Object Detection", objectImg);
 						cv::waitKey(150);
 					}
 					catch (...) {
