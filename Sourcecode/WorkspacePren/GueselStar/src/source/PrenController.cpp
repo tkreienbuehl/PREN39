@@ -1,13 +1,12 @@
 #include "../header/PrenController.hpp"
 
-
 PrenController::PrenController() {
 	prenConfig = new PrenConfiguration();
 	m_State = STOPPED;
 }
 
 PrenController::~PrenController() {
-
+	uartSender->sendStopCmd();
 }
 
 PrenConfiguration* PrenController::getPrenConfig(void) {
@@ -34,7 +33,30 @@ void PrenController::setState(const states state) {
 void PrenController::runProgram() {
 
 	while (m_State != END) {
-		//@TODO Implement Controller code here
+		pthread_t threads;
+		int rc;
+
+		UARTHandler* handler = new UARTHandler();
+		handler = new UARTHandler();
+		char ifName[] = "/dev/ttyACM3";
+		handler->openSerialIF(ifName);
+		if (!handler->setUartConfig(handler->FULL_SPEED)) {
+			cout << "configuration failed" << endl;
+			delete handler;
+		}
+
+		uartReceiver = new UARTReciever(handler);
+		uartSender = new UARTSender(handler);
+
+		rc = pthread_create(&threads, NULL, UARTReciever::staticEntryPoint,
+				uartReceiver);
+		if (rc) {
+			cout << "Error:unable to create thread," << rc << endl;
+		}
+		usleep(1000);
+
+		uartSender->sendStartCmd();
+
 		usleep(300);
 	}
 	cout << "exiting Controller" << endl;
@@ -63,7 +85,6 @@ void PrenController::setTargetFieldFound(int distance) {
 	cout << "Targetfield ahead: Distance to Tagetfield: " << distance << endl;
 }
 
-
 void PrenController::setLaneLost() {
 
 	// inform MC-Board
@@ -74,22 +95,24 @@ void PrenController::setSteeringAngle(int angle) {
 
 	// inform MC-Board: adjust
 	cout << "set new angle" << angle << endl;
+	uartSender->setSteering(angle);
 }
 
 void PrenController::setVehicleInCrossing() {
 
-	// inform MC-Board: wait
 	cout << "Vehicle in Crossing";
+
+
 }
 
-bool PrenController:: checkObjectOnLane(void) {
+bool PrenController::checkObjectOnLane(void) {
 
 	bool objectOnLane = false;
 	int distance = 0;
 
 	// ask MC-Board for distance
 
-	if(distance < 10) {
+	if (distance < 10) {
 		objectOnLane = true;
 	}
 

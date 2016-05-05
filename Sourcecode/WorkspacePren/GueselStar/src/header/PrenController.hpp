@@ -3,7 +3,8 @@
 #include <iostream>
 #include <unistd.h>
 #include "PrenConfiguration.hpp"
-
+#include "UARTReciever.hpp"
+#include "UARTSender.hpp"
 
 using namespace std;
 
@@ -40,4 +41,6 @@ private:
 	int stopProgram(void);
 	PrenConfiguration* prenConfig;
 	states m_State;
+	UARTReciever* uartReceiver;
+	UARTSender* uartSender;
 };
