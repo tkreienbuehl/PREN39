@@ -34,6 +34,7 @@ private:
 	int runProcess();
 	void bubbleSort(std::vector<unsigned short>* vals);
 	bool compareTolerance(unsigned short refVal, unsigned short compVal);
+	void setLineDirection(cv::Vec4i& line);
 
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
@@ -51,5 +52,7 @@ private:
 	cv::Mat m_FinalFltImg;
 	unsigned short m_leftRoutePos, m_rightRoutePos, m_rtWidth;
 	pthread_mutex_t m_mutex;
+	bool m_rightSidePositiveSlope;
+	bool m_leftSidePositiveSlope;
 
 };

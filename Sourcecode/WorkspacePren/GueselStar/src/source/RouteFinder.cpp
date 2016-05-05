@@ -17,6 +17,8 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_rtWidth = 0;
 	pthread_mutex_init(&m_mutex, NULL);
 	cout << MINLENGTH << " " << NROFLINES << endl;
+	m_rightSidePositiveSlope = true;
+	m_leftSidePositiveSlope = false;
 }
 
 RouteFinder::~RouteFinder() {
@@ -31,7 +33,12 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     short xDiff, yDiff;
     ushort upperLimit, lowerLimit, i,j;
     ushort nRows = mat->rows;
-    ushort nCols = mat->cols* mat->channels();
+    ushort nCols = mat->cols * mat->channels();
+    bool leftSidePositive, rightSidePositive;
+    short lNegSignCnt, lPosSignCnt, rNegSignCnt, rPosSignCnt;
+    lNegSignCnt = lPosSignCnt = rNegSignCnt = rPosSignCnt = 0;
+    leftSidePositive = m_leftSidePositiveSlope;
+	rightSidePositive = m_rightSidePositiveSlope;
 
     for(i = (nRows >> 1)-10; i < nRows-1; ++i) {
         for (j = 1; j < nCols-2; ++j) {
@@ -45,14 +52,69 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
     }
 
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(*changesMat, lines, 1, CV_PI/180, 30, 40, 5 );
-    cv::Mat test;
+    std::vector<cv::Vec4i> savedlines;
+    cv::HoughLinesP(*changesMat, lines, 1, CV_PI/180, 15, 30, 20 );
     for( size_t i = 0; i < lines.size(); i++ )
     {
-      cv::Vec4i l = lines[i];
-      line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
+		cv::Vec4i l = lines[i];
+		setLineDirection(l);
+		if ((l[2] - l[0]) != 0) {
+			int slope = (l[3] - l[1]) / (l[2] - l[0]);
+			if (abs(slope) == 1 || abs(slope) == 2) {
+				//leftSide
+				if (l[2] < ((nCols >> 1) - MAX_PIX_DIFF) && l[0] < ((nCols >> 1) - MAX_PIX_DIFF)) {
+					if (slope < 0) {
+						lNegSignCnt++;
+					}
+					else {
+						lPosSignCnt++;
+					}
+					savedlines.push_back(l);
+				}
+				//right side
+				if (l[2] > ((nCols >> 1) + MAX_PIX_DIFF) && l[0] > ((nCols >> 1) + MAX_PIX_DIFF)) {
+					if (slope < 0) {
+						rNegSignCnt++;
+					}
+					else {
+						rPosSignCnt++;
+					}
+					savedlines.push_back(l);
+				}
+			}
+		}
     }
-    //*changesMat = test;
+    if (lPosSignCnt < lNegSignCnt) {
+    	leftSidePositive = false;
+    }
+    if (rPosSignCnt < rNegSignCnt) {
+    	rightSidePositive = false;
+    }
+
+	if (m_rightSidePositiveSlope != rightSidePositive) {
+		rightSidePositive = m_rightSidePositiveSlope;
+	}
+	if (m_leftSidePositiveSlope != leftSidePositive) {
+		m_leftSidePositiveSlope = leftSidePositive;
+	}
+
+    for( size_t i = 0; i < savedlines.size(); i++ )
+    {
+		cv::Vec4i l = savedlines[i];
+		int slope = (l[3] - l[1]) / (l[2] - l[0]);
+		if (l[2] < ((nCols >> 1) - MAX_PIX_DIFF) && l[0] < ((nCols >> 1) - MAX_PIX_DIFF)) {
+			if ( (slope > 0 && leftSidePositive) || (slope < 0 && !leftSidePositive)) {
+				line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
+			}
+		}
+		//right side
+		if (l[2] > ((nCols >> 1) + MAX_PIX_DIFF) && l[0] > ((nCols >> 1) + MAX_PIX_DIFF)) {
+			if ( (slope > 0 && rightSidePositive) || (slope < 0 && !rightSidePositive)) {
+				line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
+			}
+		}
+    }
+    usleep(10000);
 
     i = nRows-1;
     upperLimit = mat->cols;
@@ -241,7 +303,6 @@ void RouteFinder::bubbleSort(std::vector<unsigned short>* vals) {
 			}
 		}
 	}
-
 }
 
 bool RouteFinder::compareTolerance(unsigned short refVal, unsigned short compVal) {
@@ -249,4 +310,16 @@ bool RouteFinder::compareTolerance(unsigned short refVal, unsigned short compVal
 		return true;
 	}
 	return false;
+}
+
+void RouteFinder::setLineDirection(cv::Vec4i& line) {
+	cv::Point p1(line[0], line[1]);
+	cv::Point p2(line[2], line[3]);
+	cv::Point tmp;
+	if (p1.y < p2.y) {
+		tmp = p2;
+		p2 = p1;
+		p1 = tmp;
+	}
+
 }

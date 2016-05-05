@@ -76,10 +76,10 @@ Lenkungsservo        & Rasp$\to$Frd & LeS p,uint8        & abs Winkel (0=127)   
 Kameraservo          & Rasp$\to$Frd & CamP p,uint8       & Kamera pos                & \\\hline
 Debug Messages       & Frd$\to$Rasp & DBG,char[]         & Meldung                   & \\\hline
 NochDa               & Frd$\to$Rasp & There              & Flag                      & periodisch all 0.5s \\
-                     & Rasp$\to$Frd & Ja                 & Erhalten?                 & Wenn nein $\to$ DC stop \\\hline
-Start                & Rasp$\to$Frd & StartFrd           &                           & Hochfahren und init \\
+                     & Rasp$\to$Frd & Ja a               & Erhalten?                 & Wenn nein $\to$ DC stop \\\hline
+Start                & Rasp$\to$Frd & StartFrd a         &                           & Hochfahren und init \\
                      & Frd$\to$Rasp & Ready              &                           & \\\hline
-Stop	                 & Rasp$\to$Frd & Stop               &                           & Programm beenden \\
+Stop	                 & Rasp$\to$Frd & Stop a             &                           & Programm beenden \\
 	                 & Frd$\to$Rasp & Stop               &                           & Programm beendet \\ \hline
 \end{tabular}
 \subsection{Methodenübersicht \code{UARTReciever}}
