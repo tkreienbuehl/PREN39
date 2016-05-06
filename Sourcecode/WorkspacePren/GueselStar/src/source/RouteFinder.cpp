@@ -61,6 +61,8 @@ int RouteFinder::runProcess() {
 
 			cv::cvtColor(image,grayImg,CV_BGR2GRAY);
 			cv::Mat fltImg = cv::Mat::zeros(grayImg.rows, grayImg.cols, CV_8UC1);
+			m_Rows = grayImg.rows;
+			m_Cols = grayImg.cols * grayImg.channels();
 			edgeDetection(&grayImg, &fltImg);
 			calcDriveDirection(&fltImg);
 			m_GrayImg = grayImg;
@@ -228,6 +230,15 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	if (rightLines.size() == 0) {
 		cout << "*** Left side found only ***" << endl;
 	}
+	short max = 0;
+	cv::Point pt;
+	for (unsigned short i = 0; i< leftLines.size() ; i++) {
+		if (leftLines[i][1] > max) {
+			pt = cv::Point(leftLines[i][0],leftLines[i][1]);
+			max = leftLines[i][1];
+		}
+	}
+	calcRefDistance(pt);
 }
 
 void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
@@ -309,4 +320,10 @@ void RouteFinder::calcAverageLimit(unsigned short& upperLimit, unsigned short& l
 
 	m_minVals.clear();
 	m_maxVals.clear();
+}
+
+void RouteFinder::calcRefDistance(cv::Point pt) {
+	short dist = (pt.y >> 1) + 40;
+	short diff = pt.x - dist;
+	cout << " ******* " << pt.x << "******** " << diff << " *************** " << endl;
 }

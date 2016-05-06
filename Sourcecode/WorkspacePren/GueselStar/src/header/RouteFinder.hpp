@@ -36,6 +36,7 @@ private:
 	void calcDriveDirection(cv::Mat* edgeImg);
 	void approxLimit(cv::Mat* mat, unsigned short& upperLimit, unsigned short& lowerLimit, unsigned short row);
 	void calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit);
+	void calcRefDistance(cv::Point pt);
 
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
@@ -55,5 +56,6 @@ private:
 	pthread_mutex_t m_mutex;
 	bool m_rightSidePositiveSlope;
 	bool m_leftSidePositiveSlope;
+	unsigned short m_Rows, m_Cols;
 
 };
