@@ -14,6 +14,9 @@ int ConfigParser::readIntParam(string paraName) {
     string paraVal;
     while (getline(file, str)) {
     	paraVal.clear();
+    	if (str.find("#") != string::npos) {
+    		continue;
+    	}
     	if (str.find(paraName) != string::npos) {
     		parseParaVal(paraVal, str);
     		break;
@@ -28,6 +31,9 @@ ushort ConfigParser::readUShortParam(string paraName) {
     string paraVal;
     while (getline(file, str)) {
     	paraVal.clear();
+    	if (str.find("#") != string::npos) {
+    		continue;
+    	}
     	if (str.find(paraName) != string::npos) {
     		parseParaVal(paraVal, str);
     		break;
@@ -42,6 +48,9 @@ string ConfigParser::readStringParam(string paraName) {
     string paraVal;
     while (getline(file, str)) {
     	paraVal.clear();
+    	if (str.find("#") != string::npos) {
+    		continue;
+    	}
     	if (str.find(paraName) != string::npos) {
     		parseParaVal(paraVal, str);
     		break;

@@ -18,12 +18,6 @@ public:
 	RouteFinder(PrenController* controller, PictureCreator* picCreator);
 	~RouteFinder();
 
-	void edgeDetection(cv::Mat* mat, cv::Mat* changesMat);
-	void routeLocker(cv::Mat* edgeImg, unsigned short upperLimit, unsigned short lowerLimit, unsigned short row);
-	void calcDriveDirection(cv::Mat* edgeImg);
-	void approxLimit(cv::Mat* mat, unsigned short& upperLimit, unsigned short& lowerLimit, unsigned short row);
-	void calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit);
-
 	cv::Mat getOriginalImage();
 	cv::Mat getGrayImage();
 	cv::Mat getFilteredImage();
@@ -35,6 +29,13 @@ private:
 	void bubbleSort(std::vector<unsigned short>* vals);
 	bool compareTolerance(unsigned short refVal, unsigned short compVal);
 	void setLineDirection(cv::Vec4i& line);
+	void edgeDetection(cv::Mat* mat, cv::Mat* changesMat);
+	void lineDetection(cv::Mat* changesMat);
+	void lineFilter(cv::Mat* changesMat, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
+	void routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
+	void calcDriveDirection(cv::Mat* edgeImg);
+	void approxLimit(cv::Mat* mat, unsigned short& upperLimit, unsigned short& lowerLimit, unsigned short row);
+	void calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit);
 
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
