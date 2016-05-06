@@ -48,18 +48,19 @@ void PrenController::setState(const states state) {
 
 void PrenController::runProgram() {
 
+	pthread_t threads;
+	int rc;
+
+	rc = pthread_create(&threads, NULL, UARTReciever::staticEntryPoint,
+			uartReceiver);
+	if (rc) {
+		cout << "Error:unable to create thread," << rc << endl;
+	}
+	usleep(1000);
+
+	uartSender->sendStartCmd();
+
 	while (m_State != END) {
-		pthread_t threads;
-		int rc;
-
-		rc = pthread_create(&threads, NULL, UARTReciever::staticEntryPoint,
-				uartReceiver);
-		if (rc) {
-			cout << "Error:unable to create thread," << rc << endl;
-		}
-		usleep(1000);
-
-		uartSender->sendStartCmd();
 
 		usleep(300);
 	}
