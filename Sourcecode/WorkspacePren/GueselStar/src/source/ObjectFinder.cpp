@@ -130,8 +130,7 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 		cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
-		if (boundRect[i].height > boundRect[i].width
-				&& boundRect[i].height > 150) {
+		if (boundRect[i].height > boundRect[i].width && boundRect[i].height > 90) {
 
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
 					cv::Scalar(0, 255, 0), 2, 8, 0);
