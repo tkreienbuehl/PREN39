@@ -93,7 +93,6 @@ Die Auswertung des Signales geschieht im Mikrocontrollerboard. Das Encodersiganl
  
 \section{Geschwindigkeitsregelung einstellen}
 Für die Geschwindigkeitsregelung wurde ein PID-Regler verwendet. Damit die Parameter für die Geschwindigkeitsregelung richtig eingestellt sind, wurde die Schrittantwort des DC-Motors per Encoder ausgemessen. Die Schrittantwort von Null auf volle Geschwindigkeit (210RPM) sieht ungefähr so aus:
-\ref{fig:schrittantwort}
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.9\textwidth]{Images/Sprungantwort.png}
@@ -106,8 +105,15 @@ Diese Werte sind jedoch für kontinuierliche Regler und nicht wie in diesem Fall
 \[ Kp=Kp1*32=2.22*32=72\]
 \[ Ki=Kp1*32*T/(2*Tn)=2.22*32*0.05/(2*0.063)=28\]
 \[ Kd=Kp1*32*2*Tv/T=2.22*32*2*0.0085/0.05=5.44 =>5\]
-Diese Werte sind die Regelparameter. Die Multiplikation mit 32 ergibt sich dem Grund, dass auf dem Mikrocontroller nicht mit Fließkommazahlen gerechnet wird. Somit werden die Werte bei den Parameter hochskaliert und später nach der Verrechnug mit der Regelabweichung wieder dividiert. 
-
+Diese Werte sind die Regelparameter. Die Multiplikation mit 32 ergibt sich dem Grund, dass auf dem Mikrocontroller nicht mit Fließkommazahlen gerechnet wird. Somit werden die Werte bei den Parameter hochskaliert und später nach der Verrechnug mit der Regelabweichung wieder dividiert.
+Diese Parameter wurden programmiert und ausgemessen. Ein Sollgeschwindigkeit von 150mm/s wurde dem Regler vorgegeben (entspricht einem Encoderwert von 108)
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.9\textwidth]{Images/PID auf 150mms.PNG}
+\caption{Die Istwert verglichen mit dem Stellwert}
+\label{fig:IstSollwertVergleich}
+\end{figure}
+Hier zeigt sich, dass der Regler nicht Perfekt eingestellt ist, jedoch nach einer halben Sekunden den Sollwert erreicht hat. Dies ist für unsere Anwendung ausreichend und wird desshalb so belassen.
 \section{Methodendefinitionen}
 \subsection{UART-Methodenstrings}
 \begin{tabular}{|l|l|l|l|l|} \hline
