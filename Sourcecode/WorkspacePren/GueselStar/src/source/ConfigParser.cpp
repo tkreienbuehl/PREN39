@@ -14,12 +14,11 @@ int ConfigParser::readIntParam(string paraName) {
     string paraVal;
     while (getline(file, str)) {
     	paraVal.clear();
-    	if (str.find("#") != string::npos) {
-    		continue;
-    	}
-    	if (str.find(paraName) != string::npos) {
+    	if (str.find("#") == string::npos) {
+    		if (str.find(paraName) != string::npos) {
     		parseParaVal(paraVal, str);
     		break;
+    		}
     	}
     }
     return atoi(paraVal.c_str());
@@ -31,12 +30,11 @@ ushort ConfigParser::readUShortParam(string paraName) {
     string paraVal;
     while (getline(file, str)) {
     	paraVal.clear();
-    	if (str.find("#") != string::npos) {
-    		continue;
-    	}
-    	if (str.find(paraName) != string::npos) {
-    		parseParaVal(paraVal, str);
-    		break;
+    	if (str.find("#") == string::npos) {
+			if (str.find(paraName) != string::npos) {
+				parseParaVal(paraVal, str);
+				break;
+			}
     	}
     }
     return static_cast<ushort>(atoi(paraVal.c_str()));
@@ -48,12 +46,11 @@ string ConfigParser::readStringParam(string paraName) {
     string paraVal;
     while (getline(file, str)) {
     	paraVal.clear();
-    	if (str.find("#") != string::npos) {
-    		continue;
-    	}
-    	if (str.find(paraName) != string::npos) {
-    		parseParaVal(paraVal, str);
-    		break;
+    	if (str.find("#") == string::npos) {
+			if (str.find(paraName) != string::npos) {
+				parseParaVal(paraVal, str);
+				break;
+			}
     	}
     }
     return paraVal.c_str();
@@ -65,9 +62,11 @@ bool ConfigParser::readBoolParam(string paraName) {
     string paraVal;
     while (getline(file, str)) {
     	paraVal.clear();
-    	if (str.find(paraName) != string::npos) {
-    		parseParaVal(paraVal, str);
-    		break;
+    	if (str.find("#") == string::npos) {
+			if (str.find(paraName) != string::npos) {
+				parseParaVal(paraVal, str);
+				break;
+			}
     	}
     }
     if (paraVal.find("TRUE") != string::npos) {
