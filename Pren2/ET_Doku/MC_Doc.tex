@@ -65,13 +65,18 @@ Folgende Informationen sind gegeben oder wurden gemessen:
 \end{itemize}
 
 \section{Akkuüberwachung}
-Damit die LiPo-Akkumulatoren nicht zerstört werden, muss sichergestellt werden das diese nicht tief entladen werden. Dies wird über das Freedomboard gelöst. Die Akkuspannung wird über einen Analog - Digitalwandler eingelesen.Wenn die Akkuspannung einen gewissen Wert unterschreiten, werden die Verbraucher an den Akkus "abgeschaltet".
+Damit die LiPo-Akkumulatoren nicht zerstört werden, muss sichergestellt werden das diese nicht tief entladen werden. Dies wird über das Freedomboard gelöst. Die Akkuspannung wird über einen Analog - Digitalwandler eingelesen. Wenn die Akkuspannung einen gewissen Wert unterschreiten, werden die Verbraucher an den Akkus "abgeschaltet". Eine Lipozelle sollte die Zellenspannung von 3.5V nicht unterschreiten. Im Normalfall sollten alle Zellen einzeln überwacht werden, dies ist jedoch im Rahmen dieses Prototypen nicht angemessen. Als Kompromiss wird gesamte Ausgangsspannung gemessen. Das heisst zwei beziehungsweise drei Zellen in Serie (je nach Akku). Als Abschaltwert für eine Zelle wurde 3.7V bestimmt.
 \subsection{Berechungen}
-Das Freedomboard kann nur Spannungen bis 3V einlesen. Daher ist ein Spannungsteiler nötig.
+Das Freedomboard kann nur Spannungen bis 3.3V einlesen. Daher ist ein Spannungsteiler nötig. Damit dieser Wert sicher nicht überschritten wird, wird mit einer maximal zulässigen Spannung von 3V gerechnet. 
 Für den zweiten Akku (11.1V):
 \[	U_Akku/U_Frd=R1/R2\]
-\[	13V/3V=4.33\]
+\[	13V/3V=4.33=g\]
 \[	R2=10k R1=R2*4.33=43kOhm\]
+Der Abschaltwert des drei Zellen Akkus ist 3.7V * 3= 11.1V.
+11.1V nach dem Spannungswandler entspricht einer Spannung von \[Uin/g=11.1V/4.33=2.56V\]
+3.3V enspricht 65'535. Somit entspricht eine Spannung von 2.56V einem eingelesenen Spannungswert von 50'839. Falls dieser Wert über längere (wenige Sekunden) unterschritten wird, wird eine Nachricht an das Raspberry gesendet und das System heruntergefahren.
+Dies en
+
 Für UAkku wurde 13V gewählt, damit der AD-Wandler sicher nie 3V erreicht.\\
 Für den ersten (logik) Akku (7.1V)
 \[	U_Akku/U_Frd=R1/R2\]
