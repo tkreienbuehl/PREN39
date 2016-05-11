@@ -76,6 +76,7 @@ int PrenController::stopProgram() {
 void PrenController::setContainerFound(int distance) {
 
 	// inform MC-Board
+	uartSender->setContainerFound(distance);
 	cout << "Container ahead: Distance to Container: " << distance << endl;
 }
 void PrenController::setCrossingFound(int distance) {
