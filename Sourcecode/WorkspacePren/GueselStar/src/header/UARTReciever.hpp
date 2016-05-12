@@ -23,6 +23,7 @@ private:
 	void decodeRecievedString(std::string message);
 	void decodeUnknownCommandError(std::string message);
 	void decodeUltraValue(std::string message);
+	void decodeFlexValue(std::string message);
 
 	UARTHandler m_handler;
 	int m_uart0_filestream;

@@ -70,16 +70,17 @@ void UARTReciever::readAndPlotData() {
 		}
 	}
 	cout << "UART-Recorder stopped" << endl;
-
 }
 
 void UARTReciever::decodeRecievedString(std::string message) {
 	if (message.find("*** Failed") != std::string::npos) {
 		decodeUnknownCommandError(message);
+	} else if (message.find("Ul") != std::string::npos) {
+		decodeUltraValue(message);
+	} else if(message.find("Fld1") != std::string::npos) {
+		decodeFlexValue(message);
 	}
-	else if (message.find("Ul") != std::string::npos) {
-
-	}
+	// TODO: EngineSpeed
 }
 
 void UARTReciever::decodeUnknownCommandError(std::string message) {
@@ -92,6 +93,15 @@ void UARTReciever::decodeUltraValue(std::string message) {
 	int start = message.find("Ul");
 	message.replace(start, 3, "");
 	int value = atoi(message.c_str());
+	m_UltraDist = value;
+	cout << message << endl;
+}
+
+void UARTReciever::decodeFlexValue(std::string message) {
+	int start = message.find("Fld1");
+	message.replace(start, 5, "");
+	int value = atoi(message.c_str());
+	m_FlexDistance = value;
 	cout << message << endl;
 }
 
@@ -102,11 +112,12 @@ void* UARTReciever::staticEntryPoint(void* threadId) {
 }
 
 uint8_t UARTReciever::getFlexDistance() {
-	return 0;
+
+	return m_FlexDistance;
 }
 uint8_t UARTReciever::getEngineSpeed() {
 	return 0;
 }
 uint16_t UARTReciever::getUltraDist() {
-	return 0;
+	return m_UltraDist;
 }
