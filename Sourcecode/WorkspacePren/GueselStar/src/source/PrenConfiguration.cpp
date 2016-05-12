@@ -28,6 +28,7 @@ PrenConfiguration::PrenConfiguration() {
 		GREEN_RANGE_V_HIGH = parser.readIntParam("GREEN_RANGE_V_HIGH");
 		MAX_DISTANCE_TO_OBJECT = parser.readIntParam("MAX_DISTANCE_TO_OBJECT");
 		MAX_DISTANCE_TO_OBJECT_CROSSING = parser.readIntParam("MAX_DISTANCE_TO_OBJECT_CROSSING");
+		NUM_VALUES_UNTIL_RELEVANT = parser.readIntParam("NUM_VALUES_UNTIL_RELEVANT");
 		REFERENCE_HEIGHT = parser.readIntParam("REFERENCE_HEIGHT");
 		REFERENCE_DISTANCE = parser.readIntParam("REFERENCE_DISTANCE");
 		P_PART = parser.readUShortParam("P-PART");
