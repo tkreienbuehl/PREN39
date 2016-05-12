@@ -8,13 +8,14 @@
 #pragma once
 
 #include "PrenConfiguration.hpp"
+#include "PrenController.hpp"
 #include <stdint.h>
 
 using namespace std;
 
 class PIDCalculation {
 public:
-	PIDCalculation();
+	PIDCalculation(PrenController* controller);
 	~PIDCalculation();
 
 	void pidDoWork(int& calcVal);
@@ -31,4 +32,5 @@ private:
 	uint8_t m_KP;
 	uint8_t m_KI;
 	uint8_t m_KD;
+	PrenController* m_Controller;
 };

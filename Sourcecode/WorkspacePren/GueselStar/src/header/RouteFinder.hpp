@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include "PIDCalculation.h"
 #include <stdint.h>
+#include <math.h>
 
 using namespace std;
 
@@ -36,7 +37,8 @@ private:
 	void calcDriveDirection(cv::Mat* edgeImg);
 	void approxLimit(cv::Mat* mat, unsigned short& upperLimit, unsigned short& lowerLimit, unsigned short row);
 	void calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit);
-	void calcRefDistance(cv::Point pt);
+	short calcRefDistance(cv::Point pt);
+	int calcCorrAng(short distVal);
 
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
@@ -57,5 +59,6 @@ private:
 	bool m_rightSidePositiveSlope;
 	bool m_leftSidePositiveSlope;
 	unsigned short m_Rows, m_Cols;
+	PIDCalculation* m_pidCalc;
 
 };

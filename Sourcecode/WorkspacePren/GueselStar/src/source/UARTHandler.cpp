@@ -13,7 +13,7 @@
 		return m_uart0_filestream;
 	}
 
-	bool UARTHandler::openSerialIF(char* ifName) {
+	bool UARTHandler::openSerialIF(const char* ifName) {
 		m_uart0_filestream = open(ifName, O_RDWR | O_NONBLOCK);	//Open in non blocking read/write mode
 		if (m_uart0_filestream == -1)
 		{

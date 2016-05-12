@@ -29,7 +29,7 @@ public:
 
 	int getFileStream();
 
-	bool openSerialIF(char* ifName);
+	bool openSerialIF(const char* ifName);
 
 	bool setUartConfig(BaudRateE baudRate);
 

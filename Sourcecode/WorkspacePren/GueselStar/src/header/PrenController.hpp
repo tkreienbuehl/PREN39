@@ -5,6 +5,7 @@
 #include "PrenConfiguration.hpp"
 #include "UARTSender.hpp"
 #include "UARTReciever.hpp"
+#include "ConsoleView.h"
 
 
 using namespace std;
@@ -45,4 +46,5 @@ private:
 	UARTReciever* uartReceiver;
 	UARTSender* uartSender;
 	UARTHandler* handler;
+	ConsoleView* consoleView;
 };

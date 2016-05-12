@@ -13,7 +13,9 @@ public:
 	bool START_LOCAL_VIEW;
 	bool IS_DEBUG;
 	bool IS_ON_PI;
+	bool IS_ON_IDE;
 	string TEST_IMG_DIR;
+	string IF_NAME;
 	int TEST_IMG_FIRST;
 	int TEST_IMG_LAST;
 	int BLUE_RANGE_H_LOW;

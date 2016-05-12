@@ -5,8 +5,8 @@ PrenController::PrenController() {
 	m_State = STOPPED;
 
 	handler = new UARTHandler();
-	char ifName[] = "/dev/ttyACM3";
-	handler->openSerialIF(ifName);
+	consoleView = new ConsoleView();
+	handler->openSerialIF(prenConfig->IF_NAME.c_str());
 	if (!handler->setUartConfig(handler->FULL_SPEED)) {
 		cout << "configuration failed" << endl;
 		delete handler;
@@ -22,6 +22,7 @@ PrenController::~PrenController() {
 
 	delete uartReceiver;
 	delete uartSender;
+	delete consoleView;
 	delete handler;
 }
 
@@ -48,15 +49,23 @@ void PrenController::setState(const states state) {
 
 void PrenController::runProgram() {
 
-	pthread_t threads;
+	pthread_t threads[2];
 	int rc;
 
-	rc = pthread_create(&threads, NULL, UARTReciever::staticEntryPoint,
+	rc = pthread_create(&threads[0], NULL, UARTReciever::staticEntryPoint,
 			uartReceiver);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;
 	}
 	usleep(1000);
+
+	if (!prenConfig->IS_ON_IDE) {
+		rc = pthread_create(&threads[1], NULL, ConsoleView::startThread, consoleView);
+		if (rc) {
+			cout << "Error:unable to create thread," << rc << endl;
+			exit(-1);
+		}
+	}
 
 	uartSender->sendStartCmd();
 
@@ -64,6 +73,8 @@ void PrenController::runProgram() {
 
 		usleep(300);
 	}
+
+	uartReceiver->stopReading();
 	cout << "exiting Controller" << endl;
 }
 

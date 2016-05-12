@@ -6,21 +6,11 @@
 int main(int argc, char** argv) {
 
 	testing::InitGoogleTest(&argc, argv);
-	int testResult = RUN_ALL_TESTS();
-
-	initscr();
-	printw("Welcome");
-	refresh();
-	usleep(1000000);
-	clear();
-	printw("Gueselstar rocks: Tests passed %i <- WOOOHOOOO!!!!", testResult);
-	refresh();
-	usleep(1000000);
-	endwin();
+	RUN_ALL_TESTS();
 
 	usleep(1000000);
 
-	pthread_t threads[5];
+	pthread_t threads[6];
 	XInitThreads();
 	int rc;
 
@@ -31,7 +21,6 @@ int main(int argc, char** argv) {
 	ObjectFinder* objectFinder = new ObjectFinder(controller, picCreator);
 	PictureViewer* picViewer = new PictureViewer(rtFinder, objectFinder);
 	DebugServer* debugServer = new DebugServer(rtFinder, objectFinder);
-
 
 	rc = pthread_create(&threads[0], NULL, PictureCreator::staticEntryPoint, picCreator);
 	if (rc) {
@@ -62,8 +51,8 @@ int main(int argc, char** argv) {
 			cout << "Error:unable to create thread," << rc << endl;
 			exit(-1);
 		}
-	} else {
-
+	}
+	else {
 		if(controller->getPrenConfig()->IS_DEBUG) {
 			rc = pthread_create(&threads[4], NULL, DebugServer::startDebugServer, debugServer);
 			if (rc) {

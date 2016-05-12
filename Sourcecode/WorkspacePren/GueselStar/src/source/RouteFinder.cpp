@@ -19,10 +19,14 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	cout << MINLENGTH << " " << NROFLINES << endl;
 	m_rightSidePositiveSlope = true;
 	m_leftSidePositiveSlope = false;
+	m_Cols = 0;
+	m_Rows = 0;
+	m_pidCalc = new PIDCalculation(m_Controller);
 }
 
 RouteFinder::~RouteFinder() {
 	delete m_GradMat;
+	delete m_pidCalc;
 }
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
@@ -122,11 +126,9 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
 
     short xDiff, yDiff;
     ushort i,j;
-    ushort nRows = mat->rows;
-    ushort nCols = mat->cols * mat->channels();
 
-    for(i = (nRows >> 1); i < nRows-1; ++i) {
-        for (j = 1; j < nCols-2; ++j) {
+    for(i = (m_Rows >> 1); i < m_Rows-1; ++i) {
+        for (j = 1; j < m_Cols-2; ++j) {
         	xDiff = (static_cast<ushort>(mat->at<uchar>(i,j+1)) - static_cast<ushort>(mat->at<uchar>(i,j-1))) >> 1;
         	yDiff = (static_cast<ushort>(mat->at<uchar>(i-1,j)) - static_cast<ushort>(mat->at<uchar>(i+1,j))) >> 1;
         	Gradient grad(xDiff,yDiff);
@@ -143,8 +145,6 @@ void RouteFinder::lineDetection(cv::Mat* changesMat) {
     short lNegSignCnt, lPosSignCnt, rNegSignCnt, rPosSignCnt;
     lNegSignCnt = lPosSignCnt = rNegSignCnt = rPosSignCnt = 0;
 
-    ushort nCols = changesMat->cols;
-
     std::vector<cv::Vec4i> lines;
     std::vector<cv::Vec4i> savedLinesLeft, savedLinesRight;
     cv::HoughLinesP(*changesMat, lines, 1, CV_PI/180, 15, 30, 20 );
@@ -156,7 +156,7 @@ void RouteFinder::lineDetection(cv::Mat* changesMat) {
 			int slope = (l[3] - l[1]) / (l[2] - l[0]);
 			if (abs(slope) == 1 || abs(slope) == 2) {
 				//leftSide
-				if (l[2] < ((nCols >> 1) - MAX_PIX_DIFF) && l[0] < ((nCols >> 1) - MAX_PIX_DIFF)) {
+				if (l[2] < ((m_Cols >> 1) - MAX_PIX_DIFF) && l[0] < ((m_Cols >> 1) - MAX_PIX_DIFF)) {
 					if (slope < 0) {
 						lNegSignCnt++;
 					}
@@ -166,7 +166,7 @@ void RouteFinder::lineDetection(cv::Mat* changesMat) {
 					savedLinesLeft.push_back(l);
 				}
 				//right side
-				if (l[2] > ((nCols >> 1) + MAX_PIX_DIFF) && l[0] > ((nCols >> 1) + MAX_PIX_DIFF)) {
+				if (l[2] > ((m_Cols >> 1) + MAX_PIX_DIFF) && l[0] > ((m_Cols >> 1) + MAX_PIX_DIFF)) {
 					if (slope < 0) {
 						rNegSignCnt++;
 					}
@@ -231,20 +231,50 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 		cout << "*** Left side found only ***" << endl;
 	}
 	short max = 0;
-	cv::Point pt;
+	cv::Point lpt, rpt;
 	for (unsigned short i = 0; i< leftLines.size() ; i++) {
 		if (leftLines[i][1] > max) {
-			pt = cv::Point(leftLines[i][0],leftLines[i][1]);
+			lpt = cv::Point(leftLines[i][0],leftLines[i][1]);
 			max = leftLines[i][1];
 		}
 	}
-	calcRefDistance(pt);
+	max = 0;
+	for (unsigned short i = 0; i< rightLines.size() ; i++) {
+		if (rightLines[i][1] > max) {
+			rpt = cv::Point(rightLines[i][0],rightLines[i][1]);
+			max = rightLines[i][1];
+		}
+	}
+
+	short lVal, rVal, med;
+	lVal = rVal = med = 0;
+	int corrAng;
+
+	cout << " ****************** Anfang *******************" << endl;
+	if (leftLines.size() > 0) {
+		lVal = calcRefDistance(lpt);
+	}
+	if (rightLines.size() > 0) {
+		rVal = calcRefDistance(rpt);
+	}
+	if (leftLines.size() > 0 && rightLines.size() > 0) {
+		med = (lVal+rVal) >> 1;
+	}
+	else if (rightLines.size() > 0) {
+		med = rVal;
+	}
+	else if (leftLines.size() > 0) {
+		med = lVal;
+	}
+	corrAng = calcCorrAng(med);
+	cout << "In: "<< corrAng << "  out:";
+	m_pidCalc->pidDoWork(corrAng);
+
 }
 
 void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
 	//int middle;
-	unsigned short rows = edgeImg->rows;
-	for (short i = rows; i > (rows >> 1) ; i-=5 ) {
+	for (short i = m_Rows; i > (m_Rows >> 1) ; i-=5 ) {
 		for (short j = m_leftRoutePos-MAX_PIX_DIFF ; j< m_leftRoutePos+MAX_PIX_DIFF; j++) {
 			if (edgeImg->at<uchar>(i,j) == 255) {
 				if (compareTolerance(m_leftRoutePos, j)) {
@@ -322,8 +352,15 @@ void RouteFinder::calcAverageLimit(unsigned short& upperLimit, unsigned short& l
 	m_maxVals.clear();
 }
 
-void RouteFinder::calcRefDistance(cv::Point pt) {
+short RouteFinder::calcRefDistance(cv::Point pt) {
 	short dist = (pt.y >> 1) + 40;
-	short diff = pt.x - dist;
-	cout << " ******* " << pt.x << "******** " << diff << " *************** " << endl;
+	short diff = abs((m_Cols >> 1)-pt.x) - dist;
+	return diff;
+}
+
+int RouteFinder::calcCorrAng(short distVal) {
+	if (distVal == 0) {
+		return 0;
+	}
+	return static_cast<int>(acosf(static_cast<float>(distVal)/ 160.0f) * 180 / 3.1415926f) - 90;
 }
