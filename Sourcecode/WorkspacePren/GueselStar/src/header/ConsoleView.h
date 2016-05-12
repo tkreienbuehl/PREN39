@@ -13,9 +13,17 @@ public:
 
 	static void* startThread(void* threadId);
 
-	void setRouteFinderText(string text);
+	void setRouteFinderText(string text, unsigned int line = 0);
+
+	void stopProcess();
 
 private:
 	void runProcess();
+	WINDOW* createNewWindow(int height, int width, int startY, int startX);
+	void destroyWindowin(WINDOW* window);
+
+	WINDOW* m_RtFinderView, *m_UARTState;
+	unsigned int m_width, m_height;
+	bool m_State;
 
 };

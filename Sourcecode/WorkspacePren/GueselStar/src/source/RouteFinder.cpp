@@ -16,12 +16,14 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_rightRoutePos = 320;
 	m_rtWidth = 0;
 	pthread_mutex_init(&m_mutex, NULL);
-	cout << MINLENGTH << " " << NROFLINES << endl;
+	//m_outStr = MINLENGTH + " " + NROFLINES;
+	//printString(m_outStr);
 	m_rightSidePositiveSlope = true;
 	m_leftSidePositiveSlope = false;
 	m_Cols = 0;
 	m_Rows = 0;
 	m_pidCalc = new PIDCalculation(m_Controller);
+	m_outStr = "";
 }
 
 RouteFinder::~RouteFinder() {
@@ -31,7 +33,8 @@ RouteFinder::~RouteFinder() {
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
 	reinterpret_cast<RouteFinder*>(threadId)->runProcess();
-	cout << "Thread ended " << endl;
+	//m_outStr = "Thread ended";
+	//printString(m_outStr);
 	return NULL;
 }
 
@@ -56,8 +59,9 @@ cv::Mat RouteFinder::getFilteredImage() {
 int RouteFinder::runProcess() {
 	cv::Mat grayImg, image;
 
-	cout << "Start" << endl;
-    for(int i = 0; i<2500000; i++) {
+	//m_outStr = "Start";
+	//printString(m_outStr);
+    for(int i = 0; i<2500; i++) {
 
         image = m_PicCreator->GetImage();
 
@@ -71,9 +75,10 @@ int RouteFinder::runProcess() {
 			calcDriveDirection(&fltImg);
 			m_GrayImg = grayImg;
 			m_FinalFltImg = fltImg;
-			if (i%100 == 0) {
-				cout << "image processed nr:" << i << endl;
-			}
+			//if (i%100 == 0) {
+				m_outStr =  "image processed nr:" + i;
+				printString(m_outStr, 5);
+			//}
         }
         else {
         	i--;
@@ -82,7 +87,7 @@ int RouteFinder::runProcess() {
 
     m_Controller->setState(m_Controller->END);
 	string bye = "Now I've done my job, have fun with your pics ;)";
-	cout << bye << endl;
+	printString(bye, 6);
 
 	return 0;
 
@@ -221,14 +226,17 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
     		cv::Point((edgeImg->cols >> 1),(edgeImg->rows >> 1)),cv::Scalar(255), 2);
 
 	if (leftLines.size() == 0 && rightLines.size() == 0) {
-		cout << "*** No lines found, keeping old direction ***";
+		m_outStr = "*** No lines found, keeping old direction ***";
+		printString(m_outStr);
 		return;
 	}
 	if (leftLines.size() == 0) {
-		cout << "*** Right side found only ***" << endl;
+		m_outStr = "*** Right side found only ***";
+		printString(m_outStr);
 	}
 	if (rightLines.size() == 0) {
-		cout << "*** Left side found only ***" << endl;
+		m_outStr = "*** Left side found only ***";
+		printString(m_outStr);
 	}
 	short max = 0;
 	cv::Point lpt, rpt;
@@ -250,7 +258,8 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	lVal = rVal = med = 0;
 	int corrAng;
 
-	cout << " ****************** Anfang *******************" << endl;
+	m_outStr = " ****************** Anfang *******************";
+	printString(m_outStr, 2);
 	if (leftLines.size() > 0) {
 		lVal = calcRefDistance(lpt);
 	}
@@ -267,7 +276,11 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 		med = lVal;
 	}
 	corrAng = calcCorrAng(med);
-	cout << "In: "<< corrAng << "  out:";
+	char numstr[128];
+	bzero(numstr, sizeof(numstr));
+	sprintf(numstr, "In: %d out:", corrAng);
+	m_outStr = numstr;
+	printString(m_outStr, 3);
 	m_pidCalc->pidDoWork(corrAng);
 
 }
@@ -363,4 +376,15 @@ int RouteFinder::calcCorrAng(short distVal) {
 		return 0;
 	}
 	return static_cast<int>(acosf(static_cast<float>(distVal)/ 160.0f) * 180 / 3.1415926f) - 90;
+}
+
+void RouteFinder::printString(string str, uint line) {
+	if (m_Controller->getPrenConfig()->IS_ON_IDE) {
+		cout << str << endl;
+	}
+	else {
+		if (m_Controller->getConsoleView() != NULL) {
+			m_Controller->getConsoleView()->setRouteFinderText(str, line);
+		}
+	}
 }

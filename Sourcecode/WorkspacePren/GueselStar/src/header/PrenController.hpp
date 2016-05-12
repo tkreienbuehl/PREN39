@@ -37,6 +37,7 @@ public:
 	int getFlexDistance(void);
 	int getEngineSpeed(void);
 	PrenConfiguration* getPrenConfig(void);
+	ConsoleView* getConsoleView();
 
 private:
 	void runProgram(void);

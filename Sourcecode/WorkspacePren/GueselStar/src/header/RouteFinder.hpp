@@ -39,6 +39,7 @@ private:
 	void calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit);
 	short calcRefDistance(cv::Point pt);
 	int calcCorrAng(short distVal);
+	void printString(string str, uint line = 0);
 
 	vector<unsigned short>m_minVals;
 	vector<unsigned short>m_maxVals;
@@ -60,5 +61,6 @@ private:
 	bool m_leftSidePositiveSlope;
 	unsigned short m_Rows, m_Cols;
 	PIDCalculation* m_pidCalc;
+	string m_outStr;
 
 };

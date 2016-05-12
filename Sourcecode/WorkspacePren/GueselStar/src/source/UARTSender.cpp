@@ -95,7 +95,7 @@ bool UARTSender::writeCharToPort(const char* ch) {
 	int count = write(m_uart0_filestream, ch , 1);
 	if (count < 0)
 	{
-		cout << "UART TX error\n" << endl;
+		//cout << "UART TX error\n" << endl;
 		return false;
 	}
 	return true;

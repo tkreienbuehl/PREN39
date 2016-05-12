@@ -47,7 +47,7 @@ void PIDCalculation::pidDoWork(int& calcVal) {
 	m_val += static_cast<int>(m_KD * (m_dev-m_devOld));
 	m_devOld = m_dev;
 	m_val /= 32;
-	cout << " Calculated Value " << m_val << endl;
+	//cout << " Calculated Value " << m_val << endl;
 	// limit control point
 	if (m_val > 35)
 	{
@@ -59,6 +59,6 @@ void PIDCalculation::pidDoWork(int& calcVal) {
 		m_val = -35;
 		m_integ -= m_dev;
 	}
-	cout << m_val << endl;
+	//cout << m_val << endl;
 	m_Controller->setSteeringAngle((m_val+180));
 }

@@ -5,7 +5,7 @@ PrenController::PrenController() {
 	m_State = STOPPED;
 
 	handler = new UARTHandler();
-	consoleView = new ConsoleView();
+	consoleView = NULL;
 	handler->openSerialIF(prenConfig->IF_NAME.c_str());
 	if (!handler->setUartConfig(handler->FULL_SPEED)) {
 		cout << "configuration failed" << endl;
@@ -29,6 +29,10 @@ PrenController::~PrenController() {
 PrenConfiguration* PrenController::getPrenConfig(void) {
 
 	return prenConfig;
+}
+
+ConsoleView* PrenController::getConsoleView() {
+	return consoleView;
 }
 
 void PrenController::start() {
@@ -60,6 +64,7 @@ void PrenController::runProgram() {
 	usleep(1000);
 
 	if (!prenConfig->IS_ON_IDE) {
+		consoleView = new ConsoleView();
 		rc = pthread_create(&threads[1], NULL, ConsoleView::startThread, consoleView);
 		if (rc) {
 			cout << "Error:unable to create thread," << rc << endl;
@@ -74,6 +79,9 @@ void PrenController::runProgram() {
 		usleep(300);
 	}
 
+	if (consoleView != NULL) {
+		consoleView->stopProcess();
+	}
 	uartReceiver->stopReading();
 	cout << "exiting Controller" << endl;
 }
@@ -88,17 +96,17 @@ void PrenController::setContainerFound(int distance) {
 
 	// inform MC-Board
 	uartSender->setContainerFound(distance);
-	cout << "Container ahead: Distance to Container: " << distance << endl;
+	//cout << "Container ahead: Distance to Container: " << distance << endl;
 }
 void PrenController::setCrossingFound(int distance) {
 
 	// inform MC-Board
-	cout << "Crossing ahead: Distance to Crossing: " << distance << endl;
+	//cout << "Crossing ahead: Distance to Crossing: " << distance << endl;
 }
 
 void PrenController::setTargetFieldFound(int distance) {
 
-	cout << "Targetfield ahead: Distance to Tagetfield: " << distance << endl;
+	//cout << "Targetfield ahead: Distance to Tagetfield: " << distance << endl;
 	uartSender->setTargetFieldFound(distance);
 }
 
@@ -110,13 +118,13 @@ void PrenController::setLaneLost() {
 
 void PrenController::setSteeringAngle(int angle) {
 
-	cout << "set new angle" << angle << endl;
+	//cout << "set new angle" << angle << endl;
 	uartSender->setSteering(angle);
 }
 
 void PrenController::setVehicleInCrossing() {
 
-	cout << "Vehicle in Crossing";
+	//cout << "Vehicle in Crossing";
 }
 
 bool PrenController::checkObjectOnLane(void) {
