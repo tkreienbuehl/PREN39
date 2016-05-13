@@ -117,6 +117,10 @@ void PrenController::setSteeringAngle(int angle) {
 	uartSender->setSteering(angle);
 }
 
+void PrenController::setEngineSpeed(uint8_t speed) {
+	uartSender->setEngineSpeed(speed);
+}
+
 void PrenController::setVehicleInCrossing() {
 
 	if (!prenConfig->IS_ON_IDE) {

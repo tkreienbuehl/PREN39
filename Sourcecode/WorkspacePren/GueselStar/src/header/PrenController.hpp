@@ -33,6 +33,7 @@ public:
 	void setTargetFieldFound(int distance);
 	void setLaneLost();
 	void setSteeringAngle(int angle);
+	void setEngineSpeed(uint8_t speed);
 	void setVehicleInCrossing();
 	bool checkObjectOnLane(void);
 	int getFlexDistance(void);
