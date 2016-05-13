@@ -39,12 +39,24 @@ void* ConsoleView::startThread(void* threadId) {
 }
 
 void ConsoleView::setRouteFinderText(string text, unsigned int line) {
-
-	//wclear(m_RtFinderView);
 	wborder(m_RtFinderView, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	box(m_RtFinderView, 0 , 0);
 	mvwprintw(m_RtFinderView, 1 + line, 1, text.c_str());
 	wrefresh(m_RtFinderView);
+}
+
+void ConsoleView::setObjectFinderText(string text, unsigned int line) {
+	wborder(m_ObjFinderView, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	box(m_ObjFinderView, 0 , 0);
+	mvwprintw(m_ObjFinderView, 1 + line, 1, text.c_str());
+	wrefresh(m_ObjFinderView);
+}
+
+void ConsoleView::setUARTStateText(string text, unsigned int line) {
+	wborder(m_UARTState, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	box(m_UARTState, 0 , 0);
+	mvwprintw(m_UARTState, 1 + line, 1, text.c_str());
+	wrefresh(m_UARTState);
 }
 
 void ConsoleView::stopProcess() {
