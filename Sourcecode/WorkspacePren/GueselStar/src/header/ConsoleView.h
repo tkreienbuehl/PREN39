@@ -14,6 +14,8 @@ public:
 	static void* startThread(void* threadId);
 
 	void setRouteFinderText(string text, unsigned int line = 0);
+	void setObjectFinderText(string text, unsigned int line = 0);
+	void setUARTStateText(string text, unsigned int line = 0);
 
 	void stopProcess();
 
@@ -22,7 +24,7 @@ private:
 	WINDOW* createNewWindow(int height, int width, int startY, int startX);
 	void destroyWindowin(WINDOW* window);
 
-	WINDOW* m_RtFinderView, *m_UARTState;
+	WINDOW* m_RtFinderView, *m_UARTState, *m_ObjFinderView;
 	unsigned int m_width, m_height;
 	bool m_State;
 

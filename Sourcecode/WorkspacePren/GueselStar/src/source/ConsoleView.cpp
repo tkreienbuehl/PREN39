@@ -21,7 +21,8 @@ ConsoleView::ConsoleView() {
 	clear();
 	refresh();
 	m_UARTState = createNewWindow(4, m_width,0,0);
-	m_RtFinderView = createNewWindow(m_height-5,m_width,5,0);
+	m_RtFinderView = createNewWindow(m_height-5,(m_width >> 1)-1,5,0);
+	m_ObjFinderView = createNewWindow(m_height-5,(m_width >> 1)-1,5,(m_width >> 1)+1);
 	usleep(3000000);
 	refresh();
 }
@@ -41,6 +42,7 @@ void ConsoleView::setRouteFinderText(string text, unsigned int line) {
 
 	//wclear(m_RtFinderView);
 	wborder(m_RtFinderView, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	box(m_RtFinderView, 0 , 0);
 	mvwprintw(m_RtFinderView, 1 + line, 1, text.c_str());
 	wrefresh(m_RtFinderView);
 }
