@@ -50,6 +50,8 @@ void ConsoleView::stopProcess() {
 }
 
 void ConsoleView::runProcess() {
+	usleep(10000);
+	wclear(m_RtFinderView);
 	while (m_State) {
 		usleep(500);
 	}

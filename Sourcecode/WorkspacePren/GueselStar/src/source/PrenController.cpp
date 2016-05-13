@@ -7,6 +7,7 @@ PrenController::PrenController() {
 	handler = new UARTHandler();
 	consoleView = NULL;
 	handler->openSerialIF(prenConfig->IF_NAME.c_str());
+	usleep(1000);
 	if (!handler->setUartConfig(handler->FULL_SPEED)) {
 		cout << "configuration failed" << endl;
 		delete handler;
@@ -17,12 +18,12 @@ PrenController::PrenController() {
 }
 
 PrenController::~PrenController() {
-	uartSender->sendStopCmd();
-	uartReceiver->stopReading();
 
 	delete uartReceiver;
 	delete uartSender;
-	delete consoleView;
+	if (consoleView!= NULL) {
+		delete consoleView;
+	}
 	delete handler;
 }
 
@@ -42,6 +43,7 @@ void PrenController::start() {
 }
 
 void PrenController::setState(const states state) {
+	cout << state << endl;
 	switch (state) {
 	case END:
 		stopProgram();
@@ -82,6 +84,7 @@ void PrenController::runProgram() {
 	if (consoleView != NULL) {
 		consoleView->stopProcess();
 	}
+	uartSender->sendStopCmd();
 	uartReceiver->stopReading();
 	cout << "exiting Controller" << endl;
 }

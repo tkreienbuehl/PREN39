@@ -61,7 +61,7 @@ int RouteFinder::runProcess() {
 
 	//m_outStr = "Start";
 	//printString(m_outStr);
-    for(int i = 0; i<2500; i++) {
+    for(int i = 0; i<15000; i++) {
 
         image = m_PicCreator->GetImage();
 
@@ -75,16 +75,19 @@ int RouteFinder::runProcess() {
 			calcDriveDirection(&fltImg);
 			m_GrayImg = grayImg;
 			m_FinalFltImg = fltImg;
-			//if (i%100 == 0) {
-				m_outStr =  "image processed nr:" + i;
-				printString(m_outStr, 5);
-			//}
+			if (i%100 == 0) {
+				char str[50];
+				bzero(str,sizeof(str));
+				sprintf(str,"image processed nr: %d",i);
+				printString(str, 5);
+				//cout << "image processed nr:" << i << endl;
+			}
         }
         else {
         	i--;
         }
     }
-
+    printString("Ende :)",6);
     m_Controller->setState(m_Controller->END);
 	string bye = "Now I've done my job, have fun with your pics ;)";
 	printString(bye, 6);
@@ -226,17 +229,17 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
     		cv::Point((edgeImg->cols >> 1),(edgeImg->rows >> 1)),cv::Scalar(255), 2);
 
 	if (leftLines.size() == 0 && rightLines.size() == 0) {
-		m_outStr = "*** No lines found, keeping old direction ***";
-		printString(m_outStr);
+		//m_outStr = "*** No lines found, keeping old direction ***";
+		//printString(m_outStr);
 		return;
 	}
 	if (leftLines.size() == 0) {
-		m_outStr = "*** Right side found only ***";
-		printString(m_outStr);
+		//m_outStr = "*** Right side found only ***";
+		//printString(m_outStr);
 	}
 	if (rightLines.size() == 0) {
-		m_outStr = "*** Left side found only ***";
-		printString(m_outStr);
+		//m_outStr = "*** Left side found only ***";
+		//printString(m_outStr);
 	}
 	short max = 0;
 	cv::Point lpt, rpt;
@@ -278,9 +281,8 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	corrAng = calcCorrAng(med);
 	char numstr[128];
 	bzero(numstr, sizeof(numstr));
-	sprintf(numstr, "In: %d out:", corrAng);
-	m_outStr = numstr;
-	printString(m_outStr, 3);
+	sprintf(numstr, "Input angle to PID: %d ", corrAng);
+	printString(numstr, 3);
 	m_pidCalc->pidDoWork(corrAng);
 
 }
@@ -380,7 +382,7 @@ int RouteFinder::calcCorrAng(short distVal) {
 
 void RouteFinder::printString(string str, uint line) {
 	if (m_Controller->getPrenConfig()->IS_ON_IDE) {
-		cout << str << endl;
+		cout << str.c_str() << endl;
 	}
 	else {
 		if (m_Controller->getConsoleView() != NULL) {

@@ -60,5 +60,5 @@ void PIDCalculation::pidDoWork(int& calcVal) {
 		m_integ -= m_dev;
 	}
 	//cout << m_val << endl;
-	m_Controller->setSteeringAngle((m_val+180));
+	//m_Controller->setSteeringAngle((m_val+180));
 }
