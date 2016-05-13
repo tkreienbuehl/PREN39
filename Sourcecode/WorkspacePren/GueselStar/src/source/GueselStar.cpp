@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
 
 	usleep(100);
 
-	rc = pthread_create(&threads[0], NULL, UARTReciever::staticEntryPoint,
+	rc = pthread_create(&threads[5], NULL, UARTReciever::staticEntryPoint,
 			uartReceiver);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;

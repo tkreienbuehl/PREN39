@@ -54,6 +54,7 @@ private:
 	PrenController* m_Controller;
 	bool m_State;
 	bool m_RouteFound;
+	bool m_Driving;
 	cv::Mat m_GrayImg;
 	cv::Mat m_FinalFltImg;
 	unsigned short m_leftRoutePos, m_rightRoutePos, m_rtWidth;

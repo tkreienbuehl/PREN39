@@ -45,12 +45,12 @@ void PrenController::setState(const states state) {
 
 void PrenController::runProgram() {
 
-	pthread_t threads[2];
+	pthread_t thread;
 	int rc;
 
 	if (!prenConfig->IS_ON_IDE) {
 		consoleView = new ConsoleView();
-		rc = pthread_create(&threads[1], NULL, ConsoleView::startThread, consoleView);
+		rc = pthread_create(&thread, NULL, ConsoleView::startThread, consoleView);
 		if (rc) {
 			cout << "Error:unable to create thread," << rc << endl;
 			exit(-1);

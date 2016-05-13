@@ -25,6 +25,7 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_pidCalc = new PIDCalculation(m_Controller);
 	m_outStr = "";
 	m_RouteFound = false;
+	m_Driving = false;
 }
 
 RouteFinder::~RouteFinder() {
@@ -83,8 +84,9 @@ int RouteFinder::runProcess() {
 				printString(str, 5);
 				//cout << "image processed nr:" << i << endl;
 			}
-			if (m_RouteFound) {
-
+			if (m_RouteFound && !m_Driving) {
+				m_Controller->setEngineSpeed(80);
+				m_Driving = true;
 			}
         }
         else {
