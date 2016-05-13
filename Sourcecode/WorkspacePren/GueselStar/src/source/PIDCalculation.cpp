@@ -49,16 +49,16 @@ void PIDCalculation::pidDoWork(int& calcVal) {
 	m_val /= 32;
 	//cout << " Calculated Value " << m_val << endl;
 	// limit control point
-	if (m_val > 35)
+	if (m_val > 125)
 	{
-		m_val = 35;
+		m_val = 125;
 		m_integ -= m_dev;
 	}
-	else if (m_val < -35)
+	else if (m_val < -125)
 	{
-		m_val = -35;
+		m_val = -125;
 		m_integ -= m_dev;
 	}
 	//cout << m_val << endl;
-	//m_Controller->setSteeringAngle((m_val+180));
+	m_Controller->setSteeringAngle((m_val+125));
 }

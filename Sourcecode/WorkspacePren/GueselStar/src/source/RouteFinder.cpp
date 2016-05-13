@@ -24,6 +24,7 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_Rows = 0;
 	m_pidCalc = new PIDCalculation(m_Controller);
 	m_outStr = "";
+	m_RouteFound = false;
 }
 
 RouteFinder::~RouteFinder() {
@@ -81,6 +82,9 @@ int RouteFinder::runProcess() {
 				sprintf(str,"image processed nr: %d",i);
 				printString(str, 5);
 				//cout << "image processed nr:" << i << endl;
+			}
+			if (m_RouteFound) {
+
 			}
         }
         else {
@@ -284,6 +288,7 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	sprintf(numstr, "Input angle to PID: %d ", corrAng);
 	printString(numstr, 3);
 	m_pidCalc->pidDoWork(corrAng);
+	m_RouteFound = true;
 
 }
 

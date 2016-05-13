@@ -4,11 +4,12 @@
 #include <unistd.h>
 #include "PrenConfiguration.hpp"
 #include "UARTSender.hpp"
-#include "UARTReciever.hpp"
 #include "ConsoleView.h"
-
+#include <string.h>
 
 using namespace std;
+
+class UARTHandler;
 
 class PrenController {
 
@@ -21,7 +22,7 @@ public:
 		STOPPED = -99
 	};
 
-	PrenController(void);
+	PrenController(UARTSender* sender);
 	~PrenController();
 
 	void start(void);
@@ -44,8 +45,6 @@ private:
 	int stopProgram(void);
 	PrenConfiguration* prenConfig;
 	states m_State;
-	UARTReciever* uartReceiver;
 	UARTSender* uartSender;
-	UARTHandler* handler;
 	ConsoleView* consoleView;
 };

@@ -2,6 +2,9 @@
 #include "../header/GueselStar.hpp"
 #include "../test/PictureCreator_test.hpp"
 #include "../header/DebugServer.hpp"
+#include "../header/UARTReciever.hpp"
+#include "../header/UARTSender.hpp"
+#include "../header/PrenConfiguration.hpp"
 
 int main(int argc, char** argv) {
 
@@ -10,11 +13,24 @@ int main(int argc, char** argv) {
 
 	usleep(1000000);
 
-	pthread_t threads[6];
+	pthread_t threads[7];
 	XInitThreads();
 	int rc;
 
-	PrenController* controller = new PrenController();
+	PrenConfiguration prenConfig;
+
+	UARTHandler* handler = new UARTHandler();
+
+	handler->openSerialIF(prenConfig.IF_NAME.c_str());
+	usleep(1000);
+	if (!handler->setUartConfig(handler->FULL_SPEED)) {
+		cout << "configuration failed" << endl;
+	}
+	UARTSender* uartSender = new UARTSender(handler);
+
+	PrenController* controller = new PrenController(uartSender);
+
+	UARTReciever* uartReceiver = new UARTReciever(handler, controller);
 
 	PictureCreator* picCreator = new PictureCreator(controller);
 	RouteFinder* rtFinder = new RouteFinder(controller, picCreator);
@@ -64,6 +80,13 @@ int main(int argc, char** argv) {
 
 	usleep(100);
 
+	rc = pthread_create(&threads[0], NULL, UARTReciever::staticEntryPoint,
+			uartReceiver);
+	if (rc) {
+		cout << "Error:unable to create thread," << rc << endl;
+	}
+	usleep(1000);
+
 	controller->start();
 
 	debugServer->stopServer();
@@ -78,12 +101,16 @@ int main(int argc, char** argv) {
 	delete objectFinder;
 
 	picCreator->StopRecording();
+	uartReceiver->stopReading();
 
 	usleep(5000);
 
 	delete picCreator;
 	delete controller;
 	delete debugServer;
+	delete uartReceiver;
+	delete uartSender;
+	delete handler;
 
 	cout << "done :)" << endl;
 

@@ -53,6 +53,7 @@ private:
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;
 	bool m_State;
+	bool m_RouteFound;
 	cv::Mat m_GrayImg;
 	cv::Mat m_FinalFltImg;
 	unsigned short m_leftRoutePos, m_rightRoutePos, m_rtWidth;
@@ -62,5 +63,6 @@ private:
 	unsigned short m_Rows, m_Cols;
 	PIDCalculation* m_pidCalc;
 	string m_outStr;
+
 
 };

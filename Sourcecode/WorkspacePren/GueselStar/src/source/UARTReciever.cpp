@@ -1,6 +1,6 @@
 #include "../header/UARTReciever.hpp"
 
-UARTReciever::UARTReciever(UARTHandler* handler) {
+UARTReciever::UARTReciever(UARTHandler* handler, PrenController* controller) {
 	m_EngineSpeed = 0;
 	m_FlexDistance = 0;
 	m_UltraDist = 0;
@@ -14,6 +14,7 @@ UARTReciever::UARTReciever(UARTHandler* handler) {
 	m_ContDoneCmd = "StAf";
 	m_unloadDoneCmd = "StEf";
 	m_DCengCmd = "DCDr";
+	m_Controller = controller;
 }
 
 UARTReciever::~UARTReciever() {

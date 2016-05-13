@@ -1,12 +1,14 @@
 #pragma once
 
 #include "UARTHandler.hpp"
+#include "UARTListener.h"
+#include "PrenController.hpp"
 
 using namespace std;
 
 class UARTReciever {
 public:
-	UARTReciever(UARTHandler* handler);
+	UARTReciever(UARTHandler* handler, PrenController* controller);
 	~UARTReciever();
 
 	uint8_t getFlexDistance();
@@ -31,5 +33,6 @@ private:
 	uint8_t m_FlexDistance, m_EngineSpeed, m_UltraDist;
 	std::string m_startCmd, m_ultraCmd, m_camCmd, m_debug, m_flex1Cmd, m_ContDoneCmd;
 	std::string m_unloadDoneCmd, m_DCengCmd;
+	PrenController* m_Controller;
 
 };

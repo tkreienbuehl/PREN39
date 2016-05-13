@@ -1,30 +1,20 @@
 #include "../header/PrenController.hpp"
 
-PrenController::PrenController() {
+PrenController::PrenController(UARTSender* sender) {
 	prenConfig = new PrenConfiguration();
 	m_State = STOPPED;
 
-	handler = new UARTHandler();
+	uartSender = sender;
 	consoleView = NULL;
-	handler->openSerialIF(prenConfig->IF_NAME.c_str());
-	usleep(1000);
-	if (!handler->setUartConfig(handler->FULL_SPEED)) {
-		cout << "configuration failed" << endl;
-		delete handler;
-	}
 
-	uartReceiver = new UARTReciever(handler);
-	uartSender = new UARTSender(handler);
 }
 
 PrenController::~PrenController() {
 
-	delete uartReceiver;
 	delete uartSender;
 	if (consoleView!= NULL) {
 		delete consoleView;
 	}
-	delete handler;
 }
 
 PrenConfiguration* PrenController::getPrenConfig(void) {
@@ -58,13 +48,6 @@ void PrenController::runProgram() {
 	pthread_t threads[2];
 	int rc;
 
-	rc = pthread_create(&threads[0], NULL, UARTReciever::staticEntryPoint,
-			uartReceiver);
-	if (rc) {
-		cout << "Error:unable to create thread," << rc << endl;
-	}
-	usleep(1000);
-
 	if (!prenConfig->IS_ON_IDE) {
 		consoleView = new ConsoleView();
 		rc = pthread_create(&threads[1], NULL, ConsoleView::startThread, consoleView);
@@ -85,7 +68,6 @@ void PrenController::runProgram() {
 		consoleView->stopProcess();
 	}
 	uartSender->sendStopCmd();
-	uartReceiver->stopReading();
 	cout << "exiting Controller" << endl;
 }
 
@@ -121,19 +103,33 @@ void PrenController::setLaneLost() {
 
 void PrenController::setSteeringAngle(int angle) {
 
-	//cout << "set new angle" << angle << endl;
+	char str[20];
+	bzero(str,sizeof(str));
+	sprintf(str, "set new angle % d",angle);
+	if (!prenConfig->IS_ON_IDE) {
+		if (consoleView != NULL ) {
+			consoleView->setUARTStateText(str);
+		}
+	}
+	else {
+		cout << str << endl;
+	}
 	uartSender->setSteering(angle);
 }
 
 void PrenController::setVehicleInCrossing() {
 
-	//cout << "Vehicle in Crossing";
+	if (!prenConfig->IS_ON_IDE) {
+		if (consoleView != NULL ) {
+			consoleView->setUARTStateText("Vehicle in Crossing");
+		}
+	}
 }
 
 bool PrenController::checkObjectOnLane(void) {
 
 	bool objectOnLane = false;
-	int distance = uartReceiver->getUltraDist();
+	int distance = 5; //uartReceiver->getUltraDist();
 
 	if (distance < 10) {
 		objectOnLane = true;
@@ -144,10 +140,10 @@ bool PrenController::checkObjectOnLane(void) {
 
 int PrenController::getFlexDistance(void) {
 
-	return uartReceiver->getFlexDistance();
+	return 7; //uartReceiver->getFlexDistance();
 }
 
 int PrenController::getEngineSpeed(void) {
 
-	return uartReceiver->getEngineSpeed();
+	return 7; //uartReceiver->getEngineSpeed();
 }
