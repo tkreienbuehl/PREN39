@@ -10,7 +10,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_state = false;
-	pthread_mutex_init(&m_mutex,NULL);
+	pthread_mutex_init(&m_mutex, NULL);
 }
 
 ObjectFinder::~ObjectFinder() {
@@ -35,29 +35,64 @@ void ObjectFinder::RunProcess() {
 
 	while (m_state) {
 
-		if(1==0) { //ultraschall
-		}
-		else {
+		if (m_Controller->checkObjectOnLane()) { //ultraschall: no object detected
 
-		cv::Mat image = m_PicCreator->GetImage();
+			cv::Mat image = m_PicCreator->GetImage();
 
-			//origImage = createImage(
-					//"/home/patbrant/Pictures/pren/street_distance1.jpg");
-
-		origImage = image.clone();
+			origImage = image.clone();
 			if (!origImage.empty()) {
 				cv::Rect areaToCrop(origImage.cols / 2, 0, origImage.cols / 2,
 						origImage.rows);
 
 				croppedImage = origImage(areaToCrop);
+
+				cv::medianBlur(croppedImage, croppedImage, 3);
 				hsvImage = convertImageToHSV(croppedImage);
-				filteredImageGreen = filterColorInImage("green", hsvImage);
-				filteredImageBlue = filterColorInImage("blue", hsvImage);
+
+				cv::inRange(hsvImage,
+						cv::Scalar(
+								m_Controller->getPrenConfig()->GREEN_RANGE_H_LOW,
+								m_Controller->getPrenConfig()->GREEN_RANGE_S_LOW,
+								m_Controller->getPrenConfig()->GREEN_RANGE_V_LOW),
+						cv::Scalar(
+								m_Controller->getPrenConfig()->GREEN_RANGE_H_HIGH,
+								m_Controller->getPrenConfig()->GREEN_RANGE_S_HIGH,
+								m_Controller->getPrenConfig()->GREEN_RANGE_V_HIGH),
+						filteredImageGreen);
+				cv::inRange(hsvImage,
+						cv::Scalar(
+								m_Controller->getPrenConfig()->BLUE_RANGE_H_LOW,
+								m_Controller->getPrenConfig()->BLUE_RANGE_S_LOW,
+								m_Controller->getPrenConfig()->BLUE_RANGE_V_LOW),
+						cv::Scalar(
+								m_Controller->getPrenConfig()->BLUE_RANGE_H_HIGH,
+								m_Controller->getPrenConfig()->BLUE_RANGE_S_HIGH,
+								m_Controller->getPrenConfig()->BLUE_RANGE_V_HIGH),
+						filteredImageBlue);
+
+				cv::Mat blue_green_combined;
+				cv::addWeighted(filteredImageGreen, 1.0, filteredImageBlue, 1.0,
+						0.0, blue_green_combined);
+				// cv::GaussianBlur(filteredImageGreen, filteredImageBlue, cv::Size(9, 9), 2, 2);
+
+				//filteredImageGreen = filterColorInImage("green", hsvImage);
+				//filteredImageBlue = filterColorInImage("blue", hsvImage);
 				contoursGreen = findContainersInImage(filteredImageGreen);
 				contoursBlue = findContainersInImage(filteredImageBlue);
 				contours = mergeContours(contoursGreen, contoursBlue);
+
+				// TODO: IDEA for two following containers with same color
+				//cv::Scalar color( 255, 255, 255 );
+				//cv::drawContours(croppedImage, contours, -1, color, 1, 8);
+				// cv::Mat ourfitLine;
+				// cv::fitLine(InputArray points, OutputArray line, int distType, double param, double reps, double aeps);
+
 				resultImage = markFoundContoursInImage(contours, croppedImage);
+				line(resultImage, cv::Point(4 * croppedImage.cols / 5, 0),
+						cv::Point(4 * croppedImage.cols / 5, croppedImage.rows),
+						cv::Scalar(0, 255, 255), 1, 8, 0);
 				m_MarkedImage = resultImage;
+
 				usleep(10);
 			}
 		}
@@ -81,7 +116,7 @@ cv::Mat ObjectFinder::createImage(cv::String filename) {
 cv::Mat ObjectFinder::convertImageToHSV(cv::Mat rgbImage) {
 	cv::Mat HSVImage;
 
-	cvtColor(rgbImage, HSVImage, CV_RGB2HSV);
+	cvtColor(rgbImage, HSVImage, CV_BGR2HSV);
 	return HSVImage;
 }
 
@@ -90,11 +125,23 @@ cv::Mat ObjectFinder::filterColorInImage(cv::String color,
 
 	cv::Mat filteredImage;
 	if (color == "green") {
-		cv::inRange(imageToFilter, cv::Scalar(m_Controller->getPrenConfig()->GREEN_RANGE_H_LOW, m_Controller->getPrenConfig()->GREEN_RANGE_S_LOW, m_Controller->getPrenConfig()->GREEN_RANGE_V_LOW),
-				cv::Scalar(m_Controller->getPrenConfig()->GREEN_RANGE_H_HIGH, m_Controller->getPrenConfig()->GREEN_RANGE_S_HIGH, m_Controller->getPrenConfig()->GREEN_RANGE_V_HIGH), filteredImage);
+		cv::inRange(imageToFilter,
+				cv::Scalar(m_Controller->getPrenConfig()->GREEN_RANGE_H_LOW,
+						m_Controller->getPrenConfig()->GREEN_RANGE_S_LOW,
+						m_Controller->getPrenConfig()->GREEN_RANGE_V_LOW),
+				cv::Scalar(m_Controller->getPrenConfig()->GREEN_RANGE_H_HIGH,
+						m_Controller->getPrenConfig()->GREEN_RANGE_S_HIGH,
+						m_Controller->getPrenConfig()->GREEN_RANGE_V_HIGH),
+				filteredImage);
 	} else if (color == "blue") {
-		cv::inRange(imageToFilter, cv::Scalar(m_Controller->getPrenConfig()->BLUE_RANGE_H_LOW, m_Controller->getPrenConfig()->BLUE_RANGE_S_LOW, m_Controller->getPrenConfig()->BLUE_RANGE_V_LOW),
-						cv::Scalar(m_Controller->getPrenConfig()->BLUE_RANGE_H_HIGH, m_Controller->getPrenConfig()->BLUE_RANGE_S_HIGH, m_Controller->getPrenConfig()->BLUE_RANGE_V_HIGH), filteredImage);
+		cv::inRange(imageToFilter,
+				cv::Scalar(m_Controller->getPrenConfig()->BLUE_RANGE_H_LOW,
+						m_Controller->getPrenConfig()->BLUE_RANGE_S_LOW,
+						m_Controller->getPrenConfig()->BLUE_RANGE_V_LOW),
+				cv::Scalar(m_Controller->getPrenConfig()->BLUE_RANGE_H_HIGH,
+						m_Controller->getPrenConfig()->BLUE_RANGE_S_HIGH,
+						m_Controller->getPrenConfig()->BLUE_RANGE_V_HIGH),
+				filteredImage);
 	}
 	return filteredImage;
 }
@@ -130,24 +177,46 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 		cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
-		if (boundRect[i].height > boundRect[i].width && boundRect[i].height > 90) {
+		int green;
+		int red;
+
+		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 50
+				&& boundRect[i].height > 40) {
 
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
-					cv::Scalar(0, 255, 0), 2, 8, 0);
+					cv::Scalar(0, 255, 0), 1, 8, 0);
 
-			int distanceToContainer = m_Controller->getPrenConfig()->REFERENCE_DISTANCE * m_Controller->getPrenConfig()->REFERENCE_HEIGHT / boundRect[i].height;
+			int centerX = boundRect[i].x + boundRect[i].width / 2;
+			int centerY = boundRect[i].y + boundRect[i].height / 2;
 
-			m_Controller->setContainerFound(distanceToContainer);
+			if (abs(lastCenterX - centerX) > 10) {
+				informedController = false;
+			}
+			lastCenterX = centerX;
+			lastCenterY = centerY;
 
-			std::ostringstream stringConverter;
-			stringConverter << distanceToContainer;
-			std::string distanceString = stringConverter.str();
+			cv::Scalar color;
+			if (informedController) {
+				rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
+						cv::Point(centerX + 1, centerY + 1),
+						cv::Scalar(0, 255, 0), 1, 8, 0);
+			} else {
+				rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
+						cv::Point(centerX + 1, centerY + 1),
+						cv::Scalar(0, 0, 255), 1, 8, 0);
+			}
 
-			putText(markedImage,
-					"Distance to Container: " + distanceString + "mm",
-					cvPoint(30, 30),
-					CV_FONT_HERSHEY_PLAIN, 1.0, cvScalar(200, 200, 250), 1,
-					CV_AA);
+			if (centerX >= 4 * imageToMarkContainer.cols / 5
+					&& !informedController) {
+
+				int distanceToContainer =
+						m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+								* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+								/ boundRect[i].height;
+
+				m_Controller->setContainerFound(distanceToContainer);
+				informedController = true;
+			}
 		}
 	}
 
@@ -156,7 +225,7 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 
 cv::Mat ObjectFinder::getImage() {
 	pthread_mutex_lock(&m_mutex);
-		cv::Mat retImg = m_MarkedImage;
+	cv::Mat retImg = m_MarkedImage;
 	pthread_mutex_unlock(&m_mutex);
 	return retImg;
 }

@@ -41,4 +41,8 @@ private:
 	PrenController* m_Controller;
 	bool m_state;
 	pthread_mutex_t m_mutex;
+
+	int lastCenterX;
+	int lastCenterY;
+	bool informedController;
 };
