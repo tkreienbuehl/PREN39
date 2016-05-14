@@ -21,11 +21,11 @@ public:
 	void pidDoWork(int& calcVal);
 
 private:
-	uint16_t m_actSpeedValue;
-	uint16_t m_nomValue;
-	uint16_t m_nomValueOld;
-	uint16_t m_setValue;
-	uint16_t m_setValueOld;
+	short m_actSpeedValue;
+	short m_nomValue;
+	short m_nomValueOld;
+	short m_setValue;
+	short m_setValueOld;
 	int m_integ;
 	int m_devOld;
 	int m_val,m_dev;

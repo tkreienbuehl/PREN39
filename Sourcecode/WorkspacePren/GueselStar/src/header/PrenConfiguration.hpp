@@ -44,6 +44,8 @@ public:
 	ushort NROFLINES;
 	ushort MAX_PIX_DIFF;
 	ushort MIN_RT_WIDTH;
+	ushort MAX_SPEED;
+	ushort MAX_NR_OF_IMAGES;
 
 private:
 };

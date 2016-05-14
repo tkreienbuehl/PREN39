@@ -16,6 +16,7 @@ public:
 	void setRouteFinderText(string text, unsigned int line = 0);
 	void setObjectFinderText(string text, unsigned int line = 0);
 	void setUARTStateText(string text, unsigned int line = 0);
+	void setControllerText(string text, unsigned int line = 0);
 
 	void stopProcess();
 
@@ -24,7 +25,7 @@ private:
 	WINDOW* createNewWindow(int height, int width, int startY, int startX);
 	void destroyWindowin(WINDOW* window);
 
-	WINDOW* m_RtFinderView, *m_UARTState, *m_ObjFinderView;
+	WINDOW* m_RtFinderView, *m_UARTState, *m_ObjFinderView, *m_ControllerView;
 	unsigned int m_width, m_height;
 	bool m_State;
 

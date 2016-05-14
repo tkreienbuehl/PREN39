@@ -21,8 +21,9 @@ ConsoleView::ConsoleView() {
 	clear();
 	refresh();
 	m_UARTState = createNewWindow(4, m_width,0,0);
-	m_RtFinderView = createNewWindow(m_height-5,(m_width >> 1)-1,5,0);
-	m_ObjFinderView = createNewWindow(m_height-5,(m_width >> 1)-1,5,(m_width >> 1)+1);
+	m_RtFinderView = createNewWindow(m_height-10,(m_width >> 1)-1,5,0);
+	m_ObjFinderView = createNewWindow(m_height-10,(m_width >> 1)-1,5,(m_width >> 1)+1);
+	m_ControllerView = createNewWindow(4,m_width,m_height-5,0);
 	usleep(3000000);
 	refresh();
 }
@@ -39,6 +40,7 @@ void* ConsoleView::startThread(void* threadId) {
 }
 
 void ConsoleView::setRouteFinderText(string text, unsigned int line) {
+	wclrtoeol(m_RtFinderView);
 	wborder(m_RtFinderView, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	box(m_RtFinderView, 0 , 0);
 	mvwprintw(m_RtFinderView, 1 + line, 1, text.c_str());
@@ -46,6 +48,7 @@ void ConsoleView::setRouteFinderText(string text, unsigned int line) {
 }
 
 void ConsoleView::setObjectFinderText(string text, unsigned int line) {
+	wclrtoeol(m_ObjFinderView);
 	wborder(m_ObjFinderView, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	box(m_ObjFinderView, 0 , 0);
 	mvwprintw(m_ObjFinderView, 1 + line, 1, text.c_str());
@@ -53,10 +56,19 @@ void ConsoleView::setObjectFinderText(string text, unsigned int line) {
 }
 
 void ConsoleView::setUARTStateText(string text, unsigned int line) {
+	wclrtoeol(m_UARTState);
 	wborder(m_UARTState, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	box(m_UARTState, 0 , 0);
 	mvwprintw(m_UARTState, 1 + line, 1, text.c_str());
 	wrefresh(m_UARTState);
+}
+
+void ConsoleView::setControllerText(string text, unsigned int line) {
+	wclrtoeol(m_ControllerView);
+	wborder(m_ControllerView, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	box(m_ControllerView, 0 , 0);
+	mvwprintw(m_ControllerView, 1 + line, 1, text.c_str());
+	wrefresh(m_ControllerView);
 }
 
 void ConsoleView::stopProcess() {

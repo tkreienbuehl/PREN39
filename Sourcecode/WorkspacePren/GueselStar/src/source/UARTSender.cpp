@@ -2,6 +2,7 @@
 
 UARTSender::UARTSender(UARTHandler* handler) {
 	m_uart0_filestream = handler->getFileStream();
+	pthread_mutex_init(&m_mutex, NULL);
 }
 
 UARTSender::~UARTSender() {
@@ -26,7 +27,8 @@ bool UARTSender::setCameraPos(CameraStatesE pos) {
 bool UARTSender::setEngineSpeed(uint8_t speed, EngineModesE mode) {
 	char stream[30];
 	int length = 0;
-	length = sprintf(stream,"\rDCDr d %d %d", speed, mode);
+	//length = sprintf(stream,"\rDCDr d %d %d", speed, mode);
+	length = sprintf(stream,"\rDCDr d %d", speed);
 	return writeStreamToPort(stream, length);
 }
 
@@ -80,23 +82,14 @@ void UARTSender::blinkLed(int on) {
 
 bool UARTSender::writeStreamToPort(const char* strPtr, unsigned int size) {
 
+	pthread_mutex_lock(&m_mutex);
 	bool isOk = true;
-	isOk = writeCharToPort("\r");
-	for (unsigned int i = 0; i< size; i++) {
-		isOk = writeCharToPort(&strPtr[i]);
-	}
-	isOk = writeCharToPort("\0");
-	return isOk;
-}
-
-bool UARTSender::writeCharToPort(const char* ch) {
-
-	usleep(waitTime);
-	int count = write(m_uart0_filestream, ch , 1);
+	int count = write(m_uart0_filestream, strPtr , size);
 	if (count < 0)
 	{
 		//cout << "UART TX error\n" << endl;
-		return false;
+		isOk = false;
 	}
-	return true;
+	pthread_mutex_unlock(&m_mutex);
+	return isOk;
 }

@@ -22,6 +22,13 @@ public:
 		STOPPED = -99
 	};
 
+	enum classes {
+		ROUTE_FINDER,
+		OBJECT_FINDER,
+		UART_COMM,
+		CONTROLLER
+	};
+
 	PrenController(UARTSender* sender);
 	~PrenController();
 
@@ -40,10 +47,12 @@ public:
 	int getEngineSpeed(void);
 	PrenConfiguration* getPrenConfig(void);
 	ConsoleView* getConsoleView();
+	void printString(string str, classes cl, uint line = 0);
 
 private:
 	void runProgram(void);
 	int stopProgram(void);
+
 	PrenConfiguration* prenConfig;
 	states m_State;
 	UARTSender* uartSender;

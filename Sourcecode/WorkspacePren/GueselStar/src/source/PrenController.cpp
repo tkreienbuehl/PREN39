@@ -78,56 +78,52 @@ int PrenController::stopProgram() {
 }
 
 void PrenController::setContainerFound(int distance) {
-
+	char str[50];
+	bzero(str,sizeof(str));
+	sprintf(str,"Container ahead: Distance to Container: %d", distance);
+	printString(str,CONTROLLER,1);
 	// inform MC-Board
 	uartSender->setContainerFound(distance);
-	//cout << "Container ahead: Distance to Container: " << distance << endl;
 }
 void PrenController::setCrossingFound(int distance) {
-
+	char str[50];
+	bzero(str,sizeof(str));
+	sprintf(str,"Crossing ahead: Distance to Crossing: %d", distance);
+	printString(str,CONTROLLER,1);
 	// inform MC-Board
-	//cout << "Crossing ahead: Distance to Crossing: " << distance << endl;
+
 }
 
 void PrenController::setTargetFieldFound(int distance) {
-
-	//cout << "Targetfield ahead: Distance to Tagetfield: " << distance << endl;
+	char str[50];
+	bzero(str,sizeof(str));
+	sprintf(str,"Targetfield ahead: Distance to Tagetfield: %d", distance);
+	printString(str,CONTROLLER,1);
+	// inform MC-Board
 	uartSender->setTargetFieldFound(distance);
 }
 
 void PrenController::setLaneLost() {
-
 	// inform MC-Board
-	cout << "RouterFinder lost Lane" << endl;
+	printString("RouterFinder lost Lane", CONTROLLER, 1);
 }
 
 void PrenController::setSteeringAngle(int angle) {
-
 	char str[20];
 	bzero(str,sizeof(str));
-	sprintf(str, "set new angle % d",angle);
-	if (!prenConfig->IS_ON_IDE) {
-		if (consoleView != NULL ) {
-			consoleView->setUARTStateText(str);
-		}
-	}
-	else {
-		cout << str << endl;
-	}
+	sprintf(str, "set new angle %d",angle);
+	printString(str,CONTROLLER,0);
+	// inform MC-Board
 	uartSender->setSteering(angle);
 }
 
 void PrenController::setEngineSpeed(uint8_t speed) {
+	// inform MC-Board
 	uartSender->setEngineSpeed(speed);
 }
 
 void PrenController::setVehicleInCrossing() {
-
-	if (!prenConfig->IS_ON_IDE) {
-		if (consoleView != NULL ) {
-			consoleView->setUARTStateText("Vehicle in Crossing");
-		}
-	}
+	printString("Vehicle in Crossing",CONTROLLER,1);
 }
 
 bool PrenController::checkObjectOnLane(void) {
@@ -150,4 +146,28 @@ int PrenController::getFlexDistance(void) {
 int PrenController::getEngineSpeed(void) {
 
 	return 7; //uartReceiver->getEngineSpeed();
+}
+
+void PrenController::printString(string str, classes cl, uint line) {
+	if (prenConfig->IS_ON_IDE) {
+		cout << str.c_str() << endl;
+	}
+	else {
+		if (consoleView != NULL) {
+			switch (cl) {
+			case ROUTE_FINDER:
+				consoleView->setRouteFinderText(str, line);
+				break;
+			case OBJECT_FINDER:
+				consoleView->setObjectFinderText(str, line);
+				break;
+			case UART_COMM:
+				consoleView->setUARTStateText(str, line);
+				break;
+			case CONTROLLER:
+				consoleView->setControllerText(str, line);
+				break;
+			}
+		}
+	}
 }

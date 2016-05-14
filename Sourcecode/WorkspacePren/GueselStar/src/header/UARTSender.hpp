@@ -36,10 +36,9 @@ public:
 
 private:
 	bool writeStreamToPort(const char* strPtr, unsigned int size);
-	bool writeCharToPort(const char* ch);
 
 	UARTHandler m_handler;
 	int m_uart0_filestream;
-	const static unsigned short waitTime = 10000;
+	pthread_mutex_t m_mutex;
 
 };

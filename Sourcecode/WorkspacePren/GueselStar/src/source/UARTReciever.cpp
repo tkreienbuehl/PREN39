@@ -27,7 +27,7 @@ void UARTReciever::startRecording() {
 
 void UARTReciever::stopReading() {
 	m_active = false;
-	cout << "Stop command recieved" << endl;
+	m_Controller->printString("Stop command recieved", m_Controller->UART_COMM, 0);
 }
 
 void UARTReciever::readAndPlotData() {
@@ -70,7 +70,7 @@ void UARTReciever::readAndPlotData() {
 			}
 		}
 	}
-	cout << "UART-Recorder stopped" << endl;
+	m_Controller->printString("UART-Recorder stopped", m_Controller->UART_COMM, 1);
 }
 
 void UARTReciever::decodeRecievedString(std::string message) {
@@ -80,6 +80,9 @@ void UARTReciever::decodeRecievedString(std::string message) {
 		decodeUltraValue(message);
 	} else if(message.find("Fld1") != std::string::npos) {
 		decodeFlexValue(message);
+	} else if(message.find("Stop") != std::string::npos) {
+		m_Controller->printString(message, m_Controller->UART_COMM, 1);
+		m_Controller->setState(m_Controller->END);
 	}
 	// TODO: EngineSpeed
 }
@@ -87,7 +90,7 @@ void UARTReciever::decodeRecievedString(std::string message) {
 void UARTReciever::decodeUnknownCommandError(std::string message) {
 	int start = message.find("*** Failed");
 	message.replace(start, 4 , "");
-	cout << message << endl;
+	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 
 void UARTReciever::decodeUltraValue(std::string message) {
@@ -95,7 +98,7 @@ void UARTReciever::decodeUltraValue(std::string message) {
 	message.replace(start, 3, "");
 	int value = atoi(message.c_str());
 	m_UltraDist = value;
-	cout << message << endl;
+	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 
 void UARTReciever::decodeFlexValue(std::string message) {
@@ -103,12 +106,11 @@ void UARTReciever::decodeFlexValue(std::string message) {
 	message.replace(start, 5, "");
 	int value = atoi(message.c_str());
 	m_FlexDistance = value;
-	cout << message << endl;
+	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 
 void* UARTReciever::staticEntryPoint(void* threadId) {
 	((UARTReciever*)threadId)->startRecording();
-	cout << "Thread ended " << endl;
 	return NULL;
 }
 

@@ -42,6 +42,8 @@ PrenConfiguration::PrenConfiguration() {
 		MAX_PIX_DIFF = parser.readUShortParam("MAX_PIX_DIFF");
 		MIN_RT_WIDTH = parser.readUShortParam("MIN_RT_WIDTH");
 		IF_NAME = parser.readStringParam("IF_NAME");
+		MAX_SPEED = parser.readUShortParam("MAX_SPEED");
+		MAX_NR_OF_IMAGES = parser.readUShortParam("MAX_NR_OF_IMAGES");
 }
 
 PrenConfiguration::~PrenConfiguration() {
