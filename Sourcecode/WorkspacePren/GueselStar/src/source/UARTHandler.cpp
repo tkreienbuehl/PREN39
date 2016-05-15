@@ -18,8 +18,9 @@
 		m_uart0_filestream = open(ifName, O_RDWR | O_NONBLOCK);	//Open in non blocking read/write mode
 		if (m_uart0_filestream == -1)
 		{
-			m_ConsoleView->setUARTStateText( "Error - Unable to open UART.  "
-					"Ensure it is not in use by another application and you have permission to use", 0);
+			m_ConsoleView->setUARTStateText( "Error - Unable to open UART.",0);
+			m_ConsoleView->setUARTStateText( "Ensure it is not in use by another application and you have permission to use", 1);
+			usleep(1000000);
 			return false;
 		}
 		return true;
@@ -29,7 +30,7 @@
 		struct termios options;
 
 		if (tcgetattr(m_uart0_filestream, &options) !=0) {
-			cout << "error" << endl;
+			m_ConsoleView->setUARTStateText("Error reading config parameters",1);
 			return false;
 		}
 	    cfsetospeed(&options,baudRate);
@@ -43,7 +44,7 @@
 		options.c_cc[VTIME] = 5;
 
 		if (tcsetattr(m_uart0_filestream, TCSANOW, &options) != 0 ) {
-			cout << "no a error" << endl;
+			m_ConsoleView->setUARTStateText("Error writing config parameters",1);
 			close(m_uart0_filestream);
 			return false;
 		}

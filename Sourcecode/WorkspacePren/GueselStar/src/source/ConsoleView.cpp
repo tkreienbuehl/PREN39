@@ -4,30 +4,7 @@ ConsoleView* ConsoleView::m_TheInstance = NULL;
 
 ConsoleView::ConsoleView() {
 	m_State = true;
-	initscr();
-	raw();
-	keypad(stdscr, TRUE);
-	start_color();
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	getmaxyx(stdscr, m_height, m_width);
-	attron(A_BOLD);
-	printw("Welcome");
-	mvchgat(0, 0, -1, A_BLINK, 1, NULL);
-	attroff(A_BOLD);
-	move(1,0);
-	printw("Drücke 'F1' um die View zu schliessen");
-	move(2,0);
-	printw("Das Programm startet in wenigen Augenblicken");
-	refresh();
-	usleep(1000000);
-	clear();
-	refresh();
-	m_UARTState = createNewWindow(4, m_width,0,0);
-	m_RtFinderView = createNewWindow(m_height-10,(m_width >> 1)-1,5,0);
-	m_ObjFinderView = createNewWindow(m_height-10,(m_width >> 1)-1,5,(m_width >> 1)+1);
-	m_ControllerView = createNewWindow(4,m_width,m_height-5,0);
-	usleep(3000000);
-	refresh();
+	initView();
 }
 
 ConsoleView::~ConsoleView() {
@@ -115,4 +92,30 @@ void ConsoleView::destroyWindowin(WINDOW* window) {
 	wborder(window, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	wrefresh(window);
 	delwin(window);
+}
+
+void ConsoleView::initView() {
+	initscr();
+	raw();
+	keypad(stdscr, TRUE);
+	start_color();
+	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	getmaxyx(stdscr, m_height, m_width);
+	attron(A_BOLD);
+	printw("Welcome");
+	mvchgat(0, 0, -1, A_BLINK, 1, NULL);
+	attroff(A_BOLD);
+	move(1,0);
+	printw("Drücke 'F1' um die View zu schliessen");
+	move(2,0);
+	printw("Das Programm startet in wenigen Augenblicken");
+	refresh();
+	usleep(1000000);
+	clear();
+	refresh();
+	m_UARTState = createNewWindow(4, m_width,0,0);
+	m_RtFinderView = createNewWindow(m_height-10,(m_width >> 1)-1,5,0);
+	m_ObjFinderView = createNewWindow(m_height-10,(m_width >> 1)-1,5,(m_width >> 1)+1);
+	m_ControllerView = createNewWindow(4,m_width,m_height-5,0);
+	refresh();
 }

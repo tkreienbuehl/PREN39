@@ -9,8 +9,8 @@ using namespace std;
 class ConsoleView {
 private:
 	ConsoleView();
-	ConsoleView(ConsoleView const&) {};				// Copy Constructor private
-	ConsoleView& operator=(ConsoleView const&) {};	//
+	ConsoleView(ConsoleView const&);				// Copy Constructor private
+	ConsoleView& operator=(ConsoleView const&);		// assignment operator private
 
 	~ConsoleView();
 public:
@@ -33,6 +33,7 @@ private:
 	void runProcess();
 	WINDOW* createNewWindow(int height, int width, int startY, int startX);
 	void destroyWindowin(WINDOW* window);
+	void initView();
 
 	WINDOW* m_RtFinderView, *m_UARTState, *m_ObjFinderView, *m_ControllerView;
 	unsigned int m_width, m_height;
