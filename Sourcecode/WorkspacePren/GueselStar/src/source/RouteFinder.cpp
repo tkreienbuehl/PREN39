@@ -152,14 +152,18 @@ void RouteFinder::lineDetection(cv::Mat* changesMat) {
 
     std::vector<cv::Vec4i> lines;
     std::vector<cv::Vec4i> savedLinesLeft, savedLinesRight;
-    cv::HoughLinesP(*changesMat, lines, 1, CV_PI/180, 15, 30, 20 );
+    cv::HoughLinesP(*changesMat, lines, 1, CV_PI/180, 15, 50, 20 );
     for( size_t i = 0; i < lines.size(); i++ )
     {
 		cv::Vec4i l = lines[i];
 		setLineDirection(l);
 		if ((l[2] - l[0]) != 0) {
 			int slope = (l[3] - l[1]) / (l[2] - l[0]);
-			if (abs(slope) == 1 || abs(slope) == 2) {
+			char str[20];
+			bzero(str, sizeof(str));
+			sprintf(str,"slope of Line. %d", slope);
+			m_Controller->printString(str,me,9);
+			if (abs(slope) >= 1) {
 				//leftSide
 				if (l[2] < ((m_Cols >> 1) - MAX_PIX_DIFF) && l[0] < ((m_Cols >> 1) - MAX_PIX_DIFF)) {
 					if (slope < 0) {

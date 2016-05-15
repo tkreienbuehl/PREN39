@@ -28,66 +28,47 @@
 		m_state = true;
 		uint32_t imgNr = 0;
 
-		cout << "Viever online" << endl;
 		if (!conf.IS_ON_PI) {
 			cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
-			cout << "window is opening" << endl;
 		}
 		while (m_state) {
-
 			try {
 				origImg = m_rtFinder->getOriginalImage();
 				fltImage = m_rtFinder->getFilteredImage();
-					if (!origImg.empty()) {
-						if (conf.IS_ON_PI) {
-							char str[20];
-							//bzero(str,20);
-							sprintf(str,"/tmp/img_%i.jpg",imgNr);
-							cv::imwrite(str, m_rtFinder->getOriginalImage());
-							//sprintf(str,"/tmp/fltImg_%i.jpg",imgNr);
-							//cv::imwrite(str, fltImage);
-
-							/*
-							bzero(str,20);
-							sprintf(str,"/tmp/imggrey_%i.jpg",imgNr);
-							cv::imwrite(str, m_rtFinder->getGrayImage());
-
-							bzero(str,20);
-							sprintf(str,"/tmp/imgobj_%i.jpg",imgNr);
-							cv::imwrite(str, m_objectFinder->getImage());
-							*/
-							imgNr++;
+				if (!origImg.empty()) {
+					if (conf.IS_ON_PI) {
+						char str[20];
+						sprintf(str,"/tmp/img_%i.jpg",imgNr);
+						cv::imwrite(str, m_rtFinder->getOriginalImage());
+						imgNr++;
+					} else {
+						try {
+							cv::imshow("The Image", fltImage);
+						} catch (...) {
+							cout << "Error occured" << endl;
 						}
-						else {
-							try {
-								cv::imshow("The Image", fltImage);
-								//usleep(50000);
-							}
-							catch (...) {
-								cout << "Error occured" << endl;
-							}
-							try {
-								cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
-								//cv::waitKey(100);
-							}
-							catch (...) {
-								cout << "Error occured" << endl;
-							}
-							try {
-								objectImg =  m_objectFinder->getImage();
-								cv::imshow("Object Detection", objectImg);
-								//cv::waitKey(150);
-							}
-							catch (...) {
-								cout << "Error occured" << endl;
-							}
-							cv::waitKey(0);
-
+						try {
+							cv::imshow("The Source gray Image", m_rtFinder->getGrayImage());
+						} catch (...) {
+							cout << "Error occured" << endl;
 						}
+						try {
+							objectImg =  m_objectFinder->getImage();
+							cv::imshow("Object Detection", objectImg);
+						} catch (...) {
+							cout << "Error occured" << endl;
+						}
+						cv::waitKey(0);
 					}
+				}
+				else {
+					m_state = false;
+				}
 			}
 			catch (...) {
 				cout << "Error occured" << endl;
 			}
 		}
+		cv::destroyAllWindows();
+		cv::waitKey(1);
 	}

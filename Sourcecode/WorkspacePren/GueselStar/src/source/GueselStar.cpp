@@ -38,11 +38,8 @@ int main(int argc, char** argv) {
 		cout << "configuration failed" << endl;
 	}
 	UARTSender* uartSender = new UARTSender(handler);
-
 	PrenController* controller = new PrenController(uartSender, viewer);
-
 	UARTReciever* uartReceiver = new UARTReciever(handler, controller);
-
 	PictureCreator* picCreator = new PictureCreator(controller);
 	RouteFinder* rtFinder = new RouteFinder(controller, picCreator);
 	ObjectFinder* objectFinder = new ObjectFinder(controller, picCreator);
@@ -63,14 +60,12 @@ int main(int argc, char** argv) {
 	}
 	usleep(100);
 
-
 	rc = pthread_create(&threads[2], NULL, ObjectFinder::staticEntryPoint, objectFinder);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;
 		exit(-1);
 	}
 	usleep(100);
-
 
 	if(controller->getPrenConfig()->START_LOCAL_VIEW) {
 		rc = pthread_create(&threads[3], NULL, PictureViewer::startThread, picViewer);
