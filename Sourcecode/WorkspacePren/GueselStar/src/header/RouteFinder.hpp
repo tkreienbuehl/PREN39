@@ -8,9 +8,9 @@
 #include <opencv2/imgproc.hpp>
 #include "GradientMat.hpp"
 #include <unistd.h>
-#include "PIDCalculation.h"
 #include <stdint.h>
 #include <math.h>
+#include "PIDCalculation.hpp"
 
 using namespace std;
 
@@ -35,15 +35,10 @@ private:
 	void lineDetection(cv::Mat* changesMat);
 	void lineFilter(cv::Mat* changesMat, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
 	void routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
-	void calcDriveDirection(cv::Mat* edgeImg);
-	void approxLimit(cv::Mat* mat, unsigned short& upperLimit, unsigned short& lowerLimit, unsigned short row);
-	void calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit);
 	short calcLeftRefDistance(cv::Point pt);
 	short calcRightRefDistance(cv::Point pt);
 	int calcCorrAng(short distVal);
 
-	vector<ushort>m_minVals;
-	vector<ushort>m_maxVals;
 	ushort MINLENGTH;
 	ushort MINXDIFF;
 	ushort MINYDIFF;
@@ -60,7 +55,6 @@ private:
 	bool m_Driving;
 	cv::Mat m_GrayImg;
 	cv::Mat m_FinalFltImg;
-	ushort m_leftRoutePos, m_rightRoutePos, m_rtWidth;
 	pthread_mutex_t m_mutex;
 	bool m_rightSidePositiveSlope;
 	bool m_leftSidePositiveSlope;

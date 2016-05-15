@@ -7,9 +7,16 @@
 using namespace std;
 
 class ConsoleView {
-public:
+private:
 	ConsoleView();
+	ConsoleView(ConsoleView const&) {};				// Copy Constructor private
+	ConsoleView& operator=(ConsoleView const&) {};	//
+
 	~ConsoleView();
+public:
+
+	static ConsoleView* getInstance();
+	static void freeInstance();
 
 	static void* startThread(void* threadId);
 
@@ -21,6 +28,8 @@ public:
 	void stopProcess();
 
 private:
+	static ConsoleView* m_TheInstance;
+
 	void runProcess();
 	WINDOW* createNewWindow(int height, int width, int startY, int startX);
 	void destroyWindowin(WINDOW* window);

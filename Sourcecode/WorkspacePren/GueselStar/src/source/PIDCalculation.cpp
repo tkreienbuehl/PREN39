@@ -5,7 +5,7 @@
  *      Author: tobias
  */
 
-#include "../header/PIDCalculation.h"
+#include "../header/PIDCalculation.hpp"
 
 PIDCalculation::PIDCalculation(PrenController* controller) {
 	PrenConfiguration conf;

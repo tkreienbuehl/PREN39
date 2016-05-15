@@ -28,28 +28,28 @@ bool UARTSender::setEngineSpeed(uint8_t speed, EngineModesE mode) {
 	char stream[30];
 	int length = 0;
 	//length = sprintf(stream,"\rDCDr d %d %d", speed, mode);
-	length = sprintf(stream,"\rDCDr d %d", speed);
+	length = sprintf(stream,"\rDCDr d %d\r\n", speed);
 	return writeStreamToPort(stream, length);
 }
 
 bool UARTSender::setContainerFound(uint16_t distance) {
 	char stream[20];
 	int length = 0;
-	length = sprintf(stream,"\rStA d %d", distance);
+	length = sprintf(stream,"\rStA d %d\r\n", distance);
 	return writeStreamToPort(stream, length);
 }
 
 bool UARTSender::setTargetFieldFound(uint16_t distance) {
 	char stream[20];
 	int length = 0;
-	length = sprintf(stream,"\rStE d %d", distance);
+	length = sprintf(stream,"\rStE d %d\r\n", distance);
 	return writeStreamToPort(stream, length);
 }
 
 bool UARTSender::setSteering(uint8_t steeringAng) {
 	char stream[20];
 	int length = 0;
-	length = sprintf(stream,"\rLeS p %d", steeringAng);
+	length = sprintf(stream,"\rLeS p %d\r\n", steeringAng);
 	return writeStreamToPort(stream, length);
 }
 

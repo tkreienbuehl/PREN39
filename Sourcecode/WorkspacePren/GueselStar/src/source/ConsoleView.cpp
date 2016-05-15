@@ -1,4 +1,6 @@
-#include "../header/ConsoleView.h"
+#include "../header/ConsoleView.hpp"
+
+ConsoleView* ConsoleView::m_TheInstance = NULL;
 
 ConsoleView::ConsoleView() {
 	m_State = true;
@@ -33,9 +35,22 @@ ConsoleView::~ConsoleView() {
 	destroyWindowin(m_UARTState);
 }
 
+ConsoleView* ConsoleView::getInstance() {
+	if (m_TheInstance == NULL ){
+		m_TheInstance = new ConsoleView();
+	}
+	return m_TheInstance;
+}
+
+void ConsoleView::freeInstance() {
+	if (m_TheInstance != NULL) {
+		delete m_TheInstance;
+	}
+}
+
 void* ConsoleView::startThread(void* threadId) {
 	reinterpret_cast<ConsoleView*>(threadId)->runProcess();
-	cout << "Thread ended " << endl;
+	cout << "Thread Console View ended " << endl;
 	return NULL;
 }
 

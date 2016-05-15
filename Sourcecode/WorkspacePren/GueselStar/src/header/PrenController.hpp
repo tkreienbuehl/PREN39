@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include "PrenConfiguration.hpp"
 #include "UARTSender.hpp"
-#include "ConsoleView.h"
 #include <string.h>
+#include "ConsoleView.hpp"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ public:
 		CONTROLLER
 	};
 
-	PrenController(UARTSender* sender);
+	PrenController(UARTSender* sender, ConsoleView* viewer);
 	~PrenController();
 
 	void start(void);

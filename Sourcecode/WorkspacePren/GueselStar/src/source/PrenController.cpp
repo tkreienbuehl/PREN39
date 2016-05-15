@@ -1,20 +1,17 @@
 #include "../header/PrenController.hpp"
 
-PrenController::PrenController(UARTSender* sender) {
+PrenController::PrenController(UARTSender* sender, ConsoleView* viewer) {
 	prenConfig = new PrenConfiguration();
 	m_State = STOPPED;
 
 	uartSender = sender;
-	consoleView = NULL;
+	consoleView = viewer;
 
 }
 
 PrenController::~PrenController() {
 
 	delete uartSender;
-	if (consoleView!= NULL) {
-		delete consoleView;
-	}
 }
 
 PrenConfiguration* PrenController::getPrenConfig(void) {
@@ -27,7 +24,6 @@ ConsoleView* PrenController::getConsoleView() {
 }
 
 void PrenController::start() {
-	// Start thread PictureCreator
 	m_State = RUNNING;
 	runProgram();
 }
@@ -44,18 +40,6 @@ void PrenController::setState(const states state) {
 }
 
 void PrenController::runProgram() {
-
-	pthread_t thread;
-	int rc;
-
-	if (!prenConfig->IS_ON_IDE) {
-		consoleView = new ConsoleView();
-		rc = pthread_create(&thread, NULL, ConsoleView::startThread, consoleView);
-		if (rc) {
-			cout << "Error:unable to create thread," << rc << endl;
-			exit(-1);
-		}
-	}
 
 	uartSender->sendStartCmd();
 

@@ -7,6 +7,7 @@
 #include "ObjectFinder.hpp"
 #include "PictureViewer.hpp"
 #include "DebugServer.hpp"
-#include "ConsoleView.h"
 #include <iostream>
 #include <unistd.h>
+
+#include "ConsoleView.hpp"

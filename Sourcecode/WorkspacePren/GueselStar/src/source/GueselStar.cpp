@@ -5,11 +5,12 @@
 #include "../header/UARTReciever.hpp"
 #include "../header/UARTSender.hpp"
 #include "../header/PrenConfiguration.hpp"
+#include "../header/ConsoleView.hpp"
 
 int main(int argc, char** argv) {
 
 	testing::InitGoogleTest(&argc, argv);
-	RUN_ALL_TESTS();
+	//RUN_ALL_TESTS();
 
 	usleep(1000000);
 
@@ -18,6 +19,16 @@ int main(int argc, char** argv) {
 	int rc;
 
 	PrenConfiguration prenConfig;
+
+	ConsoleView* viewer = NULL;
+	if (!prenConfig.IS_ON_IDE) {
+		viewer = ConsoleView::getInstance();
+		rc = pthread_create(&threads[6], NULL, ConsoleView::startThread, viewer);
+		if (rc) {
+			cout << "Error:unable to create Console View thread," << rc << endl;
+			exit(-1);
+		}
+	}
 
 	UARTHandler* handler = new UARTHandler();
 
@@ -28,7 +39,7 @@ int main(int argc, char** argv) {
 	}
 	UARTSender* uartSender = new UARTSender(handler);
 
-	PrenController* controller = new PrenController(uartSender);
+	PrenController* controller = new PrenController(uartSender, viewer);
 
 	UARTReciever* uartReceiver = new UARTReciever(handler, controller);
 
@@ -111,6 +122,10 @@ int main(int argc, char** argv) {
 	delete uartReceiver;
 	delete uartSender;
 	delete handler;
+
+	usleep(1000);
+
+	ConsoleView::freeInstance();
 
 	cout << "done :)" << endl;
 

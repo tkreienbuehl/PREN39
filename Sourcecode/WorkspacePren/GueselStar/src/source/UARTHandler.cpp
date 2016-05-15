@@ -1,9 +1,9 @@
 #include "../header/UARTHandler.hpp"
-#include "../header/PrenController.hpp"
 
 	UARTHandler::UARTHandler() {
 		m_uart0_filestream =-1;
 		m_waitFlag = 0;
+		m_ConsoleView = ConsoleView::getInstance();
 	}
 
 	UARTHandler::~UARTHandler() {
@@ -18,7 +18,8 @@
 		m_uart0_filestream = open(ifName, O_RDWR | O_NONBLOCK);	//Open in non blocking read/write mode
 		if (m_uart0_filestream == -1)
 		{
-			cout << "Error - Unable to open UART.  Ensure it is not in use by another application and you have permission to use" << endl;
+			m_ConsoleView->setUARTStateText( "Error - Unable to open UART.  "
+					"Ensure it is not in use by another application and you have permission to use", 0);
 			return false;
 		}
 		return true;

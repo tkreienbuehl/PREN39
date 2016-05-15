@@ -13,6 +13,7 @@
 #include <memory>
 #include <stdint.h>
 #include <cstdlib>
+#include "ConsoleView.hpp"
 
 using namespace std;
 
@@ -37,4 +38,5 @@ private:
 
 	int m_uart0_filestream;
 	int m_waitFlag;
+	ConsoleView* m_ConsoleView;
 };

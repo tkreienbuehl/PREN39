@@ -14,9 +14,6 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
 	m_State = false;
-	m_leftRoutePos = 0;
-	m_rightRoutePos = 320;
-	m_rtWidth = 0;
 	pthread_mutex_init(&m_mutex, NULL);
 	m_rightSidePositiveSlope = true;
 	m_leftSidePositiveSlope = false;
@@ -36,8 +33,6 @@ RouteFinder::~RouteFinder() {
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
 	reinterpret_cast<RouteFinder*>(threadId)->runProcess();
-	//m_outStr = "Thread ended";
-	//printString(m_outStr);
 	return NULL;
 }
 
@@ -63,7 +58,7 @@ int RouteFinder::runProcess() {
 	cv::Mat grayImg, image;
 
 	m_Controller->printString("Start", me, 1);
-    for(int i = 0; i<300; i++) {
+    for(int i = 0; i<MAX_NR_OF_IMAGES; i++) {
         image = m_PicCreator->GetImage();
 
         if (!image.empty()) {
@@ -72,7 +67,6 @@ int RouteFinder::runProcess() {
 			m_Rows = grayImg.rows;
 			m_Cols = grayImg.cols * grayImg.channels();
 			edgeDetection(&grayImg, &fltImg);
-			calcDriveDirection(&fltImg);
 			m_GrayImg = grayImg;
 			m_FinalFltImg = fltImg;
 			if (i%100 == 0) {
@@ -83,7 +77,7 @@ int RouteFinder::runProcess() {
 			}
 			if (m_RouteFound && !m_Driving) {
 				m_Controller->setEngineSpeed(MAX_ENGINE_SPEED);
-				//m_Driving = true;
+				m_Driving = true;
 			}
         }
         else {
@@ -303,86 +297,6 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	m_pidCalc->pidDoWork(corrAng);
 	m_RouteFound = true;
 
-}
-
-void RouteFinder::calcDriveDirection(cv::Mat* edgeImg) {
-	//int middle;
-	for (short i = m_Rows; i > (m_Rows >> 1) ; i-=5 ) {
-		for (short j = m_leftRoutePos-MAX_PIX_DIFF ; j< m_leftRoutePos+MAX_PIX_DIFF; j++) {
-			if (edgeImg->at<uchar>(i,j) == 255) {
-				if (compareTolerance(m_leftRoutePos, j)) {
-					//cv::circle(*edgeImg, cv::Point(j,i), 3, cv::Scalar(255,0,0),2);
-				}
-			}
-		}
-		for (short j = m_rightRoutePos-MAX_PIX_DIFF ; j< m_rightRoutePos+MAX_PIX_DIFF; j++) {
-			if (edgeImg->at<uchar>(i,j) == 255) {
-				if (compareTolerance(m_rightRoutePos, j)) {
-					//cv::circle(*edgeImg, cv::Point(i,j), 3, cv::Scalar(255,0,0),2);
-				}
-			}
-		}
-	}
-
-}
-
-void RouteFinder::approxLimit(cv::Mat* mat, unsigned short& upperLimit, unsigned short& lowerLimit, unsigned short row) {
-
-	ushort val;
-	ushort cnt;
-	bool minim = false;
-	for ( int j = (mat->cols >> 1)+MAX_PIX_DIFF; j <  mat->cols-1; j++) {
-		val = static_cast<ushort>(mat->at<uchar>(row,j));
-		if (val == 255) {
-			if (minim == false) {
-				upperLimit = j;
-				minim = true;
-			}
-			else {
-				break;
-			}
-		}
-	}
-	minim = false;
-
-	for (int j = (mat->cols >> 1)-(MAX_PIX_DIFF << 1); j > 0; j--) {
-		val = static_cast<ushort>(mat->at<uchar>(row,j));
-		if (val == 255) {
-			if (minim == false) {
-				if (cnt == 1) {
-					lowerLimit = j;
-					minim = true;
-				}
-				else {
-					cnt++;
-				}
-			}
-			else {
-				break;
-			}
-		}
-		else {
-			cnt = 0;
-		}
-	}
-	//cout << "Row: " << row << " Low: " << lowerLimit << " Up: " << upperLimit << endl;
-	//usleep(100000);
-	m_minVals.push_back(lowerLimit);
-	m_maxVals.push_back(upperLimit);
-}
-
-void RouteFinder::calcAverageLimit(unsigned short& upperLimit, unsigned short& lowerLimit) {
-
-	bubbleSort(&m_minVals);
-	bubbleSort(&m_maxVals);
-
-	ushort medVal = static_cast<ushort>(m_minVals.size()/2);
-
-	lowerLimit = m_minVals.at(medVal);
-	upperLimit = m_maxVals.at(medVal);
-
-	m_minVals.clear();
-	m_maxVals.clear();
 }
 
 short RouteFinder::calcLeftRefDistance(cv::Point pt) {
