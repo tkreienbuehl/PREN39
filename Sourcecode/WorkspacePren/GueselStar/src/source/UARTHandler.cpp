@@ -3,7 +3,10 @@
 	UARTHandler::UARTHandler() {
 		m_uart0_filestream =-1;
 		m_waitFlag = 0;
-		m_ConsoleView = ConsoleView::getInstance();
+		m_prenConfig = new PrenConfiguration();
+		if(!m_prenConfig->IS_ON_IDE) {
+			m_ConsoleView = ConsoleView::getInstance();
+		}
 	}
 
 	UARTHandler::~UARTHandler() {
@@ -18,8 +21,13 @@
 		m_uart0_filestream = open(ifName, O_RDWR | O_NONBLOCK);	//Open in non blocking read/write mode
 		if (m_uart0_filestream == -1)
 		{
-			m_ConsoleView->setUARTStateText( "Error - Unable to open UART.",0);
-			m_ConsoleView->setUARTStateText( "Ensure it is not in use by another application and you have permission to use", 1);
+			if(!m_prenConfig->IS_ON_IDE) {
+				m_ConsoleView->setUARTStateText( "Error - Unable to open UART.",0);
+				m_ConsoleView->setUARTStateText( "Ensure it is not in use by another application and you have permission to use", 1);
+			} else {
+				cout << "Error - Unable to open UART." << endl;
+				cout << "Ensure it is not in use by another application and you have permission to use" << endl;
+			}
 			usleep(1000000);
 			return false;
 		}
@@ -30,7 +38,11 @@
 		struct termios options;
 
 		if (tcgetattr(m_uart0_filestream, &options) !=0) {
-			m_ConsoleView->setUARTStateText("Error reading config parameters",1);
+			if(!m_prenConfig->IS_ON_IDE) {
+				m_ConsoleView->setUARTStateText("Error reading config parameters",1);
+			} else {
+				cout << "Error reading config parameters" << endl;
+			}
 			return false;
 		}
 	    cfsetospeed(&options,baudRate);
@@ -44,7 +56,11 @@
 		options.c_cc[VTIME] = 5;
 
 		if (tcsetattr(m_uart0_filestream, TCSANOW, &options) != 0 ) {
-			m_ConsoleView->setUARTStateText("Error writing config parameters",1);
+			if(!m_prenConfig->IS_ON_IDE) {
+				m_ConsoleView->setUARTStateText("Error writing config parameters",1);
+			} else {
+				cout << "Error writing config parameters" << endl;
+			}
 			close(m_uart0_filestream);
 			return false;
 		}
