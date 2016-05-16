@@ -11,6 +11,9 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 	m_PicCreator = picCreator;
 	m_state = false;
 	pthread_mutex_init(&m_mutex, NULL);
+	informedController = false;
+	lastCenterX = 0;
+	lastCenterY = 0;
 }
 
 ObjectFinder::~ObjectFinder() {
@@ -48,35 +51,13 @@ void ObjectFinder::RunProcess() {
 
 				cv::medianBlur(croppedImage, croppedImage, 3);
 				hsvImage = convertImageToHSV(croppedImage);
-
-				cv::inRange(hsvImage,
-						cv::Scalar(
-								m_Controller->getPrenConfig()->GREEN_RANGE_H_LOW,
-								m_Controller->getPrenConfig()->GREEN_RANGE_S_LOW,
-								m_Controller->getPrenConfig()->GREEN_RANGE_V_LOW),
-						cv::Scalar(
-								m_Controller->getPrenConfig()->GREEN_RANGE_H_HIGH,
-								m_Controller->getPrenConfig()->GREEN_RANGE_S_HIGH,
-								m_Controller->getPrenConfig()->GREEN_RANGE_V_HIGH),
-						filteredImageGreen);
-				cv::inRange(hsvImage,
-						cv::Scalar(
-								m_Controller->getPrenConfig()->BLUE_RANGE_H_LOW,
-								m_Controller->getPrenConfig()->BLUE_RANGE_S_LOW,
-								m_Controller->getPrenConfig()->BLUE_RANGE_V_LOW),
-						cv::Scalar(
-								m_Controller->getPrenConfig()->BLUE_RANGE_H_HIGH,
-								m_Controller->getPrenConfig()->BLUE_RANGE_S_HIGH,
-								m_Controller->getPrenConfig()->BLUE_RANGE_V_HIGH),
-						filteredImageBlue);
+				filteredImageGreen = filterColorInImage("green", hsvImage);
+				filteredImageBlue = filterColorInImage("blue", hsvImage);
 
 				cv::Mat blue_green_combined;
 				cv::addWeighted(filteredImageGreen, 1.0, filteredImageBlue, 1.0,
 						0.0, blue_green_combined);
-				// cv::GaussianBlur(filteredImageGreen, filteredImageBlue, cv::Size(9, 9), 2, 2);
 
-				//filteredImageGreen = filterColorInImage("green", hsvImage);
-				//filteredImageBlue = filterColorInImage("blue", hsvImage);
 				contoursGreen = findContainersInImage(filteredImageGreen);
 				contoursBlue = findContainersInImage(filteredImageBlue);
 				contours = mergeContours(contoursGreen, contoursBlue);
@@ -173,53 +154,60 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 	vector<vector<cv::Point> > contours_poly(contours.size());
 	vector<cv::Rect> boundRect(contours.size());
 	cv::Mat markedImage = imageToMarkContainer;
+
 	for (unsigned int i = 0; i < contours.size(); i++) {
 		cv::approxPolyDP(cv::Mat(contours[i]), contours_poly[i], 3, true);
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
-		int green;
-		int red;
-
+		// check if it is a container
 		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 50
 				&& boundRect[i].height > 40) {
-
+			//m_Controller->printString("Container found: waiting for distance calculation...", m_Controller->OBJECT_FINDER, 0);
+			// mark the container
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
 					cv::Scalar(0, 255, 0), 1, 8, 0);
 
-			int centerX = boundRect[i].x + boundRect[i].width / 2;
-			int centerY = boundRect[i].y + boundRect[i].height / 2;
+			// if container is close enough
+			if (boundRect[i].height > 65) {
+				// calculate center-Position of container
+				int centerX = boundRect[i].x + boundRect[i].width / 2;
+				int centerY = boundRect[i].y + boundRect[i].height / 2;
 
-			if (abs(lastCenterX - centerX) > 10) {
-				informedController = false;
+				// if it's a new Container
+				if (abs(lastCenterX - centerX) > 10) {
+					informedController = false;
+				}
+				lastCenterX = centerX;
+				lastCenterY = centerY;
+
+				// if container needs to be announcecd
+				if (centerX >= 4 * imageToMarkContainer.cols / 5
+						&& !informedController) {
+
+					int distanceToContainer =
+							m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+									* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+									/ boundRect[i].height;
+					m_Controller->printString("Container found: waiting for distance calculation...", m_Controller->OBJECT_FINDER, 0);
+
+					m_Controller->setContainerFound(distanceToContainer);
+
+					informedController = true;
+				}
+
+				if (informedController) {
+					rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
+							cv::Point(centerX + 1, centerY + 1),
+							cv::Scalar(0, 255, 0), 1, 8, 0);
+				} else {
+					rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
+							cv::Point(centerX + 1, centerY + 1),
+							cv::Scalar(0, 0, 255), 1, 8, 0);
+				}
 			}
-			lastCenterX = centerX;
-			lastCenterY = centerY;
 
-			cv::Scalar color;
-			if (informedController) {
-				rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
-						cv::Point(centerX + 1, centerY + 1),
-						cv::Scalar(0, 255, 0), 1, 8, 0);
-			} else {
-				rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
-						cv::Point(centerX + 1, centerY + 1),
-						cv::Scalar(0, 0, 255), 1, 8, 0);
-			}
-
-			if (centerX >= 4 * imageToMarkContainer.cols / 5
-					&& !informedController) {
-
-				int distanceToContainer =
-						m_Controller->getPrenConfig()->REFERENCE_DISTANCE
-								* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
-								/ boundRect[i].height;
-
-				m_Controller->setContainerFound(distanceToContainer);
-				informedController = true;
-			}
 		}
 	}
-
 	return markedImage;
 }
 

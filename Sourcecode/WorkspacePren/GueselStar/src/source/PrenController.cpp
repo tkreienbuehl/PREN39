@@ -62,10 +62,10 @@ int PrenController::stopProgram() {
 }
 
 void PrenController::setContainerFound(int distance) {
-	char str[50];
-	bzero(str,sizeof(str));
-	sprintf(str,"Container ahead: Distance to Container: %d", distance);
-	printString(str,CONTROLLER,1);
+	char str[30];
+	bzero(str, sizeof(str));
+	sprintf(str, "Distance to Container: %d", distance);
+	printString(str, OBJECT_FINDER, 1);
 	// inform MC-Board
 	uartSender->setContainerFound(distance);
 }
