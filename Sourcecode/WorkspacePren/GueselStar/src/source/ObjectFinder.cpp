@@ -211,6 +211,10 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 	return markedImage;
 }
 
+void ObjectFinder::updateCrossingState(bool crossingAhead) {
+	m_crossingAhead = crossingAhead;
+}
+
 cv::Mat ObjectFinder::getImage() {
 	pthread_mutex_lock(&m_mutex);
 	cv::Mat retImg = m_MarkedImage;

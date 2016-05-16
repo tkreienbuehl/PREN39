@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class ObjectFinder {
+class ObjectFinder : public ObjectStateObserver {
 
 
 public:
@@ -25,7 +25,7 @@ public:
 	vector<vector<cv::Point> > findContainersInImage(cv::Mat imageToFindContainer);
 	cv::Mat markFoundContoursInImage(vector<vector<cv::Point> > contours, cv::Mat imageToMarkContainer);
 	vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1, vector<vector<cv::Point> > contours2);
-
+	void updateCrossingState(bool crossingAhead);
 	static void* staticEntryPoint(void* threadId);
 
 	cv::Mat getImage();
@@ -41,7 +41,7 @@ private:
 	PrenController* m_Controller;
 	bool m_state;
 	pthread_mutex_t m_mutex;
-
+	bool m_crossingAhead;
 	int lastCenterX;
 	int lastCenterY;
 	bool informedController;

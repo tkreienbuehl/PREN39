@@ -2,10 +2,12 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <list>
 #include "PrenConfiguration.hpp"
 #include "UARTSender.hpp"
 #include <string.h>
 #include "ConsoleView.hpp"
+#include "ObjectStateObserver.hpp"
 
 using namespace std;
 
@@ -48,6 +50,7 @@ public:
 	PrenConfiguration* getPrenConfig(void);
 	ConsoleView* getConsoleView();
 	void printString(string str, classes cl, uint line = 0);
+	void setObjectStateObserver(ObjectStateObserver* observer);
 
 private:
 	void runProgram(void);
@@ -57,4 +60,5 @@ private:
 	states m_State;
 	UARTSender* uartSender;
 	ConsoleView* consoleView;
+	ObjectStateObserver* objectStateObserver;
 };

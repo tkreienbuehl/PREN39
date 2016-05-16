@@ -45,6 +45,8 @@ int main(int argc, char** argv) {
 	ObjectFinder* objectFinder = new ObjectFinder(controller, picCreator);
 	PictureViewer* picViewer = new PictureViewer(rtFinder, objectFinder);
 	DebugServer* debugServer = new DebugServer(rtFinder, objectFinder);
+	controller->setObjectStateObserver(objectFinder);
+
 
 	rc = pthread_create(&threads[0], NULL, PictureCreator::staticEntryPoint, picCreator);
 	if (rc) {
