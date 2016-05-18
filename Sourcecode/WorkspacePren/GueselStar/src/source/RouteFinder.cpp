@@ -124,6 +124,21 @@ void RouteFinder::setLineDirection(cv::Vec4i& line) {
 	}
 }
 
+void RouteFinder::adjustLineLength(cv::Vec4i& line) {
+	cv::Point pt1(line[0], line[1]);
+	cv::Point pt2(line[2], line[3]);
+	short distX, distY, newDistX, newDistY;
+	if (pt2.y == m_Rows ) {
+		return;
+	}
+	distX = pt1.x - pt2.x;
+	distY = pt1.y - pt2.y;
+	newDistY = m_Rows - pt2.y;
+	newDistX = (newDistY * distX) / distY;
+	line[0] += newDistX;
+	line[1] += newDistY;
+}
+
 void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
 
     // accept only char type matrices
@@ -157,6 +172,7 @@ void RouteFinder::lineDetection(cv::Mat* changesMat) {
     {
 		cv::Vec4i l = lines[i];
 		setLineDirection(l);
+		adjustLineLength(l);
 		if ((l[2] - l[0]) != 0) {
 			int slope = (l[3] - l[1]) / (l[2] - l[0]);
 			char str[20];
@@ -197,15 +213,20 @@ void RouteFinder::lineDetection(cv::Mat* changesMat) {
 
 void RouteFinder::lineFilter(cv::Mat* changesMat, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines) {
     std::vector<cv::Vec4i> usedLinesLeft, usedLinesRight;
-
+    short lmax, rmin;
+    rmin = m_Cols + 100;
+	lmax = -100;
     // left side
     for( size_t i = 0; i < leftLines.size(); i++ )
     {
 		cv::Vec4i l = leftLines[i];
 		int slope = (l[3] - l[1]) / (l[2] - l[0]);
 		if ( (slope > 0 && m_leftSidePositiveSlope) || (slope < 0 && !m_leftSidePositiveSlope)) {
-			line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
-			usedLinesLeft.push_back(l);
+			if (l[0] >= lmax) {
+				lmax = l[0];
+				//line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
+				usedLinesLeft.push_back(l);
+			}
 		}
     }
 
@@ -215,8 +236,11 @@ void RouteFinder::lineFilter(cv::Mat* changesMat, vector<cv::Vec4i>& leftLines, 
 		cv::Vec4i l = rightLines[i];
 		int slope = (l[3] - l[1]) / (l[2] - l[0]);
 		if ( (slope > 0 && m_rightSidePositiveSlope) || (slope < 0 && !m_rightSidePositiveSlope)) {
-			line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
-			usedLinesRight.push_back(l);
+			if (l[0] <= rmin) {
+				rmin = l[0];
+				//line(*changesMat, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(255), 3, CV_AA);
+				usedLinesRight.push_back(l);
+			}
 		}
     }
 
@@ -249,19 +273,22 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 		m_outStr.clear();
 		m_Controller->printString(m_outStr, me, 7);
 	}
-	short max = 0;
-	cv::Point lpt, rpt;
+	short max = -100;
+	short min = m_Cols + 100;
+	cv::Point lpt, rpt, lpt2, rpt2;
 	for (unsigned short i = 0; i< leftLines.size() ; i++) {
-		if (leftLines[i][1] > max) {
+		if (leftLines[i][0] > max) {
 			lpt = cv::Point(leftLines[i][0],leftLines[i][1]);
+			lpt2 = cv::Point(leftLines[i][2],leftLines[i][3]);
 			max = leftLines[i][1];
 		}
 	}
 	max = 0;
 	for (unsigned short i = 0; i< rightLines.size() ; i++) {
-		if (rightLines[i][1] > max) {
+		if (rightLines[i][0] < min) {
 			rpt = cv::Point(rightLines[i][0],rightLines[i][1]);
-			max = rightLines[i][1];
+			rpt2 = cv::Point(rightLines[i][2],rightLines[i][3]);
+			min = rightLines[i][1];
 		}
 	}
 
@@ -271,15 +298,17 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 
 	if (leftLines.size() > 0) {
 		lVal = calcLeftRefDistance(lpt);
+		line(*edgeImg, lpt, lpt2, cv::Scalar(255), 3, CV_AA);
 	}
 	if (rightLines.size() > 0) {
 		rVal = calcRightRefDistance(rpt);
+		line(*edgeImg, rpt, rpt2, cv::Scalar(255), 3, CV_AA);
 	}
 	if (leftLines.size() > 0 && rightLines.size() > 0) {
 		med = (lVal-rVal)/2;
 	}
 	else if (rightLines.size() > 0) {
-		med = rVal;
+		med = -rVal;
 	}
 	else if (leftLines.size() > 0) {
 		med = lVal;
@@ -287,16 +316,16 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	corrAng = calcCorrAng(med);
 	char numstr[128];
 
-	bzero(numstr, sizeof(numstr));
 	sprintf(numstr, "Left side dist: %d ", lVal);
+	putText(*edgeImg, numstr, cv::Point(5, 20), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 	m_Controller->printString(numstr, me, 2);
 
-	bzero(numstr, sizeof(numstr));
 	sprintf(numstr, "Right side dist: %d ", rVal);
+	putText(*edgeImg, numstr, cv::Point(5, 35), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 	m_Controller->printString(numstr, me, 3);
 
-	bzero(numstr, sizeof(numstr));
 	sprintf(numstr, "Input angle to PID: %d ", corrAng);
+	putText(*edgeImg, numstr, cv::Point(5, 50), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 	m_Controller->printString(numstr, me, 4);
 	m_pidCalc->pidDoWork(corrAng);
 	m_RouteFound = true;

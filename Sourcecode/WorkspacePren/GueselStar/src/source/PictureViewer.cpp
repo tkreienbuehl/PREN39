@@ -69,6 +69,8 @@
 				cout << "Error occured" << endl;
 			}
 		}
-		cv::destroyAllWindows();
-		cv::waitKey(1);
+		if (!conf.IS_ON_PI) {
+			cv::destroyAllWindows();
+			cv::waitKey(1);
+		}
 	}

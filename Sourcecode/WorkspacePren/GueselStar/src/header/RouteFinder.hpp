@@ -31,6 +31,7 @@ private:
 	void bubbleSort(std::vector<unsigned short>* vals);
 	bool compareTolerance(unsigned short refVal, unsigned short compVal);
 	void setLineDirection(cv::Vec4i& line);
+	void adjustLineLength(cv::Vec4i& line);
 	void edgeDetection(cv::Mat* mat, cv::Mat* changesMat);
 	void lineDetection(cv::Mat* changesMat);
 	void lineFilter(cv::Mat* changesMat, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
