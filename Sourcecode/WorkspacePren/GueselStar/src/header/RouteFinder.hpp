@@ -39,6 +39,7 @@ private:
 	short calcLeftRefDistance(cv::Point pt);
 	short calcRightRefDistance(cv::Point pt);
 	int calcCorrAng(short distVal);
+	void checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
 
 	ushort MINLENGTH;
 	ushort MINXDIFF;
@@ -63,5 +64,7 @@ private:
 	PIDCalculation* m_pidCalc;
 	string m_outStr;
 	PrenController::classes me;
+	short m_DistCorrVal;
+	ushort m_CamPos;
 
 };

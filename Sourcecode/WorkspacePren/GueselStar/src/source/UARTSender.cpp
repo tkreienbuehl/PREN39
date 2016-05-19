@@ -18,7 +18,7 @@ bool UARTSender::sendStopCmd() {
 }
 
 bool UARTSender::setCameraPos(ushort pos) {
-	char stream[10];
+	char stream[16];
 	int length = 0;
 	length = sprintf(stream,"\rCamP p %d\r\n", pos);
 	return writeStreamToPort(stream, length);

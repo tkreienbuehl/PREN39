@@ -1,6 +1,7 @@
 #include "../header/RouteFinder.hpp"
 
-RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator) {
+RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
+{
 	PrenConfiguration conf;
 	MINLENGTH = conf.MINLENGTH;
 	MINXDIFF = conf.MINXDIFF;
@@ -24,6 +25,8 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_RouteFound = false;
 	m_Driving = false;
 	me = m_Controller->ROUTE_FINDER;
+	m_DistCorrVal = 0;
+	m_CamPos = m_Controller->CAM_STRAIGHT;
 }
 
 RouteFinder::~RouteFinder() {
@@ -316,6 +319,7 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	else if (leftLines.size() > 0) {
 		med = lVal;
 	}
+	med += m_DistCorrVal;
 	corrAng = calcCorrAng(med);
 	char numstr[128];
 
@@ -324,11 +328,14 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	m_Controller->printString(numstr, me, 2);
 
 	sprintf(numstr, "Right side dist: %d ", rVal);
-	putText(*edgeImg, numstr, cv::Point(5, 35), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+	putText(*edgeImg, numstr, cv::Point(160, 20), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 	m_Controller->printString(numstr, me, 3);
 
 	sprintf(numstr, "Input angle to PID: %d ", corrAng);
-	putText(*edgeImg, numstr, cv::Point(5, 50), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+	putText(*edgeImg, numstr, cv::Point(5, 35), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+
+	checkRouteDirection(edgeImg, leftLines, rightLines);
+
 	m_Controller->printString(numstr, me, 4);
 	m_pidCalc->pidDoWork(corrAng);
 	m_RouteFound = true;
@@ -352,4 +359,68 @@ int RouteFinder::calcCorrAng(short distVal) {
 		return 0;
 	}
 	return static_cast<int>(acosf(static_cast<float>(distVal)/ 160.0f) * 180 / 3.1415926f) - 90;
+}
+
+void RouteFinder::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines) {
+	float xDist = 0, yDist = 0;
+	bool isLimit = false;
+	char str[40];
+	if (leftLines.size()>0) {
+		xDist = leftLines[0][2] - leftLines[0][0];
+		yDist = abs(leftLines[0][3] - leftLines[0][1]);
+		sprintf(str,"X: %.2f , Y: %.2f", xDist, yDist);
+		putText(*edgeImg, str, cv::Point(5, 50), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+		m_Controller->printString(str, me, 12);
+		sprintf(str,"Slope: %.2f", yDist/xDist);
+		putText(*edgeImg, str, cv::Point(5, 60), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+		if (abs(xDist) > 5 && abs(yDist/xDist) < 1.25) {
+			isLimit = true;
+		}
+	}
+	if (rightLines.size()>0) {
+		xDist = rightLines[0][2] - rightLines[0][0];
+		yDist = abs(rightLines[0][3] - rightLines[0][1]);
+		sprintf(str,"X: %.2f , Y: %.2f", xDist, yDist);
+		putText(*edgeImg, str, cv::Point(160, 50), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+		m_Controller->printString(str, me, 12);
+		sprintf(str,"Slope: %.2f", yDist/xDist);
+		putText(*edgeImg, str, cv::Point(160, 60), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+		if (abs(xDist) > 5 && abs(yDist/xDist) < 1.15) {
+			isLimit = true;
+		}
+	}
+	if (isLimit) {
+		putText(*edgeImg, "View line slope Limit reached", cv::Point(0, 70), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+		m_Controller->printString("View line slope Limit reached", me, 13);
+		if (m_CamPos == m_Controller->CAM_STRAIGHT && true) {
+			m_Controller->setCameraPos(m_Controller->CAM_TURN_RIGHT);
+			m_CamPos = m_Controller->CAM_TURN_RIGHT;
+		}
+		else if (m_CamPos == m_Controller->CAM_STRAIGHT && false) {
+			m_Controller->setCameraPos(m_Controller->CAM_TURN_LEFT);
+			m_CamPos = m_Controller->CAM_TURN_LEFT;
+		}
+		else if (m_CamPos == m_Controller->CAM_TURN_RIGHT) {
+			m_Controller->setCameraPos(m_Controller->CAM_STRAIGHT);
+			m_CamPos = m_Controller->CAM_STRAIGHT;
+		}
+	}
+	else {
+		m_Controller->printString("", me, 13);
+	}
+	if (m_CamPos == m_Controller->CAM_STRAIGHT) {
+		sprintf(str,"CAM-State: CAM_STRAIGHT");
+		m_Controller->printString(str, me, 14);
+		m_DistCorrVal = 0;
+	}
+	else if (m_CamPos == m_Controller->CAM_TURN_RIGHT) {
+		sprintf(str,"CAM-State: CAM_TURN_RIGHT");
+		m_Controller->printString(str, me, 14);
+		m_DistCorrVal = -80;
+	}
+	else if (m_CamPos == m_Controller->CAM_TURN_LEFT) {
+		sprintf(str,"CAM-State: CAM_TURN_LEFT");
+		m_Controller->printString(str, me, 14);
+		m_DistCorrVal = 80;
+	}
 }

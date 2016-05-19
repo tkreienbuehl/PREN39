@@ -43,6 +43,8 @@ void PrenController::setState(const states state) {
 
 void PrenController::runProgram() {
 
+	uartSender->sendStopCmd();
+	usleep(10000);
 	uartSender->sendStartCmd();
 
 	while (m_State != END) {
@@ -168,8 +170,8 @@ void PrenController::setObjectStateObserver(ObjectStateObserver* observer) {
 }
 
 void PrenController::setCameraPos(CameraStatesE pos) {
-	char str[20];
+	char str[40];
 	sprintf(str, "Cam-Pos changed to: %d", pos);
-	consoleView->setControllerText(str, 2);
+	consoleView->setControllerText(str, 1);
 	uartSender->setCameraPos(pos);
 }
