@@ -31,6 +31,13 @@ public:
 		CONTROLLER
 	};
 
+	enum CameraStatesE {
+		CAM_STRAIGHT = 120,
+		CAM_TURN_LEFT = 170,
+		CAM_TURN_RIGHT = 70,
+		CAM_CHECK_STREET = 50
+	};
+
 	PrenController(UARTSender* sender, ConsoleView* viewer);
 	~PrenController();
 
@@ -51,6 +58,7 @@ public:
 	ConsoleView* getConsoleView();
 	void printString(string str, classes cl, uint line = 0);
 	void setObjectStateObserver(ObjectStateObserver* observer);
+	void setCameraPos(CameraStatesE pos);
 
 private:
 	void runProgram(void);

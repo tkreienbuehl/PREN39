@@ -7,6 +7,8 @@ PrenController::PrenController(UARTSender* sender, ConsoleView* viewer) {
 	uartSender = sender;
 	consoleView = viewer;
 
+	objectStateObserver = NULL;
+
 }
 
 PrenController::~PrenController() {
@@ -163,4 +165,11 @@ void PrenController::printString(string str, classes cl, uint line) {
 void PrenController::setObjectStateObserver(ObjectStateObserver* observer) {
 	//objectStateObserverList.push_back(observer);
 	objectStateObserver = observer;
+}
+
+void PrenController::setCameraPos(CameraStatesE pos) {
+	char str[20];
+	sprintf(str, "Cam-Pos changed to: %d", pos);
+	consoleView->setControllerText(str, 2);
+	uartSender->setCameraPos(pos);
 }

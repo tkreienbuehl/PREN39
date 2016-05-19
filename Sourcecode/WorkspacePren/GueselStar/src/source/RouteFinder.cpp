@@ -133,6 +133,9 @@ void RouteFinder::adjustLineLength(cv::Vec4i& line) {
 	}
 	distX = pt1.x - pt2.x;
 	distY = pt1.y - pt2.y;
+	if (distY == 0 ) {
+		return;
+	}
 	newDistY = m_Rows - pt2.y;
 	newDistX = (newDistY * distX) / distY;
 	line[0] += newDistX;
@@ -345,7 +348,7 @@ short RouteFinder::calcRightRefDistance(cv::Point pt) {
 }
 
 int RouteFinder::calcCorrAng(short distVal) {
-	if (distVal == 0) {
+	if (abs(distVal) <= 2) {
 		return 0;
 	}
 	return static_cast<int>(acosf(static_cast<float>(distVal)/ 160.0f) * 180 / 3.1415926f) - 90;

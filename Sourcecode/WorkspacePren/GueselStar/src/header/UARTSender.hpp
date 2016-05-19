@@ -10,13 +10,6 @@ public:
 	UARTSender(UARTHandler* handler);
 	~UARTSender();
 
-	enum CameraStatesE {
-		CAM_STRAIGHT = 0,
-		CAM_CHECK_STREET = 1,
-		CAM_TURN_RIGHT = 2,
-		CAM_TURN_LEFT = 3
-	};
-
 	enum EngineModesE {
 		SOFT = 0,
 		HARD = 1
@@ -24,7 +17,7 @@ public:
 
 	bool sendStartCmd();
 	bool sendStopCmd();
-	bool setCameraPos(CameraStatesE pos);
+	bool setCameraPos(ushort pos);
 	bool setEngineSpeed(uint8_t speed, EngineModesE mode = SOFT);
 	bool setContainerFound(uint16_t distance);
 	bool setTargetFieldFound(uint16_t distance);

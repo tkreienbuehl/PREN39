@@ -33,7 +33,7 @@ void PIDCalculation::pidDoWork(int& calcVal) {
 	m_nomValueOld = m_nomValue;            //ist Wert (old)
 	m_nomValue=calcVal;
 
-	m_nomValue = (m_nomValueOld+m_nomValue)/2;
+	//m_nomValue = (m_nomValueOld+m_nomValue)/2;
 
 	m_dev = (m_setValue + m_nomValue);
 	// P-Part (max kpL =
@@ -46,7 +46,7 @@ void PIDCalculation::pidDoWork(int& calcVal) {
 	// D-Part
 	m_val += static_cast<int>(m_KD * (m_dev-m_devOld));
 	m_devOld = m_dev;
-	m_val /= 2;
+	m_val /= 4;
 
 	char str[30];
 	bzero(str, sizeof(str));
