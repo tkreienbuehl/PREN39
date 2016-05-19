@@ -1,7 +1,7 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Intelligente Systeme}
 
-\subsubsection{Softwarekonzept}
+\subsubsection{Software auf Mini-Computer}
 Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinzip, wobei sich die View auf einen reinen Debug-Zweck beschränkt. Der Controller kommunziert mit allen Subprozesse und grenzt an die Schnittstelle zur Hardwaresteuerung. Um die Performance des Rasperry Pi möglichst auszunutzen wird mit Threads gearbeitet. Die parallel laufenden Subprozesse sind:
 
 \begin{itemize}
@@ -45,7 +45,7 @@ Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, wel
 \end{figure}
  
 %***************************
-\subsubsection{Mikrocontroller-Board}
+\subsubsection{Software auf Encoder}
 \textbf{Funktionsbeschrieb}\\[0.2cm]
 Das Mikrocontrollerboard bildet die Schnittstelle zwischen der Hardware (Motoren und Sensoren) und dem Minicomputer. Das Mikrocontrollerboard übernimmt die Ansteuerung und Auswertung der einzelnen Komponenten und stellt die verarbeiteten Informationen dem Minicomputer über eine Schnittstelle zur Verfügung.\\[0.2cm]
 \newpage
@@ -70,3 +70,6 @@ Das Tool ProcessorExpert bietet eine Komponente FreeRTOS an. Das ist ein Betrieb
 	\caption{Übersicht MC Tasks}
 \end{figure}
 Die Implementierung der Tasks wird im Modul Produkteentwicklung zwei (PREN2) umgesetzt.
+
+%***************************
+\subsubsection{Schnittstellen}
