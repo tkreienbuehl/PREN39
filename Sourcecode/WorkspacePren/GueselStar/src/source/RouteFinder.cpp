@@ -11,6 +11,8 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	MIN_RT_WIDTH = conf.MIN_RT_WIDTH;
 	MAX_ENGINE_SPEED = conf.MAX_SPEED;
 	MAX_NR_OF_IMAGES = conf.MAX_NR_OF_IMAGES;
+	CAM_POS_CHANGE_LIMIT = conf.CAM_POS_CHANGE_LIMIT;
+	LINE_LOST_LIMIT = conf.LINE_LOST_LIMIT;
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
@@ -81,7 +83,7 @@ int RouteFinder::runProcess() {
 				m_Controller->setEngineSpeed(MAX_ENGINE_SPEED);
 				m_Driving = true;
 			}
-			if (m_LineLostCnt == m_Controller->getPrenConfig()->LINE_LOST_LIMIT) {
+			if (m_LineLostCnt >= LINE_LOST_LIMIT) {
 				m_Controller->setLaneLost();
 			}
         }
@@ -398,6 +400,9 @@ void RouteFinder::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftL
 		else {
 			m_CamPosCorrCnt = 0;
 		}
+	}
+	if (m_CamPosCorrCnt >= CAM_POS_CHANGE_LIMIT) {
+		isLimit = true;
 	}
 	if (isLimit) {
 		m_CamPosCorrCnt = 0;
