@@ -25,6 +25,8 @@ private:
 	void decodeUnknownCommandError(std::string message);
 	void decodeUltraValue(std::string message);
 	void decodeFlexValue(std::string message);
+	void decodeStillThere(std::string message);
+
 
 	UARTHandler m_handler;
 	int m_uart0_filestream;

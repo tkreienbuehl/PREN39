@@ -142,6 +142,10 @@ int PrenController::getEngineSpeed(void) {
 	return 7; //uartReceiver->getEngineSpeed();
 }
 
+void PrenController::responseStillThere() {
+	uartSender->stillThereResponse();
+}
+
 void PrenController::printString(string str, classes cl, uint line) {
 	if (prenConfig->IS_ON_IDE) {
 		cout << str.c_str() << endl;

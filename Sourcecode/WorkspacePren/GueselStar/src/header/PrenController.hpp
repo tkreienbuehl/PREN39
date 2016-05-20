@@ -59,6 +59,7 @@ public:
 	void printString(string str, classes cl, uint line = 0);
 	void setObjectStateObserver(ObjectStateObserver* observer);
 	void setCameraPos(CameraStatesE pos);
+	void responseStillThere();
 
 private:
 	void runProgram(void);

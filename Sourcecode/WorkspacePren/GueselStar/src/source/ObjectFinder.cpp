@@ -12,6 +12,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 	m_state = false;
 	pthread_mutex_init(&m_mutex, NULL);
 	informedController = false;
+	m_crossingAhead = false;
 	lastCenterX = 0;
 	lastCenterY = 0;
 }
