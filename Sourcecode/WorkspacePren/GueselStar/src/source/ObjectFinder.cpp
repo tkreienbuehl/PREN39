@@ -188,7 +188,6 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 							m_Controller->getPrenConfig()->REFERENCE_DISTANCE
 									* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
 									/ boundRect[i].height;
-					m_Controller->printString("Container found: waiting for distance calculation...", m_Controller->OBJECT_FINDER, 0);
 
 					m_Controller->setContainerFound(distanceToContainer);
 
@@ -199,6 +198,8 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 					rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
 							cv::Point(centerX + 1, centerY + 1),
 							cv::Scalar(0, 255, 0), 1, 8, 0);
+					//m_Controller->printString("", m_Controller->OBJECT_FINDER, 0);
+
 				} else {
 					rectangle(markedImage, cv::Point(centerX - 1, centerY - 1),
 							cv::Point(centerX + 1, centerY + 1),
