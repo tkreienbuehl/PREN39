@@ -48,6 +48,9 @@ public:
 	ushort MAX_NR_OF_IMAGES;
 	ushort LINE_LOST_LIMIT;
 	ushort CAM_POS_CHANGE_LIMIT;
+	int ROUTE_POS_CORR_VAL;
+	ushort CAM_ANG_CORR_VAL;
+	ushort NR_OF_IMS_FOR_CHECK_CURVE;
 
 private:
 };

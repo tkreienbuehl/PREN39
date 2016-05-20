@@ -46,6 +46,9 @@ PrenConfiguration::PrenConfiguration() {
 		MAX_NR_OF_IMAGES = parser.readUShortParam("MAX_NR_OF_IMAGES");
 		LINE_LOST_LIMIT = parser.readUShortParam("LINE_LOST_LIMIT");
 		CAM_POS_CHANGE_LIMIT = parser.readUShortParam("CAM_POS_CHANGE_LIMIT");
+		ROUTE_POS_CORR_VAL = parser.readIntParam("ROUTE_POS_CORR_VAL");
+		CAM_ANG_CORR_VAL = parser.readUShortParam("CAM_ANG_CORR_VAL");
+		NR_OF_IMS_FOR_CHECK_CURVE = parser.readUShortParam("NR_OF_IMS_FOR_CHECK_CURVE");
 }
 
 PrenConfiguration::~PrenConfiguration() {
