@@ -46,6 +46,8 @@ public:
 	ushort MIN_RT_WIDTH;
 	ushort MAX_SPEED;
 	ushort MAX_NR_OF_IMAGES;
+	ushort LINE_LOST_LIMIT;
+	ushort CAM_POS_CHANGE_LIMIT;
 
 private:
 };

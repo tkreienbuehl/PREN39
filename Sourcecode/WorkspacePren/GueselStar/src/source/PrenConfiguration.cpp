@@ -44,6 +44,8 @@ PrenConfiguration::PrenConfiguration() {
 		IF_NAME = parser.readStringParam("IF_NAME");
 		MAX_SPEED = parser.readUShortParam("MAX_SPEED");
 		MAX_NR_OF_IMAGES = parser.readUShortParam("MAX_NR_OF_IMAGES");
+		LINE_LOST_LIMIT = parser.readUShortParam("LINE_LOST_LIMIT");
+		CAM_POS_CHANGE_LIMIT = parser.readUShortParam("CAM_POS_CHANGE_LIMIT");
 }
 
 PrenConfiguration::~PrenConfiguration() {

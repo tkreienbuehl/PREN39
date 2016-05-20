@@ -49,6 +49,8 @@ private:
 	ushort MIN_RT_WIDTH;
 	ushort MAX_ENGINE_SPEED;
 	ushort MAX_NR_OF_IMAGES;
+	ushort LINE_LOST_LIMIT;
+	ushort CAM_POS_CHANGE_LIMIT;
 	GradientMat* m_GradMat;
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;
@@ -66,5 +68,7 @@ private:
 	PrenController::classes me;
 	short m_DistCorrVal;
 	ushort m_CamPos;
+	ushort m_LineLostCnt;
+	ushort m_CamPosCorrCnt;
 
 };
