@@ -15,7 +15,9 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	CAM_ANG_CORR_VAL = conf.CAM_ANG_CORR_VAL;
 	LINE_LOST_LIMIT = conf.LINE_LOST_LIMIT;
 	ROUTE_POS_CORR_VAL = conf.ROUTE_POS_CORR_VAL;
-	NR_OF_IMS_FOR_CHECK_CURVE = conf.ROUTE_POS_CORR_VAL;
+	NR_OF_IMS_FOR_CHECK_BEND = conf.NR_OF_IMS_FOR_CHECK_BEND;
+	SLOPE_VAL_FOR_BEND = conf.SLOPE_VAL_FOR_BEND;
+	SLOPE_VAL_FOR_STRAIGHT = conf.SLOPE_VAL_FOR_STRAIGHT;
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	m_GradMat = NULL;
@@ -31,7 +33,7 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	me = m_Controller->ROUTE_FINDER;
 	m_CamPos = m_Controller->CAM_STRAIGHT;
 	m_CamPosCorrCnt = m_DistCorrAng = m_LineLostCnt = 0;
-	m_CheckCurve = false;
+	m_CheckBend = false;
 }
 
 RouteFinder::~RouteFinder() {
@@ -86,13 +88,14 @@ int RouteFinder::runProcess() {
 			}
 			if (m_RouteFound && !m_Driving) {
 				m_Controller->setEngineSpeed(MAX_ENGINE_SPEED);
-				m_Driving = true;
+				//m_Driving = true;
 			}
 			if (m_LineLostCnt >= LINE_LOST_LIMIT) {
 				m_Controller->setLaneLost();
 			}
-			if (imgCnt == NR_OF_IMS_FOR_CHECK_CURVE) {
-				m_CheckCurve = true;
+			if (imgCnt >= NR_OF_IMS_FOR_CHECK_BEND) {
+				m_Controller->printString("Start checking for bend",me, 18);
+				m_CheckBend = true;
 			}
 			else {
 				imgCnt++;
@@ -348,7 +351,7 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	sprintf(numstr, "Input angle to PID: %d ", corrAng);
 	putText(*edgeImg, numstr, cv::Point(5, 35), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 
-	if (m_RouteFound && m_CheckCurve) {
+	if (m_RouteFound && m_CheckBend) {
 		checkRouteDirection(edgeImg, leftLines, rightLines);
 	}
 
@@ -383,8 +386,9 @@ void RouteFinder::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftL
 	xDistRight = xDistLeft = yDistRight = yDistLeft = 0;
 	bool isLimit = false;
 	char str[40];
-	checkRouteLimit(edgeImg, leftLines, xDistLeft, yDistLeft, 5);
-	checkRouteLimit(edgeImg, rightLines, xDistRight, yDistRight, m_Cols >> 1);
+	routeVals lRtState;//, rRtState;
+	lRtState = checkRouteLimit(edgeImg, leftLines, xDistLeft, yDistLeft, 5);
+	//rRtState = checkRouteLimit(edgeImg, rightLines, xDistRight, yDistRight, m_Cols >> 1);
 	xDistRight = - xDistRight;
 
 	if (m_CamPosCorrCnt >= CAM_POS_CHANGE_LIMIT) {
@@ -392,15 +396,15 @@ void RouteFinder::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftL
 	}
 	if (isLimit) {
 		m_CamPosCorrCnt = 0;
-		if (m_CamPos == m_Controller->CAM_STRAIGHT && xDistLeft > 10) {
+		if (m_CamPos == m_Controller->CAM_STRAIGHT && lRtState == BEND && xDistLeft > 10) {
 			m_Controller->setCameraPos(m_Controller->CAM_TURN_RIGHT);
 			m_CamPos = m_Controller->CAM_TURN_RIGHT;
 		}
-		else if (m_CamPos == m_Controller->CAM_STRAIGHT && xDistLeft < 0) {
+		else if (m_CamPos == m_Controller->CAM_STRAIGHT && lRtState == BEND && xDistLeft < 0) {
 			m_Controller->setCameraPos(m_Controller->CAM_TURN_LEFT);
 			m_CamPos = m_Controller->CAM_TURN_LEFT;
 		}
-		else if (m_CamPos == m_Controller->CAM_TURN_RIGHT && xDistLeft < 0) {
+		else if (m_CamPos == m_Controller->CAM_TURN_RIGHT && lRtState == STRAIGHT) {
 			m_Controller->setCameraPos(m_Controller->CAM_STRAIGHT);
 			m_CamPos = m_Controller->CAM_STRAIGHT;
 		}
@@ -427,7 +431,7 @@ void RouteFinder::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftL
 	m_Controller->printString(str, me, 15);
 }
 
-void RouteFinder::checkRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos) {
+RouteFinder::routeVals RouteFinder::checkRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos) {
 
 	char str[40];
 	float slope = -100;
@@ -438,25 +442,30 @@ void RouteFinder::checkRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, fl
 			slope = yDist/xDist;
 		}
 		if (slope == -100) {
-			return;
+			return NOTHING;
 		}
 		sprintf(str,"X: %.2f , Y: %.2f", xDist, yDist);
-		putText(*edgeImg, str, cv::Point(textStartPos, 50), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
-		m_Controller->printString(str, me, 12);
+		//putText(*edgeImg, str, cv::Point(textStartPos, 50), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+		m_Controller->printString(str, me, 16);
 		sprintf(str,"Slope: %.2f", slope);
-		putText(*edgeImg, str, cv::Point(textStartPos, 60), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
-		if (abs(slope) < 1.3) {
+		//putText(*edgeImg, str, cv::Point(textStartPos, 60), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+		m_Controller->printString(str, me, 17);
+		if (abs(slope) < SLOPE_VAL_FOR_BEND) {
 			m_CamPosCorrCnt++;
-			putText(*edgeImg, "View line slope min Limit reached", cv::Point(5, 70), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
-			m_Controller->printString("View line slope min Limit reached", me, 13);
+			//putText(*edgeImg, "View line slope min Limit reached", cv::Point(5, 70), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+			m_Controller->printString("View line slope min Limit reached", me, 18);
+			return BEND;
 		}
-		else if (abs(slope) > 4) {
+		if (abs(slope) > SLOPE_VAL_FOR_STRAIGHT) {
 			m_CamPosCorrCnt++;
-			putText(*edgeImg, "View line slope max Limit reached", cv::Point(5, 70), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
-			m_Controller->printString("View line slope max Limit reached", me, 13);
+			//putText(*edgeImg, "View line slope max Limit reached", cv::Point(5, 70), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+			m_Controller->printString("View line slope max Limit reached", me, 18);
+			return STRAIGHT;
 		}
 		else {
 			m_CamPosCorrCnt = 0;
+			return NOTHING;
 		}
 	}
+	return NOTHING;
 }

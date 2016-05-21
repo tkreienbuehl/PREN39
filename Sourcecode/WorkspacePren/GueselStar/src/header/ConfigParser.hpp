@@ -14,6 +14,7 @@ public:
 	ushort readUShortParam(string paraName);
 	string readStringParam(string paraName);
 	bool readBoolParam(string paraName);
+	float readFloatParam(string paraName);
 
 private:
 	void parseParaVal(string& paraVal, string& strLine);

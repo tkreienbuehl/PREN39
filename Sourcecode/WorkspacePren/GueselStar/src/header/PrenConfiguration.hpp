@@ -50,7 +50,9 @@ public:
 	ushort CAM_POS_CHANGE_LIMIT;
 	int ROUTE_POS_CORR_VAL;
 	ushort CAM_ANG_CORR_VAL;
-	ushort NR_OF_IMS_FOR_CHECK_CURVE;
+	ushort NR_OF_IMS_FOR_CHECK_BEND;
+	float SLOPE_VAL_FOR_BEND;
+	float SLOPE_VAL_FOR_STRAIGHT;
 
 private:
 };
