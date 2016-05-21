@@ -1,3 +1,35 @@
 % !TEX root = Dokumentation.tex
 \subsection{Fehlerbehebung}
+\subsubsection{Das Raspberry Pi ist nicht erreichbar}
+\subsubsection{Nichts leuchtet}
+\begin{itemize}
+\item Die Akkus sind nicht verbunden => Verbinden
+\item Alles ist korrekt verbunden => Überpfrüfe die Sicherungen, sind sie intakt?
+\item Laufen die Bauteile einzeln => Verbinde das Raspberry und das Freedomboard einzeln mit dem PC und überprüfe die Funktionstüchtigkeit.
+\end{itemize}
+
+\subsubsection{Das Fahrzeug fährt nicht los}
+\begin{itemize}
+\item Blinkt ein LED auf dem Mikrocontrollerboard? => Einer der Akkus ist entladen(oder nicht angeschlossen) und muss geladen werden
+\item Leuchtet das LED auf dem Motorentreiber nicht? => Der zweite Akku ist nicht verbunden oder ein Kabel ist nicht eingesteckt
+\item Gibt das Freedomboard keine Antwort => Siehe Kapitel "Das Mikrocontrollerboard antwortet nicht"
+\item Wurde kein StartFrd a gesendet => Sende StartFrd a damit das Fahrzeug Fahrbefehle entgegen nimmt
+\item Wurde kein DCDr d "#geschwindigkeitswert" gesendet => Sende z.B DCDr d 190 damit das Fahrzeug losfährt
+\end{itemize}
+
+\subsubsection{Das Mikrocontrollerboard antwortet nicht}
+\begin{itemize}
+\item Das Freedomboard und Raspberry Pi sind nicht verbunden =>verbinden
+\item Die UART Einstellungen sind nicht =>Baudrate: 115200 Daten:8 Stop:1 Parity:None
+\item Das Freedomboard leuchtet nicht => Freedomboard direkt mit dem PC verbinden und die ver
+
+\end{itemize}
+. 
+\subsubsection{Ein Servo funktioniert nicht richtig}
+Ist das Kabel richtig eingesteckt?
+Sind beide Akkus verbunden? Es kann sein, dass gewisse Teile funktionieren ohne einen der beiden Akkus.
+\subsubsection{Die Initialeinstellung stimmt nicht mehr}
+\subsubsection{Das Fahrzeug hält nach kurzer Zeit an}\\[0.2cm]
+Dieser Fehler wird sehr wahrscheinlich 
+
 
