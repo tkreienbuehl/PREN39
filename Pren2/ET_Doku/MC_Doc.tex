@@ -51,18 +51,6 @@
 \tableofcontents
 \clearpage
 \newpage
-\section{Encoder}
-Damit die Drehzahl des Motors ermittelt werden kann, braucht es einen Encoder. Die benötigte Hardware ist bereits auf dem Motor vorhanden. ....
-\subsection{Berechnungen Encoder}
-Damit man berechnen kann wie schnell das Fahrzeug fährt, muss man wissen wie viele Ticks einem cm entsprechen.
-Folgende Informationen sind gegeben oder wurden gemessen:
-\begin{itemize}
-\item Wenn der Motor mit voller Geschwindigkeit fährt, gibt es alle 750us einen Tick
-\item Der Encoder bekommt 12 High-Rise Counts pro Umdrehung (ohne Übersetzung)
-\item Der Motor hat eine Übersetzung von 1:47
-\item Der Raddurchmesser ist 40mm
-\item Das Differential hat eine Übersetzung von 1:2
-\end{itemize}
 
 \section{Akkuüberwachung}
 Damit die LiPo-Akkumulatoren nicht zerstört werden, muss sichergestellt werden das diese nicht tief entladen werden. Dies wird über das Freedomboard gelöst. Die Akkuspannung wird über einen Analog - Digitalwandler eingelesen. Wenn die Akkuspannung einen gewissen Wert unterschreiten, werden die Verbraucher an den Akkus "abgeschaltet". Eine Lipozelle sollte die Zellenspannung von 3.5V nicht unterschreiten. Im Normalfall sollten alle Zellen einzeln überwacht werden, dies ist jedoch im Rahmen dieses Prototypen nicht angemessen. Als Kompromiss wird gesamte Ausgangsspannung gemessen. Das heisst zwei beziehungsweise drei Zellen in Serie (je nach Akku). Als Abschaltwert für eine Zelle wurde 3.7V bestimmt.
@@ -87,15 +75,9 @@ Für UAkku wurde 7.4V als Abschaltwert gewählt.\\
 3.3V enspricht 65'535. Somit entspricht eine Spannung von 1.974V einem eingelesenen Spannungswert von 38673. Dieser Wert musste angepasst werden, da der Akku zu früh abschaltete, da unter Last die Akkuspannung kurzzeitig sinkt. Ausgehend von dem gemessenen Wert von 32158 und einer Akkuspannung von 7.55V wurde der neue Wert von 31513 berechnet.
 
 \section{Encoder}
-Der Encoder des Antriebsmotors wurde mit dem Motor mitgeliefert. Dies war sehr nützlich, da somit keine eigene aufwändige Lösung nötig war. Der Encoder muss mit 5V gespiesen werden. Als Ausgang hat der Encoder zwei Signale. Hier sind diese zu sehen:
-\ref{fig:encoder_out}
-\begin{figure}[H]%Position festigen
-\centering
-\includegraphics[width=0.6\textwidth]{Images/Encoder_Out.PNG}
-\caption{Beispiels Ausgangssignal des Encoders (Quelle:pololu.com)}
-\label{fig:encoder_out}
-\end{figure}
-Mit Hilfe dieser beiden Signalen gibt es 48 Ticks pro Umdrehung des Motors (ohne Übersetzung). Damit sind es 48Ticks/Umdrehung * 47 (Übersetzung) = 2'256 Ticks pro tatsächlicher Motorenumdrehung. Dies ergäbe eine Genauigkeit von 0.027mm/Tick bei unserem Fahrzeug. Dies ist sehr viel, darum wurde entschieden nur ein Signal auszuwerten. Damit ergibt sich eine Genauigkeit von 0.05mm/Tick. Dies ist immernoch sehr präzise.
+Damit die Drehzahl des Motors ermittelt werden kann, braucht es einen Encoder. Dieser wurde mit dem Antriebsmotor mitgeliefert. Dies war sehr nützlich, da somit keine eigene aufwändige Lösung nötig war. Der Encoder muss mit 5V gespiesen werden. Als Ausgang hat der Encoder zwei Signale. Hier sind diese zu sehen:
+
+Mit Hilfe dieser beiden Signalen gibt es 48 Ticks pro Umdrehung des Motors (ohne Übersetzung). Damit sind es 48Ticks/Umdrehung * 47 (Übersetzung) = 2'256 Ticks pro tatsächlicher Motorenumdrehung. Dies ergäbe eine Genauigkeit von 0.027mm/Tick bei unserem Fahrzeug. Dies ist sehr viel, darum wurde entschieden nur ein Signal auszuwerten. Damit ergibt sich eine Genauigkeit von 0.05mm/Tick. Dies ist immer noch sehr präzise.
 Die Auswertung des Signales geschieht im Mikrocontrollerboard. Das Encodersiganl wird über einen Spannungsteiler auf einen Pin des Freedomboard geführt. Diese löst bei jeder Flankenänderung einen Interrupt aus. Im Interrupt wird einfach einen Zähler hochgezählt. Dieser Zähler wird alle 40ms ausgelesen und wieder auf Null gesetzt. Der ausgelesene Wert ist der Ausgangswert des Encoders. Bei voller Geschwindigkeit beträgt dieser Wert Beispielsweise 140 und bei halber Geschwindigkeit 70.
  
 \section{Geschwindigkeitsregelung einstellen}
@@ -116,11 +98,11 @@ Diese Werte sind die Regelparameter. Die Multiplikation mit 32 ergibt sich dem G
 Diese Parameter wurden programmiert und ausgemessen. Ein Sollgeschwindigkeit von 150mm/s wurde dem Regler vorgegeben (entspricht einem Encoderwert von 108)
 \begin{figure}[H]%Position festigen
 \centering
-\includegraphics[width=0.9\textwidth]{Images/PID auf 150mms.PNG}
+\includegraphics[width=0.9\textwidth]{Images/StellwertePID.png}
 \caption{Die Istwert verglichen mit dem Stellwert}
 \label{fig:IstSollwertVergleich}
 \end{figure}
-Hier zeigt sich, dass der Regler nicht Perfekt eingestellt ist, jedoch nach einer halben Sekunden den Sollwert erreicht hat. Dies ist für unsere Anwendung ausreichend und wird desshalb so belassen.
+Hier zeigt sich, dass der Regler nicht Perfekt eingestellt ist, jedoch nach einer halben Sekunden den Sollwert erreicht hat. Dies ist für unsere Anwendung ausreichend und wurde deshalb so belassen.
 \section{Ultraschallsensor}
 Der Ultraschallsensor wird wie in der Pren1 Dokumentation beschreiben für den Rechtsvortritt eingesetzt. Der Ultraschallsensor wird vom Mikrocontroller angesteuert und ausgewertet. 
 \ref{fig:encoder_out}

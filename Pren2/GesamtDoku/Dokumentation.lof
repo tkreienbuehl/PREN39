@@ -14,21 +14,22 @@
 \contentsline {figure}{\numberline {13}{\ignorespaces Komponentendiagramm}}{19}{figure.13}
 \contentsline {figure}{\numberline {14}{\ignorespaces Debug-View}}{20}{figure.14}
 \contentsline {figure}{\numberline {15}{\ignorespaces Konfiguration}}{20}{figure.15}
-\contentsline {figure}{\numberline {16}{\ignorespaces Freedomboard KL25 von Freescale (Quelle:http://ch.farnell.com/)}}{21}{figure.16}
-\contentsline {figure}{\numberline {17}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{22}{figure.17}
-\contentsline {figure}{\numberline {18}{\ignorespaces Raspberry Pi Kameramudul}}{22}{figure.18}
-\contentsline {figure}{\numberline {19}{\ignorespaces Bild nach Kantenerkennung}}{24}{figure.19}
-\contentsline {figure}{\numberline {20}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Fahrbahnerkennung}}{25}{figure.20}
-\contentsline {figure}{\numberline {21}{\ignorespaces Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}}{26}{figure.21}
-\contentsline {figure}{\numberline {22}{\ignorespaces Erste Kante links der Mitte}}{27}{figure.22}
-\contentsline {figure}{\numberline {23}{\ignorespaces Erste Kante rechts der Mitte}}{27}{figure.23}
-\contentsline {figure}{\numberline {24}{\ignorespaces Flexsensor}}{30}{figure.24}
-\contentsline {figure}{\numberline {25}{\ignorespaces Widerstand in Funktion des Biegewinkels}}{30}{figure.25}
-\contentsline {figure}{\numberline {26}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Obkjekterkennung: Container und Entleerungsbecken}}{32}{figure.26}
-\contentsline {figure}{\numberline {27}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Obkjekterkennung: Rechtsvortritt}}{33}{figure.27}
-\contentsline {figure}{\numberline {28}{\ignorespaces Abgedeckter Bereich beim Rechtsvortritt}}{34}{figure.28}
-\contentsline {figure}{\numberline {29}{\ignorespaces Beispielhafte Containererkennung mit einem Infrarotsensor}}{35}{figure.29}
-\contentsline {figure}{\numberline {30}{\ignorespaces Getesteter Ultraschallsensor (Quelle: www.generationrobots.com)}}{35}{figure.30}
-\contentsline {figure}{\numberline {31}{\ignorespaces Zeitplan}}{38}{figure.31}
-\contentsline {figure}{\numberline {32}{\ignorespaces Risikomatrix}}{39}{figure.32}
-\contentsline {figure}{\numberline {33}{\ignorespaces Scrum-Board}}{44}{figure.33}
+\contentsline {figure}{\numberline {16}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{21}{figure.16}
+\contentsline {figure}{\numberline {17}{\ignorespaces Die Schrittantwort des DC-Motor im Matlab}}{24}{figure.17}
+\contentsline {figure}{\numberline {18}{\ignorespaces Die Istwert verglichen mit dem Stellwert}}{25}{figure.18}
+\contentsline {figure}{\numberline {19}{\ignorespaces Raspberry Pi Kameramudul}}{26}{figure.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces Bild nach Kantenerkennung}}{27}{figure.20}
+\contentsline {figure}{\numberline {21}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Fahrbahnerkennung}}{28}{figure.21}
+\contentsline {figure}{\numberline {22}{\ignorespaces Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}}{29}{figure.22}
+\contentsline {figure}{\numberline {23}{\ignorespaces Erste Kante links der Mitte}}{30}{figure.23}
+\contentsline {figure}{\numberline {24}{\ignorespaces Erste Kante rechts der Mitte}}{30}{figure.24}
+\contentsline {figure}{\numberline {25}{\ignorespaces Flexsensor}}{33}{figure.25}
+\contentsline {figure}{\numberline {26}{\ignorespaces Widerstand in Funktion des Biegewinkels}}{33}{figure.26}
+\contentsline {figure}{\numberline {27}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Obkjekterkennung: Container und Entleerungsbecken}}{35}{figure.27}
+\contentsline {figure}{\numberline {28}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Obkjekterkennung: Rechtsvortritt}}{36}{figure.28}
+\contentsline {figure}{\numberline {29}{\ignorespaces Abgedeckter Bereich beim Rechtsvortritt}}{37}{figure.29}
+\contentsline {figure}{\numberline {30}{\ignorespaces Beispielhafte Containererkennung mit einem Infrarotsensor}}{38}{figure.30}
+\contentsline {figure}{\numberline {31}{\ignorespaces Getesteter Ultraschallsensor (Quelle: www.generationrobots.com)}}{38}{figure.31}
+\contentsline {figure}{\numberline {32}{\ignorespaces Zeitplan}}{41}{figure.32}
+\contentsline {figure}{\numberline {33}{\ignorespaces Risikomatrix}}{42}{figure.33}
+\contentsline {figure}{\numberline {34}{\ignorespaces Scrum-Board}}{47}{figure.34}
