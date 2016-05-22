@@ -62,14 +62,20 @@ Dieser Task steuert das Freedomboard. Das heisst konkret, dass dieser Task das i
 \textbf{Kommunikation}\\[0.2cm]
 Dieser Task übernimmt die Auswertung der erhaltenen Kommandos über die UART Schnittstelle. Dies geschieht über eine sogenannte Parsertabelle. In dieser Parsertabelle können beliebig weitere Kommandos (Funktionen) hinzugefügt werden. Dieser Task wird alle 10ms aufgerufen, da die Kommunikation mit dem Raspberry Pi möglichst schnell funktionieren soll.\\[0.2cm]
 \textbf{Analog-Digitalwandlung}\\[0.2cm]
-Dieser Task holt und verarbeitet die Daten aus dem Analog Digitalwandler des KL25Z. Das heisst konkret es werden beide Akku Spannungen ausgelesen und überwacht. Zudem wird der Widerstandswert des Flexsensensors eingelesen und damit der Abstand zum Gehsteig berechnet. Zur Akkuüberwachung folgen weiter im Text weitere Informationen.\\[0.2cm]
+Dieser Task holt und verarbeitet die Daten aus dem Analog Digitalwandler des KL25Z. Das heisst konkret, es werden beide Akku Spannungen ausgelesen und überwacht. Zudem wird der Widerstandswert des Flexsensensors eingelesen und damit der Abstand zum Gehsteig berechnet. Zur Akkuüberwachung folgen weiter im Text weitere Informationen.\\[0.2cm]
 \textbf{Geschwindigkeitsregelung}\\[0.2cm]
 Der Geschwindigkeitsregelungstask regelt die Geschwindigkeit des DC-Antriebmotors. Dies geschieht über einen PID Regler. Dieser wurde vom Modul Mikrocontrollertechnik an der Hochschule Luzern übernommen und nach den eigenen Bedürfnissen angepasst. Wie die PID Werte berechnet wurden und der Regelkreis aussieht wird noch separat erläutert.\\[0.2cm]
 \textbf{Ultraschall}\\[0.2cm]
 Dieser Task steuert den Ultraschallsensor an. Dies wurde nach einem Tutorial von mcuoneclipse.com realisiert und auf die Softwareumgebung noch weiter angepasst.\\[0.2cm]
 \textbf{Master check}\\[0.2cm]
 Dieser Task ist die Lebensversicherung des Fahrzeugs. Hier wird überprüft ob der Master (Raspberry Pi) noch angeschlossen und Funktionstüchtig ist. Wenn das Mikrocontrollerborad nicht innerhalb von wenigen Sekunden eine Bestätigungsmeldung des Masters bekommt, wird das Freedomboard in den Beendet Modus wechseln und fährt somit nicht unkontrolliert herum. \\[0.2cm]
+\textbf{Analog Digitalwandlung}\\[0.2cm]
+Hier wird die Akkuspannung und der Flexsensorwert eingelesen und verarbeitet. Wenn nun die Akkuspannung zu niedrig ist, wird dies in diesem Task detektiert. Zudem wird hier der Spannungwert über dem Flexsensor in mm Abstand zum Trottoir umgerechnet.\\[0.2cm]
 \textbf{Event}\\[0.2cm]
 Die Events treten unregelmäßig und ungeplant auf. Diese unterbrechen das normale Programm (Interrupt) und führen einen eigenen kurzen Programmcode aus. Dies ist bei den im Bild aufgeführten Funktionen der Fall.\\[0.2cm]
+\textbf{Die Konfigurationsdatei}\\[0.2cm]
+Damit einzelne Komponenten des Fahrzeuges getestet werden konnten, mussten teilweise andere Fahrzeugkomponenten ausgeschaltet werden. Zum Beispiel als das Aufladen des Containers getestet werden sollte, wollte man nicht noch das Anfahren testen. Aus diesem Grund ist das File config.h entstanden. Darin lassen sich einzelne Baugruppen und Funktionen des Programmes effizient ein oder ausschalten. Dieses System hat sich als sehr nützlich erwiesen und ist sehr wichtig für die Funktion des Fahrzeuges.\\[0.2cm]
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Die Software wurde grösstenteils so implementiert, wie dies im Pren1 geplant war. Die einzigen Unterschiede zwischen dem Konzept und der Umsetzung liegen in der Zusammenführung verschiedener Tasks. So wurde die Tasks Akkuüberwachung und Trottoirabstand zu dem Task Analogdigitalwandlung zusammengeführt. Dies weil so das Programm effizienter gemacht werden konnte. Zudem wurde der Task Stellelementesteuerung nicht als Task, sondern als Event realisiert. Dies weil zum Beispiel das neue Stellen eines Servos immer eine eingabe erfordert und somit ein Event viel sinnvoller ist als polling. 
 %***************************
 \subsubsection{Schnittstellen}
