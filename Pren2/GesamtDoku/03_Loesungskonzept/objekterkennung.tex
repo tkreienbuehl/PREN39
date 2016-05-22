@@ -23,35 +23,16 @@ Die Erkennung läuft dabei immer gleich ab. Als erstes wird das Bild mit OpenCV 
 
 
 \underline{\textbf{Rechtsvortritt}}
-\\[0.2cm]
-\textbf{Funktionsbeschrieb}\\[0.2cm]
-Falls sich an der Kreuzung ein gegnerisches Fahrzeug von rechts nähert, hat dieses gemäss Aufgabenstellung Vortritt. Die Objekterkennung muss ein solches Fahrzeug erkennen und den Controller darüber informieren, damit das Fahrzeug gestoppt wird.
-\\[0.2cm]
-\textbf{Komponentenbeschrieb}\\[0.2cm]
-Sobald die Objekterkennung vom Controller informiert wird, dass das Fahrzeug gleich an der Kreuzung ankommen wird, wird Ausschau nach einem gegnerischen Fahrzeug auf der von rechtskommenden Spur gehalten. Wird ein Fahrzeug erkannt, wird dies dem Controller gemeldet. Der Vorgang wird wiederholt, bis das Fahrzeug nicht mehr im Bereich liegt. Nachdem dies geschehen ist, wird wieder der Controller informiert, damit das Fahrzeug weiterfahren kann.
-\begin{figure}[H]%Position festigen
-\centering
-\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/objekterkennung_rechtsvortritt.png}
-\caption{Aktivitätendiagramm Obkjekterkennung: Rechtsvortritt}
-\label{fig:activityRechtsvortritt}
-\end{figure} \\
-\newpage
-Da nicht nur angehalten werden muss, wenn ein gegenerisches Fahrzeug an der Kreuzun steht, sondern auch, wenn es sich von rechts nähert, muss der zu überprüfende Bereich eine gewisse Grösse haben. Der ungefähre Bereich, welcher abgesucht werden soll, ist in der folgenden Grafik markiert:
-\begin{figure}[H]%Position festigen
-\centering
-\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/rechtsvortritt_bereich.jpg}
-\caption{Abgedeckter Bereich beim Rechtsvortritt}
-\label{fig:bereichRechtsvortritt}
-\end{figure}
-\\
-\textbf{Begründung}\\[0.2cm]
-Bei der Vortrittserkennung kann nicht nach Farben oder Konturen gesucht werden, da keine Angaben vorhanden sind, wie das gegnerische Fahrzeug aussieht. Daher ist es nötig, dass erkennt werden kann, ob ein definierter Strassenabschnitt verdeckt ist oder nicht. Falls der Abschnitt verdeckt ist, heisst das, dass sich ein Fahrzeug darauf befindet, welches Vortritt hat.
+Damit Kollisionen mit anderen Fahrzeugen vermieden werden können, wurde ein Ultraschallsensor eingebaut. Dieser misst über kurze Ultraschallpulse die Distanz zum nächsten Objekt. Die Ansteuerung und Auswertung wurde auf dem Mikrocontrollerboard realisiert. Die Grundlage der Implementierung basiert auf diesem Tutorial: https://mcuoneclipse.com/2013/01/01/tutorial-ultrasonic-ranging-with-the-freedom-board/. Jedoch wurde dieser Code noch effizienter gestaltet.\\[0.2cm]
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Die Ansteuerung des Ultraschallsensor konnte bereits im Pren1 als Funktionsmuster erfolgreich getestet werden. Daher musste im Pren2 nichts am bestehenden Konzept geändert werden.
+
+
 \subsubsection{Objekterkennung präzise}
 \underline{\textbf{Containererkennung}}\\[0.2cm]
-\textbf{Funktionsbeschrieb}\\[0.2cm]
-Die präzise Containererkennung wird für das genaue Stoppen des Fahrzeuges gebraucht. Dieses Modul gibt den Trigger zum Anhalten.\\[0.2cm]
-\textbf{Komponentenbeschrieb}\\[0.2cm]
-Die Containererkennung wird mit Hilfe von Distanzsensoren realisiert. Dafür sind Infrarot-Distanzmesser oder Infrarot-Reflexkoppler vorgesehen. Diese werden auf der rechten Seite des Fahrzeuges befestigt. Sobald ein Objekt in der Nähe ist, ändert sich der Spannungswert, was einer Distanzänderung gleichkommt. 
+Das präzise Stoppen beim Container wird vom Freedomboard gesteuert. Der Aufladevorgang 
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Das Konzept mit dem präzisen anhalten über den Infrarotsensor hat sich im Pren2 nicht geändert.
 \begin{figure} [H]
 	\centering
 	\includegraphics[width=0.35\textwidth]{03_Loesungskonzept/pictures/InfrarotContainererkennung.png}
