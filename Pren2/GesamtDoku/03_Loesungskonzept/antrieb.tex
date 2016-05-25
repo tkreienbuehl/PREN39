@@ -6,22 +6,23 @@ Die aktuelle Drehzahl des Motors wird von einem Encoder erfasst. Dieser wiederum
 \textbf{Komponentenbeschrieb}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/antrieb.jpg}
-\caption{Antrieb (Quelle:http://www.conrad.ch)}	
+\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Antrieb_Encoder.jpg}
+\caption{DC-Motor mit integriertem Encoder (Quelle:http://https://www.pololu.com/product/3217)}	
 \end{figure}
-Als voraussichtlicher Favorit wurde ein Hochleistungsgetriebemotor von Modelcraft ausgewählt. Die technischen Daten sind folgende:
+Gewählt wurde ein Hochleistungsgetriebemotor von Pololu
+Die technischen Daten sind folgende:
 \begin{itemize}
-\item Leerlaufstrom: 0.32 A
-\item Last-Drehzahl: 317 U/min
-\item Leerlauf-Drehzahl: 333 U/min
+\item Leerlaufstrom: 0.3 A
+\item Leerlauf-Drehzahl: 210 U/min
 \item Betriebsspannung: 12 V DC
-\item Spitzendrehmoment: 2.23 Nm
-\item Max. Laststrom: 0.7 A
+\item Spitzendrehmoment: 1.16 Nm
+\item Max. Laststrom: 0.5 A
 \end{itemize}
 \textbf{Begründung}\\[0.2cm]
 Der ausgewählte Motor punktet vor allem aufgrund seiner kleinen und kompakten Bauform. Da der Montageort für den Antrieb am Fahrzeug nicht verändert werden kann, ohne umständliche Wellen zu installieren, ist die Baugrösse relativ beschränkt.
-Ein weiterer Punkt ist, dass er sich als Gleichstrommotor leicht ansteuern lässt und damit die Handhabung vereinfacht.
-Zudem zeichnet er sich mit einer hohen Drehzahl und einem grossen Drehmoment aus und ist dennoch verhältnismässig günstig in der Anschaffung.
+Ein weiterer Punkt ist, dass er sich als Gleichstrommotor leicht ansteuern lässt und damit die Handhabung vereinfacht.Ausschlaggebend war aber das er bereits einen integrierten Encoder besitz.\\[0.2cm]
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Im Pren1 viel die Wahl auf einen anderen DC-Motoren der von der Schule zur verfügung gestellt wurde. Da dieser aber keine interne Regelung besass, wurde geplant einen separaten Encoder zu beschaffen der die Drehzahl des Motores reguliert. Jedoch gestaltete sich die Umsetzung als zu aufwändig und daher wurde entschieden einen DC-Motoren mit integriertem Encoder zu verwenden.
 \subsubsection{Geschwindigkeitsregelung}
 Damit das Fahrzeug mit einer konstanten Geschwindigkeit fahren kann, musste ein Regler eingebaut werden.
 \begin{figure}[H]
