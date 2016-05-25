@@ -99,6 +99,7 @@ void PrenController::setTargetFieldFound(int distance) {
 void PrenController::setLaneLost() {
 	// inform MC-Board
 	printString("RouterFinder lost Lane", CONTROLLER, 1);
+	uartSender->sendStopCmd();
 }
 
 void PrenController::setSteeringAngle(int angle) {
@@ -139,6 +140,10 @@ int PrenController::getFlexDistance(void) {
 int PrenController::getEngineSpeed(void) {
 
 	return 7; //uartReceiver->getEngineSpeed();
+}
+
+void PrenController::responseStillThere() {
+	uartSender->stillThereResponse();
 }
 
 void PrenController::printString(string str, classes cl, uint line) {

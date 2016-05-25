@@ -75,6 +75,22 @@ bool ConfigParser::readBoolParam(string paraName) {
     return false;
 }
 
+float ConfigParser::readFloatParam(string paraName) {
+    string str;
+    ifstream file(m_paraFile.c_str());
+    string paraVal;
+    while (getline(file, str)) {
+    	paraVal.clear();
+    	if (str.find("#") == string::npos) {
+			if (str.find(paraName) != string::npos) {
+				parseParaVal(paraVal, str);
+				break;
+			}
+    	}
+    }
+    return atof(paraVal.c_str());
+}
+
 void ConfigParser::parseParaVal(string& paraVal, string& strLine) {
 	if (strLine.find("=") != string::npos) {
 		int beg = strLine.find("\"");

@@ -46,6 +46,13 @@ public:
 	ushort MIN_RT_WIDTH;
 	ushort MAX_SPEED;
 	ushort MAX_NR_OF_IMAGES;
+	ushort LINE_LOST_LIMIT;
+	ushort CAM_POS_CHANGE_LIMIT;
+	int ROUTE_POS_CORR_VAL;
+	ushort CAM_ANG_CORR_VAL;
+	ushort NR_OF_IMS_FOR_CHECK_BEND;
+	float SLOPE_VAL_FOR_BEND;
+	float SLOPE_VAL_FOR_STRAIGHT;
 
 private:
 };

@@ -44,6 +44,13 @@ PrenConfiguration::PrenConfiguration() {
 		IF_NAME = parser.readStringParam("IF_NAME");
 		MAX_SPEED = parser.readUShortParam("MAX_SPEED");
 		MAX_NR_OF_IMAGES = parser.readUShortParam("MAX_NR_OF_IMAGES");
+		LINE_LOST_LIMIT = parser.readUShortParam("LINE_LOST_LIMIT");
+		CAM_POS_CHANGE_LIMIT = parser.readUShortParam("CAM_POS_CHANGE_LIMIT");
+		ROUTE_POS_CORR_VAL = parser.readIntParam("ROUTE_POS_CORR_VAL");
+		CAM_ANG_CORR_VAL = parser.readUShortParam("CAM_ANG_CORR_VAL");
+		NR_OF_IMS_FOR_CHECK_BEND = parser.readUShortParam("NR_OF_IMS_FOR_CHECK_BEND");
+		SLOPE_VAL_FOR_BEND = parser.readFloatParam("SLOPE_VAL_FOR_BEND");
+		SLOPE_VAL_FOR_STRAIGHT = parser.readFloatParam("SLOPE_VAL_FOR_STRAIGHT");
 }
 
 PrenConfiguration::~PrenConfiguration() {

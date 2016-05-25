@@ -80,6 +80,8 @@ void UARTReciever::decodeRecievedString(std::string message) {
 		decodeUltraValue(message);
 	} else if(message.find("Fld1") != std::string::npos) {
 		decodeFlexValue(message);
+	} else if(message.find("There") != std::string::npos) {
+		decodeStillThere(message);
 	} else if(message.find("Stop") != std::string::npos) {
 		m_Controller->printString(message, m_Controller->UART_COMM, 1);
 		m_Controller->setState(m_Controller->END);
@@ -107,6 +109,11 @@ void UARTReciever::decodeFlexValue(std::string message) {
 	int value = atoi(message.c_str());
 	m_FlexDistance = value;
 	m_Controller->printString(message, m_Controller->UART_COMM, 1);
+}
+
+
+void UARTReciever::decodeStillThere(std::string message) {
+	m_Controller->responseStillThere();
 }
 
 void* UARTReciever::staticEntryPoint(void* threadId) {

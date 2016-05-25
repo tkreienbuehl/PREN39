@@ -76,3 +76,26 @@ I\cdot t \to 2A*0.25h = 0.5 Ah
 0.5Ah
 \]
 \end{itemize}
+\subsubsection{Akkuüberwachung Schwellwertberechnung}
+Damit die LiPo-Akkumulatoren nicht zerstört werden, muss sichergestellt werden das diese nicht tief entladen werden. Dies wird über das Freedomboard gelöst. Die Akkuspannung wird über einen Analog - Digitalwandler eingelesen. Wenn die Akkuspannung einen gewissen Wert unterschreiten, werden die Verbraucher an den Akkus "abgeschaltet". Eine Lipozelle sollte die Zellenspannung von 3.7V nicht unterschreiten. Im Normalfall sollten alle Zellen einzeln überwacht werden, dies ist jedoch im Rahmen dieses Prototypen nicht angemessen. Als Kompromiss wird gesamte Ausgangsspannung gemessen. Das heisst zwei beziehungsweise drei Zellen in Serie (je nach Akku).\\
+Das Freedomboard kann nur Spannungen bis 3.3V einlesen. Daher ist ein Spannungsteiler nötig. Damit dieser Wert sicher nicht überschritten wird, wird mit einer maximal zulässigen Spannung von 3V gerechnet. Für UAkku wurde 13V gewählt, damit der AD-Wandler sicher nie 3V erreicht.\\
+Für den 11.1V Akku:
+\[	U_Akku/U_Frd=R1/R2\]
+\[	13V/3V=4.33=g\]
+Gewählt:
+\[	R2=10k R1=R2*4.33=43kOhm\]
+Der Abschaltwert des drei Zellen Akkus ist 3.7V * 3 = 11.1V.
+Nach dem Spannungswandler entspricht dies einer Spannung von \[Uin/g=11.1V*10kOhm/(10kOhm+43kOhm)=2.075V\]
+3.3V enspricht 65'535. Somit entspricht eine Spannung von 2.075V einem eingelesenen Spannungswert von 41592. Falls dieser Wert über längere (wenige Sekunden) unterschritten wird, wird eine Nachricht an das Raspberry gesendet und das System heruntergefahren.
+
+Für den 7.1V (logik) Akku wurde mit einer maximale Spannung von 8.5V gerechnet:
+\[	U_Akku/U_Frd=R1/R2\]
+\[	8.5V/3V=2.83\]
+Gewählt:
+\[	R2=10k R1=R2*2.83=28.3kOhm\]
+Für UAkku wurde 7.4V als Abschaltwert gewählt.\\
+7.4V nach dem Spannungswandler entspricht einer Spannung von \[Uin/g=7.4V*10kOhm/(10kOhm + 28.3kOhm)=1.947\]
+3.3V enspricht 65'535. Somit entspricht eine Spannung von 1.974V einem eingelesenen Spannungswert von 38673. Dieser Wert musste angepasst werden, da der Akku zu früh abschaltete, da unter Last die Akkuspannung kurzzeitig sinkt. Ausgehend von dem gemessenen Wert von 32158 und einer Akkuspannung von 7.55V wurde der neue Wert von 31513 berechnet.
+\\[0.2cm]
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Die Akkuüberwachung konnte einfacher realisiert werden, als es im Pren1 konzipiert war. Dies deshalb, weil bei der Energieversorung auf eine galvanische Trennung der beiden Akkumulatoren verzichtet wurde. Dies ermöglichte das direkte einlesen des Spannungswertes über einen Spannungsteiler. Geplant war ursprünglich eine Vergleicherschaltung mit einem Operationsverstärker für den 11.1V Akkumulator. Diese Vereinfachung war auch sicher ein Grund auf die galvanische Trennung zu verzichten.

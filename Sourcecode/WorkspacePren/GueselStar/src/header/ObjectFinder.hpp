@@ -16,7 +16,7 @@ class ObjectFinder : public ObjectStateObserver {
 
 public:
 	ObjectFinder(PrenController* controller, PictureCreator* picCreator);
-	~ObjectFinder();
+	virtual ~ObjectFinder();
 
 	void findObjects(PictureCreator* picCreator);
 	cv::Mat createImage(cv::String filename);

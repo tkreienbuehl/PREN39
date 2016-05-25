@@ -55,6 +55,7 @@ void PictureCreator::RecordFromCam(PrenConfiguration conf) {
 
 	if(!capture) {
 		cout << "No camera detected" << endl;
+		m_Controller->setState(m_Controller->END);
 		return;
 	}
 

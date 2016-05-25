@@ -27,6 +27,13 @@ public:
 	static void* staticEntryPoint(void* threadId);
 
 private:
+
+	enum routeVals {
+		NOTHING,
+		BEND,
+		STRAIGHT
+	};
+
 	int runProcess();
 	void bubbleSort(std::vector<unsigned short>* vals);
 	bool compareTolerance(unsigned short refVal, unsigned short compVal);
@@ -40,6 +47,7 @@ private:
 	short calcRightRefDistance(cv::Point pt);
 	int calcCorrAng(short distVal);
 	void checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
+	routeVals checkRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos);
 
 	ushort MINLENGTH;
 	ushort MINXDIFF;
@@ -49,6 +57,13 @@ private:
 	ushort MIN_RT_WIDTH;
 	ushort MAX_ENGINE_SPEED;
 	ushort MAX_NR_OF_IMAGES;
+	ushort LINE_LOST_LIMIT;
+	ushort CAM_POS_CHANGE_LIMIT;
+	ushort CAM_ANG_CORR_VAL;
+	int ROUTE_POS_CORR_VAL;
+	ushort NR_OF_IMS_FOR_CHECK_BEND;
+	float SLOPE_VAL_FOR_BEND;
+	float SLOPE_VAL_FOR_STRAIGHT;
 	GradientMat* m_GradMat;
 	PictureCreator* m_PicCreator;
 	PrenController* m_Controller;
@@ -64,7 +79,10 @@ private:
 	PIDCalculation* m_pidCalc;
 	string m_outStr;
 	PrenController::classes me;
-	short m_DistCorrVal;
+	short m_DistCorrAng;
 	ushort m_CamPos;
+	ushort m_LineLostCnt;
+	ushort m_CamPosCorrCnt;
+	bool m_CheckBend;
 
 };

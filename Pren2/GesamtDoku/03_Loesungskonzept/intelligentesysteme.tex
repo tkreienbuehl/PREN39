@@ -45,31 +45,39 @@ Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, wel
 \end{figure}
  
 %***************************
-\subsubsection{Software auf Encoder}
-\textbf{Funktionsbeschrieb}\\[0.2cm]
-Das Mikrocontrollerboard bildet die Schnittstelle zwischen der Hardware (Motoren und Sensoren) und dem Minicomputer. Das Mikrocontrollerboard übernimmt die Ansteuerung und Auswertung der einzelnen Komponenten und stellt die verarbeiteten Informationen dem Minicomputer über eine Schnittstelle zur Verfügung.\\[0.2cm]
-\newpage
-\textbf{Komponentenbeschrieb}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.45\textwidth]{03_Loesungskonzept/pictures/freedomboard.png}
-	\caption{Freedomboard KL25 von Freescale (Quelle:http://ch.farnell.com/)}
-	%http://ch.farnell.com/productimages/standard/de_DE/freescalesemiconductor-frdm-kl25z-40.jpg
-\end{figure}
-Als Mikrocontrollersystem wurde das Freedomboard KL25Z von Freescale ausgewählt. Das Entwicklungsgsboard bietet vieles, wie ausreichend I/O's, AD Wandler und Timerausgänge. Das Board wird mit der Programmiersprache C programmiert.\\[0.2cm]
-\textbf{Begründung}\\[0.2cm]
-Das Board überzeugt durch eine gute Rechenperformance zu einem kleinen Preis. Das Hauptargument für das Freedomboard ist die einfache Programmierung. Für viele Komponenten wie Servos oder Ultraschalsensoren steht ein Tool namens ProcessorExpert zu Verfügung. Dieses Tool ermöglicht eine relativ einfache Anbindung solcher Komponenten. Dies spart sehr viel Entwicklungsaufwand.
-Das Freedomboard hat sich gegen das Tinkerforgesystem durchgesetzt. Der Hauptgrund ist die Flexibilität des Freedomboards gegenüber dem Tinkerforgesystem. Dieses ist sehr einfach zu bedienen solange alle Komponenten von Tinkerforge zur Verfügung gestellt werden. Fehlt aber ein Modul wird es sehr schnell kompliziert. Beim Freedomboard ist der Aufwand für eine Komponente etwas höher, dafür können die meisten Systeme angeschlossen werden.\\[0.2cm]
-\textbf{Testergebnisse}\\[0.2cm]
-Das Freedomboard wurde als Funktionsmuster bereits in Betrieb genommen. Es hat sich gezeigt, dass die Anbindung der Komponenten tatsächlich sehr einfach ist. Es wurden bereits ein Ultraschallsensor, mehrere Servos, eine UART Kommunikation und ein Infrarotsensor angebunden. Das System lieferte dabei sehr vielversprechende Ergebnisse.\\[0.2cm]
-\textbf{Software Grundaufbau}\\[0.2cm]
-Das Tool ProcessorExpert bietet eine Komponente FreeRTOS an. Das ist ein Betriebssystem, welches das Programmieren sehr vereinfacht. Damit können verschiedene Tasks definiert werden und quasi parallel ausgeführt werden. Die Software wird damit geplant. Folgende Tasks sind geplant:
+\subsubsection{Software auf Mikrocontrollerboard}
+
+\textbf{SW Architektur}\\[0.2cm]
+Auf dem Mikrocontroller (Freedomboard KL25Z) wurde mit dem Betriebssystem FreeRTOS gearbeitet. Dies ermöglicht die Erstellung von verschiedenen Tasks. Dies erlaubt eine bessere Trennung der einzelnen Softwarekomponenten und erleichtert das Programmieren. Die verschiedenen Tasks wurden bereits im PREN1 geplant und nun im PREN2 umgesetzt. 
+Hier eine Übersicht der Tasks und Events:
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/MC_Tasks.png}
 	\caption{Übersicht MC Tasks}
 \end{figure}
-Die Implementierung der Tasks wird im Modul Produkteentwicklung zwei (PREN2) umgesetzt.
-
+In den folgenden Abschnitten werden kurz auf die einzelnen Tasks und Events eingegangen. Dies dient jedoch nur der Übersicht.\\
+\textbf{Controller}\\[0.2cm]
+Dieser Task steuert das Freedomboard. Das heisst konkret, dass dieser Task das initialisieren, fahren, aufladen, entladen  und beenden des Programmes zuständg ist. Dies ist über eine FineState Maschiene realisiert, welche bei besonderen Events den State wechselt. Ein besonderer Event ist zum Beispiel das Startkommando über die Kommunikation oder eine Unterspannung am Akku.\\[0.2cm]
+\textbf{Kommunikation}\\[0.2cm]
+Dieser Task übernimmt die Auswertung der erhaltenen Kommandos über die UART Schnittstelle. Dies geschieht über eine sogenannte Parsertabelle. In dieser Parsertabelle können beliebig weitere Kommandos (Funktionen) hinzugefügt werden. Dieser Task wird alle 10ms aufgerufen, da die Kommunikation mit dem Raspberry Pi möglichst schnell funktionieren soll.\\[0.2cm]
+\textbf{Analog-Digitalwandlung}\\[0.2cm]
+Dieser Task holt und verarbeitet die Daten aus dem Analog Digitalwandler des KL25Z. Das heisst konkret, es werden beide Akku Spannungen ausgelesen und überwacht. Zudem wird der Widerstandswert des Flexsensensors eingelesen und damit der Abstand zum Gehsteig berechnet. Zur Akkuüberwachung folgen weiter im Text weitere Informationen.\\[0.2cm]
+\textbf{Geschwindigkeitsregelung}\\[0.2cm]
+Der Geschwindigkeitsregelungstask regelt die Geschwindigkeit des DC-Antriebmotors. Dies geschieht über einen PID Regler. Dieser wurde vom Modul Mikrocontrollertechnik an der Hochschule Luzern übernommen und nach den eigenen Bedürfnissen angepasst. Wie die PID Werte berechnet wurden und der Regelkreis aussieht wird noch separat erläutert.\\[0.2cm]
+\textbf{Ultraschall}\\[0.2cm]
+Dieser Task steuert den Ultraschallsensor an. Dies wurde nach einem Tutorial von mcuoneclipse.com realisiert und auf die Softwareumgebung noch weiter angepasst.\\[0.2cm]
+\textbf{Master check}\\[0.2cm]
+Dieser Task ist die Lebensversicherung des Fahrzeugs. Hier wird überprüft ob der Master (Raspberry Pi) noch angeschlossen und Funktionstüchtig ist. Wenn das Mikrocontrollerborad nicht innerhalb von wenigen Sekunden eine Bestätigungsmeldung des Masters bekommt, wird das Freedomboard in den Beendet Modus wechseln und fährt somit nicht unkontrolliert herum. \\[0.2cm]
+\textbf{Analog Digitalwandlung}\\[0.2cm]
+Hier wird die Akkuspannung und der Flexsensorwert eingelesen und verarbeitet. Wenn nun die Akkuspannung zu niedrig ist, wird dies in diesem Task detektiert. Zudem wird hier der Spannungwert über dem Flexsensor in mm Abstand zum Trottoir umgerechnet.\\[0.2cm]
+\textbf{Event}\\[0.2cm]
+Die Events treten unregelmäßig und ungeplant auf. Diese unterbrechen das normale Programm (Interrupt) und führen einen eigenen kurzen Programmcode aus. Dies ist bei den im Bild aufgeführten Funktionen der Fall.\\[0.2cm]
+\textbf{Die Konfigurationsdatei}\\[0.2cm]
+Damit einzelne Komponenten des Fahrzeuges getestet werden konnten, mussten teilweise andere Fahrzeugkomponenten ausgeschaltet werden. Zum Beispiel als das Aufladen des Containers getestet werden sollte, wollte man nicht noch das Anfahren testen. Aus diesem Grund ist das File config.h entstanden. Darin lassen sich einzelne Baugruppen und Funktionen des Programmes effizient ein oder ausschalten. Dieses System hat sich als sehr nützlich erwiesen und ist sehr wichtig für die Funktion des Fahrzeuges.\\[0.2cm]
+\textbf{Das Debuggen und Fehlersuchen}\\[0.2cm]
+Ein grosser Vorteil am Freedomboard ist die Möglichkeit zum Debuggen. Dies war einerseits über die normale Entwicklungsumgebung Kinetis möglich. Andererseits war dies auch durch den SystemViewer möglich. Damit man dieses Tool nutzen kann, ist es nötig den Debugger von der Firma Segger zu brauchen. Mit diesem Tool kann analysiert werden, wie viel und wie lange ein Task aktiv ist. Diese Tool half dabei, schwierige Feher im Taskhandling zu finden. Eine Anleitung dazu findet sich auch auf mcuoneclipse.com.\\[0.2cm]
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Die Software wurde grösstenteils so implementiert, wie dies im Pren1 geplant war. Die einzigen Unterschiede zwischen dem Konzept und der Umsetzung liegen in der Zusammenführung verschiedener Tasks. So wurde die Tasks Akkuüberwachung und Trottoirabstand zu dem Task Analogdigitalwandlung zusammengeführt. Dies weil so das Programm effizienter gemacht werden konnte. Zudem wurde der Task Stellelementesteuerung nicht als Task, sondern als Event realisiert. Dies weil zum Beispiel das neue Stellen eines Servos immer eine eingabe erfordert und somit ein Event viel sinnvoller ist als polling. 
 %***************************
 \subsubsection{Schnittstellen}
