@@ -74,6 +74,8 @@ I\cdot t \to 2A*0.25h = 0.5 Ah
 \[
 0.5Ah
 \]
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Im Pren1 wurde beschlossen die beiden Akkumulatoren galvanisch zu trennen, um allfällige Störungen die aufgrund des Anlaufstromes der Motoren ausgelöst werden könnte, auszuschliessen. Nun wurde jedoch beschlossen darauf zu verzichten, da die Chancen für einen Störfall eher gering sind und den benötigten Aufwand nicht rechtfertigen würden.
 \end{itemize}
 \subsubsection{Akkuüberwachung Schwellwertberechnung}
 Damit die LiPo-Akkumulatoren nicht zerstört werden, muss sichergestellt werden das diese nicht tief entladen werden. Dies wird über das Freedomboard gelöst. Die Akkuspannung wird über einen Analog - Digitalwandler eingelesen. Wenn die Akkuspannung einen gewissen Wert unterschreiten, werden die Verbraucher an den Akkus "abgeschaltet". Eine Lipozelle sollte die Zellenspannung von 3.7V nicht unterschreiten. Im Normalfall sollten alle Zellen einzeln überwacht werden, dies ist jedoch im Rahmen dieses Prototypen nicht angemessen. Als Kompromiss wird gesamte Ausgangsspannung gemessen. Das heisst zwei beziehungsweise drei Zellen in Serie (je nach Akku).\\

@@ -23,6 +23,7 @@ Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise di
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/Komponentendiagramm_detailliert_v2.jpeg}
 \caption{Komponentendiagramm}
 \end{figure}
+Damit keine zyklischen Abhängigkeiten enstehen, wurde entschieden, dass ein Oberserver nach dem Observer-Entwurfsmusster (GoF) implementiert wird. Normalerweise senden der RouteFinder und der ObjectFinder die Informationen an den Controller. Beim Eintreffen an der Kreuzung aber, muss der Controller Informationen an den ObjectFinder senden. Dazu muss sich der ObjectFinder zuerst beim Controller als Observer registrieren.
 
 \textbf{Debug-View}\\[0.2cm]
 Um während der Implementierungs-Phase der geschriebene Code zu testen wurde eine Debug-View entwickelt. Mit dieser kann auf den Debug-Server, welcher auf dem Raspberry Pi gestartet wird, zugegriffen werden. Nach einer erfolgreichen Verbindung werden die aufgenommenen Bilder vom Server an den Client (GueselStarObserver) gesendet.

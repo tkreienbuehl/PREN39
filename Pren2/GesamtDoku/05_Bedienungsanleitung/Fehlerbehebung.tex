@@ -1,6 +1,13 @@
 % !TEX root = Dokumentation.tex
 \subsection{Fehlerbehebung}
 \subsubsection{Das Raspberry Pi ist nicht erreichbar}
+\begin{itemize}
+\item das Raspberry Pi ist nicht eingesteckt => einstecken
+\item das Raspberry Pi läuft nicht => siehe Akkus
+\item WLAN-Adapter nicht eingesteckt => einstecken
+\item reboot
+\item Netzwerk- und SSH-Konfiguration kontrollieren
+\end{itemize}
 \subsubsection{Nichts leuchtet}
 \begin{itemize}
 \item Die Akkus sind nicht verbunden => Verbinden
@@ -30,10 +37,16 @@ Ist das Kabel richtig eingesteckt?
 Sind beide Akkus verbunden? Es kann sein, dass gewisse Teile funktionieren ohne einen der beiden Akkus.
 \subsubsection{Die Initialeinstellung stimmt nicht mehr}
 \begin{itemize}
-\item ad
+\item Hat sich eine Verschraubung gelöst? => Den Motor von Hand auf die Nullposition bringen und erneut befestigen.
+\item Define-Werte im Code anpassen und rekalibrieren.
 
 \end{itemize}
 \subsubsection{Das Fahrzeug hält nach kurzer Zeit an}\\[0.2cm]
 Dieser Fehler wird sehr wahrscheinlich 
 
+\subsubsection{Erkennung funktioniert nicht richtig}
+\begin{itemize}
+\item Ist die Konfiguations-Datei am richtigen Ort?
+\item Sind alle Konfigurationen richtig gesetzt?
+\end{itemize}
 
