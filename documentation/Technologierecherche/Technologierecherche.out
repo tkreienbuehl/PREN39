@@ -1,0 +1,76 @@
+\BOOKMARK [1][-]{section.1}{Autonomes Fahren}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Erkennung des rechten Randes mit Sensoren}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Fest einprogrammierte Strecke ohne Sensoren}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Rechtsvortritt}{section.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.3.1}{Mit der Kamera}{subsection.1.3}% 5
+\BOOKMARK [3][-]{subsubsection.1.3.2}{Mit Sensoren}{subsection.1.3}% 6
+\BOOKMARK [1][-]{section.2}{Beladen}{}% 7
+\BOOKMARK [2][-]{subsection.2.1}{Erkennung des Containers}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.2}{Mechanismen die bei M\374llfahrzeugen eingesetzt werden}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Entladen}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{Kippen des Beh\344lters}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.2}{Seitliche Klappe \366ffnen}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.3}{Mit Greifer ausladen}{section.3}% 13
+\BOOKMARK [1][-]{section.4}{Greifer}{}% 14
+\BOOKMARK [2][-]{subsection.4.1}{mechanisch}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.2}{pneumatisch}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.3}{magnetisch}{section.4}% 17
+\BOOKMARK [1][-]{section.5}{Antrieb}{}% 18
+\BOOKMARK [2][-]{subsection.5.1}{Elektromotor}{section.5}% 19
+\BOOKMARK [3][-]{subsubsection.5.1.1}{B\374rstenloser Gleichstrommotor}{subsection.5.1}% 20
+\BOOKMARK [3][-]{subsubsection.5.1.2}{Gleichstrommaschine}{subsection.5.1}% 21
+\BOOKMARK [3][-]{subsubsection.5.1.3}{Schrittmotor}{subsection.5.1}% 22
+\BOOKMARK [2][-]{subsection.5.2}{Verbrennungsmotor}{section.5}% 23
+\BOOKMARK [2][-]{subsection.5.3}{Pneumatik}{section.5}% 24
+\BOOKMARK [2][-]{subsection.5.4}{Dampfmaschine}{section.5}% 25
+\BOOKMARK [1][-]{section.6}{Lenkung}{}% 26
+\BOOKMARK [2][-]{subsection.6.1}{Knicklenkung}{section.6}% 27
+\BOOKMARK [2][-]{subsection.6.2}{Achsschenkellenkung}{section.6}% 28
+\BOOKMARK [3][-]{subsubsection.6.2.1}{Lenktrapez}{subsection.6.2}% 29
+\BOOKMARK [2][-]{subsection.6.3}{Zweiradlenkung}{section.6}% 30
+\BOOKMARK [2][-]{subsection.6.4}{Lenkung f\374r Kettenfahrzeuge}{section.6}% 31
+\BOOKMARK [1][-]{section.7}{Mikrocontroller-Board}{}% 32
+\BOOKMARK [2][-]{subsection.7.1}{Anforderungen}{section.7}% 33
+\BOOKMARK [2][-]{subsection.7.2}{Tinkerforge}{section.7}% 34
+\BOOKMARK [2][-]{subsection.7.3}{HCS08 Devlopperboard}{section.7}% 35
+\BOOKMARK [2][-]{subsection.7.4}{Arduinoboard}{section.7}% 36
+\BOOKMARK [2][-]{subsection.7.5}{Freedomboard}{section.7}% 37
+\BOOKMARK [1][-]{section.8}{Distanzsensoren}{}% 38
+\BOOKMARK [2][-]{subsection.8.1}{Anforderungen}{section.8}% 39
+\BOOKMARK [2][-]{subsection.8.2}{Ultraschallsensoren}{section.8}% 40
+\BOOKMARK [2][-]{subsection.8.3}{Infrarotsensoren}{section.8}% 41
+\BOOKMARK [1][-]{section.9}{Farbsensoren}{}% 42
+\BOOKMARK [2][-]{subsection.9.1}{Anforderungen}{section.9}% 43
+\BOOKMARK [2][-]{subsection.9.2}{Eigenschaften}{section.9}% 44
+\BOOKMARK [1][-]{section.10}{Stromversorgung}{}% 45
+\BOOKMARK [2][-]{subsection.10.1}{Anforderungen}{section.10}% 46
+\BOOKMARK [2][-]{subsection.10.2}{Batterien}{section.10}% 47
+\BOOKMARK [2][-]{subsection.10.3}{NiCd \(Nickel-Cadmium\)}{section.10}% 48
+\BOOKMARK [2][-]{subsection.10.4}{Lithium-Akku \(LiPo, Lilon\)}{section.10}% 49
+\BOOKMARK [2][-]{subsection.10.5}{NiMH \(Nickel-Metallhydrid\)}{section.10}% 50
+\BOOKMARK [1][-]{section.11}{Boardcomputer}{}% 51
+\BOOKMARK [2][-]{subsection.11.1}{Raspberry Pi}{section.11}% 52
+\BOOKMARK [2][-]{subsection.11.2}{Raspberry Pi 2}{section.11}% 53
+\BOOKMARK [2][-]{subsection.11.3}{Banana Pi}{section.11}% 54
+\BOOKMARK [2][-]{subsection.11.4}{BeagleBone Black}{section.11}% 55
+\BOOKMARK [2][-]{subsection.11.5}{ODROID-XU4}{section.11}% 56
+\BOOKMARK [1][-]{section.12}{Bilderkennung}{}% 57
+\BOOKMARK [2][-]{subsection.12.1}{Anforderungen}{section.12}% 58
+\BOOKMARK [2][-]{subsection.12.2}{OpenCV}{section.12}% 59
+\BOOKMARK [2][-]{subsection.12.3}{MatLab}{section.12}% 60
+\BOOKMARK [2][-]{subsection.12.4}{SimpleCV}{section.12}% 61
+\BOOKMARK [2][-]{subsection.12.5}{LibCCV}{section.12}% 62
+\BOOKMARK [1][-]{section.13}{Kamerasysteme}{}% 63
+\BOOKMARK [2][-]{subsection.13.1}{Raspberry Pi CAM}{section.13}% 64
+\BOOKMARK [2][-]{subsection.13.2}{Logitech Webcam C525}{section.13}% 65
+\BOOKMARK [2][-]{subsection.13.3}{Logitech Webcam C615}{section.13}% 66
+\BOOKMARK [2][-]{subsection.13.4}{Logitech Webcam C920}{section.13}% 67
+\BOOKMARK [2][-]{subsection.13.5}{Zusammenfassung}{section.13}% 68
+\BOOKMARK [2][-]{subsection.13.6}{Vor- und Nachteile}{section.13}% 69
+\BOOKMARK [3][-]{subsubsection.13.6.1}{Raspberry Pi CAM}{subsection.13.6}% 70
+\BOOKMARK [3][-]{subsubsection.13.6.2}{Webcams}{subsection.13.6}% 71
+\BOOKMARK [2][-]{subsection.13.7}{Steuerung}{section.13}% 72
+\BOOKMARK [2][-]{subsection.13.8}{Ein Steuerungsboard}{section.13}% 73
+\BOOKMARK [2][-]{subsection.13.9}{Bordcomputer und Hardwarecontroller}{section.13}% 74
+\BOOKMARK [1][-]{section.14}{Morphologischer Kasten}{}% 75
+\BOOKMARK [1][-]{section.15}{Recherchequellen}{}% 76

@@ -1,0 +1,68 @@
+\BOOKMARK [1][-]{section.1}{Chassis}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Raupen}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{4-Rad Heckantrieb}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{2-Rad mit St\374tzen}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{Lenkung}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{Trapez}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.2}{Raupen}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.3}{2 R\344der mit 2 Motoren}{section.2}% 8
+\BOOKMARK [1][-]{section.3}{Greifer}{}% 9
+\BOOKMARK [2][-]{subsection.3.1}{Greifer rund}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.2}{Greifer gerade}{section.3}% 11
+\BOOKMARK [1][-]{section.4}{Beladen}{}% 12
+\BOOKMARK [2][-]{subsection.4.1}{Arm ohne Knick}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.2}{Knickarm}{section.4}% 14
+\BOOKMARK [1][-]{section.5}{Lagerung}{}% 15
+\BOOKMARK [2][-]{subsection.5.1}{Beh\344lter}{section.5}% 16
+\BOOKMARK [1][-]{section.6}{Entladen}{}% 17
+\BOOKMARK [2][-]{subsection.6.1}{Kippen}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.2}{Schr\344gbeh\344lter}{section.6}% 19
+\BOOKMARK [1][-]{section.7}{Antrieb}{}% 20
+\BOOKMARK [2][-]{subsection.7.1}{DC-Motor}{section.7}% 21
+\BOOKMARK [2][-]{subsection.7.2}{Schrittmotor}{section.7}% 22
+\BOOKMARK [2][-]{subsection.7.3}{BLDC-Motor}{section.7}% 23
+\BOOKMARK [1][-]{section.8}{Motor Lenkung}{}% 24
+\BOOKMARK [2][-]{subsection.8.1}{DC-Motor}{section.8}% 25
+\BOOKMARK [2][-]{subsection.8.2}{Schrittmotor}{section.8}% 26
+\BOOKMARK [2][-]{subsection.8.3}{BLDC-Motor}{section.8}% 27
+\BOOKMARK [2][-]{subsection.8.4}{Servo-Motor}{section.8}% 28
+\BOOKMARK [1][-]{section.9}{Motor Greifer}{}% 29
+\BOOKMARK [2][-]{subsection.9.1}{Schrittmotor}{section.9}% 30
+\BOOKMARK [2][-]{subsection.9.2}{BLDC-Motor}{section.9}% 31
+\BOOKMARK [2][-]{subsection.9.3}{Servo-Motor}{section.9}% 32
+\BOOKMARK [1][-]{section.10}{Energieversorgung}{}% 33
+\BOOKMARK [2][-]{subsection.10.1}{Nickel-Metallhydrid-Akkumulator}{section.10}% 34
+\BOOKMARK [2][-]{subsection.10.2}{Lithium-Polymer-Akku}{section.10}% 35
+\BOOKMARK [1][-]{section.11}{Microcontroller}{}% 36
+\BOOKMARK [2][-]{subsection.11.1}{Freedom-Board}{section.11}% 37
+\BOOKMARK [2][-]{subsection.11.2}{Tinkerforge}{section.11}% 38
+\BOOKMARK [1][-]{section.12}{Mini-Computer}{}% 39
+\BOOKMARK [2][-]{subsection.12.1}{Raspberry Pi 1}{section.12}% 40
+\BOOKMARK [2][-]{subsection.12.2}{Raspberry Pi 2}{section.12}% 41
+\BOOKMARK [2][-]{subsection.12.3}{Banana Pi}{section.12}% 42
+\BOOKMARK [1][-]{section.13}{Kamera}{}% 43
+\BOOKMARK [2][-]{subsection.13.1}{Raspberry Pi Cam}{section.13}% 44
+\BOOKMARK [2][-]{subsection.13.2}{Raspberry Pi Cam Noir}{section.13}% 45
+\BOOKMARK [2][-]{subsection.13.3}{Webcam}{section.13}% 46
+\BOOKMARK [1][-]{section.14}{Fahrbahnerkennung}{}% 47
+\BOOKMARK [2][-]{subsection.14.1}{Sensor}{section.14}% 48
+\BOOKMARK [2][-]{subsection.14.2}{Bilderkennung}{section.14}% 49
+\BOOKMARK [1][-]{section.15}{Containererkennung \(grob\)}{}% 50
+\BOOKMARK [2][-]{subsection.15.1}{Distanz und Farbsensor}{section.15}% 51
+\BOOKMARK [2][-]{subsection.15.2}{Bilderkennung}{section.15}% 52
+\BOOKMARK [1][-]{section.16}{Containererkennung \(detailliert\)}{}% 53
+\BOOKMARK [2][-]{subsection.16.1}{Distanzsensor}{section.16}% 54
+\BOOKMARK [2][-]{subsection.16.2}{Bilderkennung}{section.16}% 55
+\BOOKMARK [1][-]{section.17}{Rechtsvortritt}{}% 56
+\BOOKMARK [2][-]{subsection.17.1}{Sensor}{section.17}% 57
+\BOOKMARK [2][-]{subsection.17.2}{Bilderkennung}{section.17}% 58
+\BOOKMARK [1][-]{section.18}{Programmiersprache}{}% 59
+\BOOKMARK [2][-]{subsection.18.1}{Java}{section.18}% 60
+\BOOKMARK [2][-]{subsection.18.2}{C++}{section.18}% 61
+\BOOKMARK [1][-]{section.19}{Bilderkennungs-Bibliothek}{}% 62
+\BOOKMARK [2][-]{subsection.19.1}{OpenCV}{section.19}% 63
+\BOOKMARK [2][-]{subsection.19.2}{SimpleCV}{section.19}% 64
+\BOOKMARK [1][-]{section.20}{Anhang}{}% 65
+\BOOKMARK [2][-]{subsection.20.1}{Farbsensor}{section.20}% 66
+\BOOKMARK [2][-]{subsection.20.2}{Ultraschallsensoren}{section.20}% 67
+\BOOKMARK [2][-]{subsection.20.3}{Infrarotsensoren}{section.20}% 68

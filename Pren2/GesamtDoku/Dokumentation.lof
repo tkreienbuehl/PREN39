@@ -1,33 +1,34 @@
 \select@language {ngerman}
 \contentsline {figure}{\numberline {1}{\ignorespaces \IeC {\"U}bersichtszeichnung}}{5}{figure.1}
-\contentsline {figure}{\numberline {2}{\ignorespaces Konzept des Chassis}}{6}{figure.2}
-\contentsline {figure}{\numberline {3}{\ignorespaces Konzept des Chassis mit Komponentenbeschriftung}}{7}{figure.3}
-\contentsline {figure}{\numberline {4}{\ignorespaces Konzept der Achsschenkellenkung}}{8}{figure.4}
-\contentsline {figure}{\numberline {5}{\ignorespaces Antrieb (Quelle:http://www.conrad.ch)}}{9}{figure.5}
-\contentsline {figure}{\numberline {6}{\ignorespaces Grober Antriebsregelkreis}}{10}{figure.6}
-\contentsline {figure}{\numberline {7}{\ignorespaces Die Schrittantwort des DC-Motor im Matlab}}{11}{figure.7}
-\contentsline {figure}{\numberline {8}{\ignorespaces Die Istwert verglichen mit dem Stellwert}}{12}{figure.8}
-\contentsline {figure}{\numberline {9}{\ignorespaces Beispiels Ausgangssignal des Encoders (Quelle:pololu.com)}}{13}{figure.9}
-\contentsline {figure}{\numberline {10}{\ignorespaces Greifer}}{14}{figure.10}
-\contentsline {figure}{\numberline {11}{\ignorespaces Einladeprozess}}{14}{figure.11}
-\contentsline {figure}{\numberline {12}{\ignorespaces Sch\IeC {\"u}ttgutfluss in den beiden Beh\IeC {\"a}ltern}}{15}{figure.12}
-\contentsline {figure}{\numberline {13}{\ignorespaces Entladen}}{16}{figure.13}
-\contentsline {figure}{\numberline {14}{\ignorespaces Klappe schliessen}}{17}{figure.14}
-\contentsline {figure}{\numberline {15}{\ignorespaces Aufteilung der Akkumulatoren}}{18}{figure.15}
-\contentsline {figure}{\numberline {16}{\ignorespaces Spannungsteiler}}{22}{figure.16}
-\contentsline {figure}{\numberline {17}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Grobablauf}}{23}{figure.17}
-\contentsline {figure}{\numberline {18}{\ignorespaces Komponentendiagramm}}{24}{figure.18}
-\contentsline {figure}{\numberline {19}{\ignorespaces Debug-View}}{25}{figure.19}
-\contentsline {figure}{\numberline {20}{\ignorespaces Konfiguration}}{25}{figure.20}
-\contentsline {figure}{\numberline {21}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{26}{figure.21}
-\contentsline {figure}{\numberline {22}{\ignorespaces Raspberry Pi Kameramudul}}{28}{figure.22}
-\contentsline {figure}{\numberline {23}{\ignorespaces Bild nach Kantenerkennung}}{29}{figure.23}
-\contentsline {figure}{\numberline {24}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Fahrbahnerkennung}}{31}{figure.24}
-\contentsline {figure}{\numberline {25}{\ignorespaces Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}}{32}{figure.25}
-\contentsline {figure}{\numberline {26}{\ignorespaces Erste Kante links der Mitte}}{33}{figure.26}
-\contentsline {figure}{\numberline {27}{\ignorespaces Erste Kante rechts der Mitte}}{33}{figure.27}
-\contentsline {figure}{\numberline {28}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Obkjekterkennung: Container und Entleerungsbecken}}{37}{figure.28}
-\contentsline {figure}{\numberline {29}{\ignorespaces Zeitplan}}{41}{figure.29}
-\contentsline {figure}{\numberline {30}{\ignorespaces Risikomatrix}}{42}{figure.30}
-\contentsline {figure}{\numberline {31}{\ignorespaces Budgetplanung}}{46}{figure.31}
-\contentsline {figure}{\numberline {32}{\ignorespaces Scrum-Board}}{47}{figure.32}
+\contentsline {figure}{\numberline {2}{\ignorespaces Chassis}}{6}{figure.2}
+\contentsline {figure}{\numberline {3}{\ignorespaces Chassis mit Komponentenbeschriftung 1}}{7}{figure.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Chassis mit Komponentenbeschriftung 2}}{7}{figure.4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Konzept der Achsschenkellenkung}}{10}{figure.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces Antrieb (Quelle:http://www.conrad.ch)}}{11}{figure.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces Grober Antriebsregelkreis}}{12}{figure.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Die Schrittantwort des DC-Motor im Matlab}}{12}{figure.8}
+\contentsline {figure}{\numberline {9}{\ignorespaces Die Istwert verglichen mit dem Stellwert}}{13}{figure.9}
+\contentsline {figure}{\numberline {10}{\ignorespaces Beispiels Ausgangssignal des Encoders (Quelle:pololu.com)}}{14}{figure.10}
+\contentsline {figure}{\numberline {11}{\ignorespaces Greifer}}{15}{figure.11}
+\contentsline {figure}{\numberline {12}{\ignorespaces Einladeprozess}}{15}{figure.12}
+\contentsline {figure}{\numberline {13}{\ignorespaces Sch\IeC {\"u}ttgutfluss in den beiden Beh\IeC {\"a}ltern}}{16}{figure.13}
+\contentsline {figure}{\numberline {14}{\ignorespaces Entladen}}{17}{figure.14}
+\contentsline {figure}{\numberline {15}{\ignorespaces Klappe schliessen}}{18}{figure.15}
+\contentsline {figure}{\numberline {16}{\ignorespaces Aufteilung der Akkumulatoren}}{19}{figure.16}
+\contentsline {figure}{\numberline {17}{\ignorespaces Spannungsteiler}}{23}{figure.17}
+\contentsline {figure}{\numberline {18}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Grobablauf}}{24}{figure.18}
+\contentsline {figure}{\numberline {19}{\ignorespaces Komponentendiagramm}}{25}{figure.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces Debug-View}}{26}{figure.20}
+\contentsline {figure}{\numberline {21}{\ignorespaces Konfiguration}}{26}{figure.21}
+\contentsline {figure}{\numberline {22}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{27}{figure.22}
+\contentsline {figure}{\numberline {23}{\ignorespaces Raspberry Pi Kameramudul}}{29}{figure.23}
+\contentsline {figure}{\numberline {24}{\ignorespaces Bild nach Kantenerkennung}}{30}{figure.24}
+\contentsline {figure}{\numberline {25}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Fahrbahnerkennung}}{32}{figure.25}
+\contentsline {figure}{\numberline {26}{\ignorespaces Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}}{33}{figure.26}
+\contentsline {figure}{\numberline {27}{\ignorespaces Erste Kante links der Mitte}}{34}{figure.27}
+\contentsline {figure}{\numberline {28}{\ignorespaces Erste Kante rechts der Mitte}}{34}{figure.28}
+\contentsline {figure}{\numberline {29}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Obkjekterkennung: Container und Entleerungsbecken}}{38}{figure.29}
+\contentsline {figure}{\numberline {30}{\ignorespaces Zeitplan}}{42}{figure.30}
+\contentsline {figure}{\numberline {31}{\ignorespaces Risikomatrix}}{43}{figure.31}
+\contentsline {figure}{\numberline {32}{\ignorespaces Budgetplanung}}{47}{figure.32}
+\contentsline {figure}{\numberline {33}{\ignorespaces Scrum-Board}}{48}{figure.33}

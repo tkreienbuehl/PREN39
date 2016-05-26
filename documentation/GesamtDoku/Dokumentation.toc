@@ -1,0 +1,43 @@
+\select@language {ngerman}
+\contentsline {section}{Inhaltsverzeichnis}{1}{section*.1}
+\contentsline {section}{Abstract}{2}{section*.2}
+\contentsline {section}{\numberline {1}Einleitung}{3}{section.1}
+\contentsline {section}{\numberline {2}L\IeC {\"o}sungskonzept}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Gesamt\IeC {\"u}bersicht}{4}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Zusammenspiel}{4}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Schnittstellen}{5}{subsubsection.2.1.2}
+\contentsline {subsubsection}{\numberline {2.1.3}Regelkreise}{6}{subsubsection.2.1.3}
+\contentsline {subsection}{\numberline {2.2}Chassis}{7}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Lenkung}{8}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Antrieb}{9}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Beladen und Greifer}{10}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Entladen}{12}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}Energieversorgung}{13}{subsection.2.7}
+\contentsline {subsection}{\numberline {2.8}Intelligente Systeme}{15}{subsection.2.8}
+\contentsline {subsubsection}{\numberline {2.8.1}Softwarekonzept}{15}{subsubsection.2.8.1}
+\contentsline {subsubsection}{\numberline {2.8.2}Mini-Computer}{17}{subsubsection.2.8.2}
+\contentsline {subsubsection}{\numberline {2.8.3}Mikrocontroller-Board}{17}{subsubsection.2.8.3}
+\contentsline {subsection}{\numberline {2.9}Bilderzeugung}{19}{subsection.2.9}
+\contentsline {subsection}{\numberline {2.10}Fahrbahnerkennung}{20}{subsection.2.10}
+\contentsline {subsection}{\numberline {2.11}Objekterkennung}{25}{subsection.2.11}
+\contentsline {subsubsection}{\numberline {2.11.1}Objekterkennung grob}{26}{subsubsection.2.11.1}
+\contentsline {subsubsection}{\numberline {2.11.2}Objekterkennung pr\IeC {\"a}zise}{29}{subsubsection.2.11.2}
+\contentsline {section}{\numberline {3}Projektmanagement}{31}{section.3}
+\contentsline {subsection}{\numberline {3.1}Team}{31}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Zeitplanung}{32}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Risikomanagement}{32}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Risiken im Team}{33}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Risiken im Projektmanagement}{34}{subsubsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.3}Risiken bei der Realisierung}{34}{subsubsection.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.4}Andere Risiken}{34}{subsubsection.3.3.4}
+\contentsline {subsection}{\numberline {3.4}Budgetplanung}{35}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Projektunterst\IeC {\"u}tzung}{35}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {3.5.1}Software}{35}{subsubsection.3.5.1}
+\contentsline {subsubsection}{\numberline {3.5.2}Aufgabenverteilung}{36}{subsubsection.3.5.2}
+\contentsline {section}{\numberline {4}Schlussdiskussion}{37}{section.4}
+\contentsline {subsection}{\numberline {4.1}Lessons Learned}{37}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Ausblick PREN2}{37}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Fazit}{37}{subsection.4.3}
+\contentsline {section}{Abbildungsverzeichnis}{38}{section*.3}
+\contentsline {section}{Tabellenverzeichnis}{39}{section*.4}
+\contentsline {section}{Anhang}{40}{section*.5}

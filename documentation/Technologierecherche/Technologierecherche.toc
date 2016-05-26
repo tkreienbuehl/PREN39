@@ -1,0 +1,77 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Autonomes Fahren}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Erkennung des rechten Randes mit Sensoren}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Fest einprogrammierte Strecke ohne Sensoren}{4}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Rechtsvortritt}{4}{subsection.1.3}
+\contentsline {subsubsection}{\numberline {1.3.1}Mit der Kamera}{4}{subsubsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.2}Mit Sensoren}{4}{subsubsection.1.3.2}
+\contentsline {section}{\numberline {2}Beladen}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Erkennung des Containers}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Mechanismen die bei M\IeC {\"u}llfahrzeugen eingesetzt werden}{5}{subsection.2.2}
+\contentsline {section}{\numberline {3}Entladen}{6}{section.3}
+\contentsline {subsection}{\numberline {3.1}Kippen des Beh\IeC {\"a}lters}{6}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Seitliche Klappe \IeC {\"o}ffnen}{6}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Mit Greifer ausladen}{6}{subsection.3.3}
+\contentsline {section}{\numberline {4}Greifer}{7}{section.4}
+\contentsline {subsection}{\numberline {4.1}mechanisch}{7}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}pneumatisch}{8}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}magnetisch}{8}{subsection.4.3}
+\contentsline {section}{\numberline {5}Antrieb}{8}{section.5}
+\contentsline {subsection}{\numberline {5.1}Elektromotor}{8}{subsection.5.1}
+\contentsline {subsubsection}{\numberline {5.1.1}B\IeC {\"u}rstenloser Gleichstrommotor}{9}{subsubsection.5.1.1}
+\contentsline {subsubsection}{\numberline {5.1.2}Gleichstrommaschine}{9}{subsubsection.5.1.2}
+\contentsline {subsubsection}{\numberline {5.1.3}Schrittmotor}{9}{subsubsection.5.1.3}
+\contentsline {subsection}{\numberline {5.2}Verbrennungsmotor}{10}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Pneumatik}{10}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Dampfmaschine}{10}{subsection.5.4}
+\contentsline {section}{\numberline {6}Lenkung}{10}{section.6}
+\contentsline {subsection}{\numberline {6.1}Knicklenkung}{10}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Achsschenkellenkung}{11}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {6.2.1}Lenktrapez}{11}{subsubsection.6.2.1}
+\contentsline {subsection}{\numberline {6.3}Zweiradlenkung}{12}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Lenkung f\IeC {\"u}r Kettenfahrzeuge}{12}{subsection.6.4}
+\contentsline {section}{\numberline {7}Mikrocontroller-Board}{12}{section.7}
+\contentsline {subsection}{\numberline {7.1}Anforderungen}{12}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Tinkerforge}{12}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}HCS08 Devlopperboard}{13}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}Arduinoboard}{13}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Freedomboard}{13}{subsection.7.5}
+\contentsline {section}{\numberline {8}Distanzsensoren}{13}{section.8}
+\contentsline {subsection}{\numberline {8.1}Anforderungen}{13}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Ultraschallsensoren}{14}{subsection.8.2}
+\contentsline {subsection}{\numberline {8.3}Infrarotsensoren}{14}{subsection.8.3}
+\contentsline {section}{\numberline {9}Farbsensoren}{14}{section.9}
+\contentsline {subsection}{\numberline {9.1}Anforderungen}{14}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Eigenschaften}{14}{subsection.9.2}
+\contentsline {section}{\numberline {10}Stromversorgung}{15}{section.10}
+\contentsline {subsection}{\numberline {10.1}Anforderungen}{15}{subsection.10.1}
+\contentsline {subsection}{\numberline {10.2}Batterien}{15}{subsection.10.2}
+\contentsline {subsection}{\numberline {10.3}NiCd (Nickel-Cadmium)}{15}{subsection.10.3}
+\contentsline {subsection}{\numberline {10.4}Lithium-Akku (LiPo, Lilon)}{16}{subsection.10.4}
+\contentsline {subsection}{\numberline {10.5}NiMH (Nickel-Metallhydrid)}{16}{subsection.10.5}
+\contentsline {section}{\numberline {11}Boardcomputer}{16}{section.11}
+\contentsline {subsection}{\numberline {11.1}Raspberry Pi}{16}{subsection.11.1}
+\contentsline {subsection}{\numberline {11.2}Raspberry Pi 2}{17}{subsection.11.2}
+\contentsline {subsection}{\numberline {11.3}Banana Pi}{17}{subsection.11.3}
+\contentsline {subsection}{\numberline {11.4}BeagleBone Black}{17}{subsection.11.4}
+\contentsline {subsection}{\numberline {11.5}ODROID-XU4}{18}{subsection.11.5}
+\contentsline {section}{\numberline {12}Bilderkennung}{18}{section.12}
+\contentsline {subsection}{\numberline {12.1}Anforderungen}{18}{subsection.12.1}
+\contentsline {subsection}{\numberline {12.2}OpenCV}{18}{subsection.12.2}
+\contentsline {subsection}{\numberline {12.3}MatLab}{18}{subsection.12.3}
+\contentsline {subsection}{\numberline {12.4}SimpleCV}{19}{subsection.12.4}
+\contentsline {subsection}{\numberline {12.5}LibCCV}{19}{subsection.12.5}
+\contentsline {section}{\numberline {13}Kamerasysteme}{19}{section.13}
+\contentsline {subsection}{\numberline {13.1}Raspberry Pi CAM}{19}{subsection.13.1}
+\contentsline {subsection}{\numberline {13.2}Logitech Webcam C525}{20}{subsection.13.2}
+\contentsline {subsection}{\numberline {13.3}Logitech Webcam C615}{20}{subsection.13.3}
+\contentsline {subsection}{\numberline {13.4}Logitech Webcam C920}{20}{subsection.13.4}
+\contentsline {subsection}{\numberline {13.5}Zusammenfassung}{21}{subsection.13.5}
+\contentsline {subsection}{\numberline {13.6}Vor- und Nachteile}{21}{subsection.13.6}
+\contentsline {subsubsection}{\numberline {13.6.1}Raspberry Pi CAM}{21}{subsubsection.13.6.1}
+\contentsline {subsubsection}{\numberline {13.6.2}Webcams}{21}{subsubsection.13.6.2}
+\contentsline {subsection}{\numberline {13.7}Steuerung}{21}{subsection.13.7}
+\contentsline {subsection}{\numberline {13.8}Ein Steuerungsboard}{22}{subsection.13.8}
+\contentsline {subsection}{\numberline {13.9}Bordcomputer und Hardwarecontroller}{22}{subsection.13.9}
+\contentsline {section}{\numberline {14}Morphologischer Kasten}{22}{section.14}
+\contentsline {section}{\numberline {15}Recherchequellen}{23}{section.15}
