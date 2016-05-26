@@ -76,8 +76,67 @@ Die Events treten unregelmäßig und ungeplant auf. Diese unterbrechen das norma
 \textbf{Die Konfigurationsdatei}\\[0.2cm]
 Damit einzelne Komponenten des Fahrzeuges getestet werden konnten, mussten teilweise andere Fahrzeugkomponenten ausgeschaltet werden. Zum Beispiel als das Aufladen des Containers getestet werden sollte, wollte man nicht noch das Anfahren testen. Aus diesem Grund ist das File config.h entstanden. Darin lassen sich einzelne Baugruppen und Funktionen des Programmes effizient ein oder ausschalten. Dieses System hat sich als sehr nützlich erwiesen und ist sehr wichtig für die Funktion des Fahrzeuges.\\[0.2cm]
 \textbf{Das Debuggen und Fehlersuchen}\\[0.2cm]
-Ein grosser Vorteil am Freedomboard ist die Möglichkeit zum Debuggen. Dies war einerseits über die normale Entwicklungsumgebung Kinetis möglich. Andererseits war dies auch durch den SystemViewer möglich. Damit man dieses Tool nutzen kann, ist es nötig den Debugger von der Firma Segger zu brauchen. Mit diesem Tool kann analysiert werden, wie viel und wie lange ein Task aktiv ist. Diese Tool half dabei, schwierige Feher im Taskhandling zu finden. Eine Anleitung dazu findet sich auch auf mcuoneclipse.com.\\[0.2cm]
+Ein grosser Vorteil am Freedomboard ist die Möglichkeit zum Debuggen. Dies war einerseits über die normale Entwicklungsumgebung Kinetis möglich. Andererseits war dies auch durch den SystemViewer möglich. Damit man dieses Tool nutzen kann, ist es nötig den Debugger von der Firma Segger zu brauchen. Mit diesem Tool kann analysiert werden, wie viel und wie lange ein Task aktiv ist. Diese Tool half dabei, schwierige Fehler im Taskhandling zu finden. Eine Anleitung dazu findet sich auch auf mcuoneclipse.com.\\[0.2cm]
 \textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
 Die Software wurde grösstenteils so implementiert, wie dies im Pren1 geplant war. Die einzigen Unterschiede zwischen dem Konzept und der Umsetzung liegen in der Zusammenführung verschiedener Tasks. So wurde die Tasks Akkuüberwachung und Trottoirabstand zu dem Task Analogdigitalwandlung zusammengeführt. Dies weil so das Programm effizienter gemacht werden konnte. Zudem wurde der Task Stellelementesteuerung nicht als Task, sondern als Event realisiert. Dies weil zum Beispiel das neue Stellen eines Servos immer eine eingabe erfordert und somit ein Event viel sinnvoller ist als polling. 
 %***************************
 \subsubsection{Schnittstellen}
+\textbf{UART Schnittstelle}\\[0.2cm]
+Aufgabe der UART Schnittstelle ist es, die Kommunikation zwischen Minicomputer und Mikrocontroller sicherzustellen. Dazu gehören folgende Aufgaben
+\begin{itemize}
+\item Austausch der Sensorwerte für die Regelkreise.
+\item Definierte Kommandos um die Aktoren anzusteuern.
+\end{itemize}
+\textbf{Architektur und Designentscheide}\\[0.2cm]
+Um den Datenfluss einfach zu halten, werden Sensorwerte periodisch vom Freedom Board an das Raspberry Pi übertragen. Die Klasse \code{UARTReciever} ist entsprechend als Thread realisiert entschlüsselt den empfangenen String und schreibt den Wert auf entsprechende Member-Variabeln. Diese können über Funktionsgerechte Get-Methoden abgefragt werden.\\
+Das Senden von Daten wird ebenfalls über Funktionsgerechte Send-Methoden von der Klasse \code{UARTSender} zur Verfügung gestellt. Entsprechend setzen diese Methoden die Ausgabestrings zusammen.\\[0.2cm]
+\textbf{UART-Methodenstrings}
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|} \hline
+	Aktion/Aktor         & Richtung     & String,[params]    & Übergabewert              & Bemerkungen \\\hline\hline
+	Ultraschall          & Frd$\to$Rasp & Ul,uint16          & distance cm               & periodisch all 0.3s \\\hline
+	Flexsensor1 und ev 2 & Frd$\to$Rasp & Fld1,uint8         & distance mm               & periodisch all 0.2s \\\hline
+	StatusAuf            & Rasp$\to$Frd & StA d,uint16       & distance mm               & \\
+	                     & Frd$\to$Rasp & StAf               &                           & Wenn  abgeschlossen \\\hline
+	StatusAb	             & Rasp$\to$Frd & StE d,uint16       & distance mm               & \\
+	                     & Frd$\to$Rasp & StEf               &                           & Wenn abgeschlossen\\\hline
+	DC Motor             & Rasp$\to$Frd & DCDr d,uint8,uint8 & mm pro sek.,modus         & Modi: hard/soft \\
+	                     & Frd$\to$Rasp & DCDr,uint8         & mm pro sek.               & wenn encoder say o \\\hline
+	Lenkungsservo        & Rasp$\to$Frd & LeS p,uint8        & abs Winkel (0=127)        & \\\hline
+	Kameraservo          & Rasp$\to$Frd & CamP p,uint8       & Kamera pos                & \\\hline
+	Debug Messages       & Frd$\to$Rasp & DBG,char[]         & Meldung                   & \\\hline
+	NochDa               & Frd$\to$Rasp & There              & Flag                      & periodisch all 0.5s \\
+	                     & Rasp$\to$Frd & Ja a               & Erhalten?                 & Wenn nein $\to$ DC stop \\\hline
+	Start                & Rasp$\to$Frd & StartFrd a         &                           & Hochfahren und init \\
+	                     & Frd$\to$Rasp & Ready              &                           & \\\hline
+	Stop	                 & Rasp$\to$Frd & Stop a             &                           & Programm beenden \\
+		                 & Frd$\to$Rasp & Stop               &                           & Programm beendet \\ \hline
+	\end{tabular}
+	\caption{Definition der Übertragungsstrings}
+\end{figure}
+\textbf{Methodenübersicht \code{UARTReciever}}
+\begin{itemize}
+\item \code{int getFlexDistance(void)} Methode, die den Abstand des Flexsensors zurückgibt.
+\item \code{int getEngineSpeed(void)} Methode, die des Antriebsmotors aktuelle Geschwindigkeit zurückgibt.
+\item \code{int getUltraDist(void)} Methode liefert die kürzeste Distanz des Ultraschallsensors zurück.
+\end{itemize}
+\textbf{Methodenübersicht \code{UARTSender}}
+\begin{itemize}
+\item \code{bool sendStartCmd(void)} Methode, die das Freedom Board aktiviert und alle Aktoren in Ausgangsposition bringt. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool sendStopCmd(void)} Methode, welche dem Freedom Board das Ende des Programms signalisiert.  Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setCameraPos(ushort pos)} Methode dreht die Kamera auf die gewünschte Position. Übergabewerte aus \code{PrenController} um ungültige Werte zu vermeiden:\\
+\code{CAM\_STRAIGHT} = gerade, \code{CAM\_CHECK\_STREET} für Rechtsvortritt, \code{CAM\_TURN\_RIGHT} = Rechtskurve und \code{CAM\_TURN\_LEFT} = Linkskurve. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setEngineSpeed(uint8\_t speed, EngineModesE mode = SOFT)} Methode setzt den Motor auf die gewünschte Geschwindigkeit, der Modus kann zwischen \code{SOFT} (default) und \code{HARD} gewählt werden. \code{HARD} = Notfall. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setContainerFound(uint16\_t distance)} Methode teilt dem Mikrocontroller mit, einen Container gefunden zu haben. Übergabeparameter: Abstand zum Container. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setTargetFieldFound(uint16\_t distance)}  Methode teilt dem Mikrocontroller mit, das Ziel gefunden zu haben. Übergabeparameter: Abstand zum Zielfeld. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool setSteering(uint8\_t steeringAng)}  Methode teilt dem Mikrocontroller mit, das auf einen bestimmten Winkel gelenkt werden soll. 0 Grad = 127 aufgrund des unsigned Typen. Übergabeparameter: Winkel, auf den die Lenkung gestellt werden soll. Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+%
+\item \code{bool stillThereResponse(void)} Methode sendet ein Ja auf die Frage, ob die Verbindung noch steht.  Rückgabe: \code{false}, wenn ein Übertragungsfehler aufgetreten ist, \code{true} sonst.
+\end{itemize}
