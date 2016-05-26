@@ -1,77 +1,13 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Fahrbahnerkennung}
-\textbf{Funktionsbeschrieb}\\[0.2cm]
-Die Fahrbahnerkennung soll primär mittels Kamera umgesetzt werden. Dazu werden Bilder aus dem zur Verfügung gestellten Bilderpool entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend einer Kantenanalyse unterzogen. Dazu wird ein eigener Algorithmus verwendet, der das ganze Bild als Funktion $z = f(x,y)$ anschaut, wobei $x$ der Pixelkoordinate der Spalte, $y$ der Pixelkoordinate der Zeile und $z$ dem Graustufenwert des Pixels entspricht (Abbildung \ref{fig:edges}).
-\begin{figure}[H]%Position festigen
-\centering
-\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
-\caption{Bild nach Kantenerkennung}
-\label{fig:edges}
-\end{figure}
-Anhand der vorhandenen Informationen kann die Fahrbahn und demzufolge laufend der Korrekturvektor ermittelt werden. Die eigentliche Korrektur soll mittels PID-Regelung realisiert werden, um eine ruhige Fahrt zu erreichen. Die Korrekturanweisungen werden dabei vom Controller berechnet, und in Grad an das Mikrocontrollerboard weitergegeben.\\[0.2cm]
-\newpage
-\textbf{Komponentenbeschrieb}
-\begin{figure}[H]%Position festigen
-\centering
-\includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
-\caption{Aktivitätendiagramm Fahrbahnerkennung}
-\label{fig:activityRoute}
-\end{figure}
-Die Fahrbahnerkennung wird als eigener Thread auf dem Raspberry Pi realisiert und in C++ objektorientiert umgesetzt. Die erhaltenen Bilder werden vor der Analyse auf ein Format von 320x230 Pixel verkleinert. Für die Kantenerkennung ein Bild zeilenwiese durchlaufen und die Änderungsrate der Graustufe des nächsten Pixels rechts davon ($x$-Richtung) und aus der darüberliegenden Zeile ($y$-Richtung) betrachtet. Überschreitet diese den Filterwert, wird eine Kante erkannt und auch deren Richtung festgehalten (Abbildung: \ref{fig:grayscale}).\\
-Im Anschluss wird im unteren Bereich des Bildes von innen nach aussen die Fahrbahn gesucht. Dazu werden jeweils von der Bildmitte aus, in beide Richtungen, die ersten Kanten gesucht, über mehrere Punkte fixiert und danach alle übrigen Kanten entfernt.
-\begin{figure}[H]%Position festigen
-\centering
-\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/graphPicture.png}
-\caption{Graph der Graustufenwerte einer Bildzeile in $x$-Richtung}
-\label{fig:grayscale}
-\end{figure}
-Da die Fahrbahn keine sprunghaften Änderungen aufweisen kann, wird die kantendetektierte Matrix von unten nach oben durchgesehen und alle Kanten, die in $x$ - Richtung eine zu grosse Abweichung von der erkannten Fahrbahn aufweisen entfernt, so dass nur noch die rechte und linke Fahrbahnbegrenzung übrig bleibt (Abbildung \ref{fig:kantenl} und \ref{fig:kantenr}). Lücken werden geschlossen, indem in Richtung des letzten Elementes fortgefahren wird.\\
-Für die anschliessende Suche der Ideallinie wird von den gefundenen Kanten die Mitte genommen. Die Abweichung wird ermittelt, indem der Fahrtrichtungsvektor mit dem Richtungsvektor der Ideallinie abgeglichen wird. Bei einem zu grossen Winkelfehler wird eine Korrektur eingeleitet. In der Kurve wird dazu der Fahrtrichtungsvektor durch einen Bogen, entsprechend dem eingeschlagenen Radius der Lenkung, ersetzt und mit dem Sollradius der Fahrbahn abgeglichen. Die Abweichung wird dann über die Tangentenfunktion in einen Winkel umgewandelt, um für die Regelung nur einen Wertetyp auswerten zu müssen. Da die Kurven, insbesondere auf der Innenbahn, sehr eng sind, verliert die Kamera die Fahrbahn aus der Sicht. Um dieses Problem zu lösen wird die Kamera beim Kurveneingang auf einen festgelegten und konstanten Winkel gedreht, der dann wiederum in der Regelung beachtet werden muss. Am Ende der Kurvenfahrt wird die Kamera wieder auf die Null-Grad-Position zurückgeschwenkt. Nebst der besseren Fahrbahnsicht werden auch Objekte auf diese Weise früher erkannt.
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/minEdge.png}
-\caption{Erste Kante links der Mitte}
-\label{fig:kantenl}
-\end{figure}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/maxEdge.png}
-\caption{Erste Kante rechts der Mitte}
-\label{fig:kantenr}
-\end{figure}
-\textbf{Begründung}\\[0.2cm]
-Mit der beschriebenen Vorgehensweise kann der Aufwand pro Bild gegenüber OpenCV deutlich reduziert werden, da die Operationen ausschliesslich für die Fahrbahnerkennung erstellt werden. Die Tests haben die Realisierbarkeit dieser Vorgehensweise als machbar und fexibel aufgezeigt.\\[0.2cm]
-\textbf{Berechnungen}\\[0.2cm]
-Abschätzung der Komplexität des Algorithmus: Jedes Bild wird als eine $n\times{m}$ Matrix $M$ betrachtet, wobei $n$ = Spaltenzahl und $m$ = Zeilenzahl. Die Resultate der Kantenerkennung werden in einer zweiten $n\times{m}$ Matrix $M_1$ gespeichert, welche für die weiteren Berechnungen verwendet wird. Anhand des Bildformates gilt: $n>m$. Die Umwandlung des Bildes in Graustufen, von OpenCV durchgeführt, ist in der Abschätzung nicht enthalten.
-\begin{itemize}
-\item Iteration für Kantenerkennung:
-\[
-n \cdot m \leq n \cdot n \text{ wenn } n\geq m \rightarrow \mathcal{O}(n^2) \text{ mit den Zeugen }C=1 \text{ und } k = 1
-\]
-\item Iteration für Kantenfindung Fahrbahn:
-\[
-\frac{1}{2}(10n) + \frac{1}{2}(10n) = 5n + 5n = 10n \rightarrow \mathcal{O}(n) \text{ mit den Zeugen }C=10 \text{ und } k = 1
-\]
-\item Iteration für Fahrbahnausfilterung und das Erzeugen der Sollspur:
-\[
-n \cdot m \leq n \cdot n \text{ wenn } n\geq m \rightarrow \mathcal{O}(n^2) \text{ mit den Zeugen }C=1 \text{ und } k = m
-\]
-\item Zusammengezogene Schätzung der Komplexität:
-\begin{align*}
-2(n^2) + 10n &\leq 2n^2 + 10n^2 \text{ wenn } n\geq 1\\
-             &= 12n^2\\
-             &\rightarrow \mathcal{O}(n^2) \text{ mit den Zeugen }C=12 \text{ und } k = m
-\end{align*}
-\end{itemize}
-Formeln für die Berechnungen:
-\begin{itemize}
-\item Kantenfindung $h=$ Grenzwert für die Änderungsrate um eine Kante zu ermitteln und $z_1$ der Wert des Pixels in der Quellmatrix $M$:
+\textbf{Umsetzung}\\[0.2cm]
+Die Fahrbahnerkennung ist primär mittels Kamera realisiert. Es wird jeweils das aktuelle Bild von der Klasse \code{PictureCreator} entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend an die Kantenerkennung weitergegeben. Für die Kanten wird eine eigene Matrix erstellt, vorgelegt mit dem Graustufenwert 0. Die Kantenerkennung basiert auf der Differentialrechnung und betrachtet vom aktuellen Pixel aus in $x$ (Spalte) und $y$ (Zeile) den Graustufenwert des nächsten Pixels und des vorherigen Pixels.
 $z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
 \[
-\frac{\partial{z}}{\partial{x}}=\frac{f(x+\Delta{x})-f(x)}{\Delta{x}} = \frac{f(x+1)-f(x)}{1} = f(x+1)-f(x)
+\frac{\partial{z}}{\partial{x}}=\frac{f(x+\Delta{x})-f(x-\Delta{x})}{2\Delta{x}} = \frac{f(x+1)-f(x-1)}{2}
 \]
 \[
-\frac{\partial{z}}{\partial{y}}=\frac{f(y+\Delta{x})-f(y)}{\Delta{y}} = \frac{f(y+1)-f(y)}{1} = f(y+1)-f(y)
+\frac{\partial{z}}{\partial{y}}=\frac{f(y+\Delta{x})-f(y-\Delta{y})}{2\Delta{y}} = \frac{f(y+1)-f(y-1)}{2}
 \]
 \[
 \nabla f(x,y) = \begin{bmatrix}
@@ -80,23 +16,50 @@ $z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
 \end{bmatrix}
 \]
 \[
-\lVert\nabla f(x,y)\rVert = \sqrt{(f(x+1)-f(x))^2 + (f(y+1) - f(y))^2}
+\lVert\nabla f(x,y)\rVert = \sqrt{\Biggl(\frac{\partial{z}}{\partial{x}}\Biggr)^2 + \Biggl(\frac{\partial{z}}{\partial{y}}\Biggr)^2}
 \]
-Wenn nun der $\lVert\nabla f(x,y)\rVert \geq h$ , wird in die Zielmatrix $M_1$ an die Stelle $(x,y)$ der Wert 255 geschrieben, sonst 0.
-\item Finden der Fahrbahnreferenz am unteren Bildrand:\\
-Wie zuvor beschrieben wird für die Fahrbahn von innen nach aussen gesucht. Dabei wird jeweils die erste Kante genommen, für die gilt:
+Übersteigt die Änderung der Graustufe den vorgegebenen Schwellwert wird eine Kante erkannt, an die entsprechende Pixelposition der Zielmatrix wird der Wert 255 geschrieben, ansonsten nicht. Mit der Festgelegten Kameraposition beschränkt sich die Fahrbahnerkennung auf die untere Bildhälfte. Damit werden störende Effekte in der Umgebung vermieden (Abbildung: \ref{fig:edges}). 
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
+\caption{Bild nach Kantenerkennung}
+\label{fig:edges}
+\end{figure}
+Im Anschluss an die Kantendetektion folgt eine Linienerkennung mittels Hough-Transformation. Dabei werden alle Linien vorgefiltert, die nicht zur Fahrbahn gehören können. Dies wird anhand der Steigung ermittelt. Die gültigen Linien werden im Anschluss harmonisiert, das Heisst ihr Start- und Endpunkt wird so angepasst, dass 
+immer der Startpunkt in $y$-Richtung am Maximum liegt. Weiter wird die Linie auf die untere Bildkante verlängert. Im Anschluss werden nur die innersten Linien behalten und zur Berechnung der Fahrtrichtung weitergegeben (Abbildung: \ref{fig:routeLimits}). Zur optischen Hilfe ist die Bildmitte markiert um die ermittelten Abstände visuell prüfen zu können.
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Fahrbahnlinien.png}
+\caption{Eingetragene Fahrbahngrenze}
+\label{fig:routeLimits}
+\end{figure}
+Um die Fahrtrichtung zu prüfen werden nun die ermittelten Fahrbahnlinien ausgewertet. Wenn beide Fahrbahnseiten erkannt werden, wird der Mittelwert aus beiden genutzt ansonsten jeweils die vorhandene Seite. Die Auswertung erfolgt nach folgenden Schritten:
+\begin{enumerate}
+\item Verzerrungskorrektur rechnen: Da schräg auf die Fahrbahn geschaut wird ist die Fahrbahn nicht parallel sondern entsprechend gegen die Bildrichtung zusammenlaufend. Dies wird für die Abstandsermittlung berücksichtigt. Der Neigungswinkel der Kamera ist so gewählt, dass die Korrektur mit folgender, einfacher Formel berechnet werden kann:
 \[
-\frac{\partial{z}}{\partial{y}} > h_y
+D = \frac{y}{2} + 40 
 \]
-wobei $h_y$ für die minimale erwartete Änderung in $y$-Richtung steht. Im Anschluss werden die $min_x$- und $max_y$-Koordinaten der gefundenen Limits folgendermassen angeglichen:
-\[
-min_{(x,y)} = 10\cdot\Bigl\lfloor\frac{min_{(x,y)}}{10}+0.5\Bigr\rfloor
-\]
-respektive:
-\[
-max_{(x,y)} = 10\cdot\Bigl\lfloor\frac{max_{(x,y)}}{10}+0.5\Bigr\rfloor
-\]
-\end{itemize}
+Wobei $D$ der Solldistanz und $y$ der höheren Bildzeile der Linie entspricht. Diese Formel ist nur gültig, da bei gerader Fahrbahn die Differenz zwischen oberer und unterer Distanz der Fahrbahnlinien exakt der Hälfte der Bildhöhe entspricht (Abbildung: \ref{fig:routeCorr}).
+\item Abstand mit Sollwert vergleichen und die Differenz ermitteln.
+\item Den Winkel der Korrektur berechnen. Die Kamera schaut 200mm vor die Mitte der Vorderachse, was 160 Bildpixel entspricht.
+\item Der ermittelte Korrekturwinkel wird an den PID-Regler weitergegeben.
+\end{enumerate}
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Verzerrung.png}
+\caption{Verzerrung des Bildes}
+\label{fig:routeCorr}
+\end{figure}
+Zugleich der Fahrbahnermittlung wird für jedes Bild die Steigung der Fahrbahnkanten überwacht. Unterschreiten diese die Mindestgrenze, wird eine Kurve erkannt und die Kamera auf einen Winkel von 30° eingelenkt. Entprechend wird die Solldistanz um den entsprechenden Pixelwert aus der Mitte versetzt um die veränderte Perspektive auszugleichen. Uberschreitet die Steigung der Fahrbahnlinien die Obergrenze wird die Kamera wieder auf die gerade Position zurückgeschwenkt.\\
+Um zu Beginn ein Einlenken der Kamera zu verhindern wird diese Funktion erst nach einer gewissen Anzahl verarbeiteter Bilder aktiviert. Der Wert kann in der Konfigurationsdatei festgelegt werden.
+\newpage
+\textbf{Komponentenbeschrieb}
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
+\caption{Aktivitätendiagramm Fahrbahnerkennung}
+\label{fig:activityRoute}
+\end{figure}
 Die Fahrbahnkanten werden im Anschluss anhand der ermittelten Werte gesucht. Ist eine Kante in der Nähe der ermittelten Fahrbahn, wird sie behalten, ansonsten entfernt. Der Grenzwert muss noch genau ermittelt werden.\\
 Die Parameter für die Regelung werden mit folgender Formel ermittelt:
 \[
@@ -107,11 +70,6 @@ Danach werden die ermittelten Werte in die Korrekturformel eingesetzt:
 y = K_{PR}\left(e + \frac{1}{T_n}\int{edt} + T_v\dot{e}\right)
 \]
 wobei $y$ dem zu korrigierenden Winkelwert in Grad entspricht. Die Parameter $T_v$, $T_n$ und $K_{PR}$ müssen für die Feineinstellung justierbar sein. Dies soll für die Debugphase über eine auf dem Notebook betriebene Software geschehen.
-\\[0.2cm]
-\textbf{Testergebnisse}\\[0.2cm]
-In den bisher durchgeführten Tests konnten die Bilder der Kamera mit einer Framerate von 10 - 20 Bilder auf dem Minicomputer verarbeitet werden. Die Lichteinflüsse haben sich dabei als handhabbar präsentiert, wenn die Beleuchtung mindestens der im Testgebäude vorhandenen Standardbeleuchtung entspricht. Hellere Lichtverhältnisse haben sich positiv auf die Kantenerkennung ausgewirkt.\\
-Die Parallelisierung hat sich ebenfalls erfolgreich testen lassen, gemeinsam mit der Objekterkennung, allerdings nur auf dem Notebook aufgrund einer defekten Testkamera.
-\\[0.2cm]
 \newpage
 \underline{\textbf{Fahrbahnerkennung Unterstützung}}\\[0.2cm]
 Unterstützend zur Kameraauswertung hat die Steuerung noch eine weitere Angabe zur Verfügung. Dies ist die gemessene Distanz des Fahrzeuges zum Gehsteig. Dies wird über den Flexsensor realisiert. Wie in der Dokumentation von Pren1 erläutert, ändert der Flexsensor seinen Widerstandswert je nachdem wie fest der Sensor gebogen ist. Der Widerstandswert wird über den Analog-Digitalwandler in dem Mikrocontroller eingelesen. Beim einlesen diese Wertes wurde festgestellt, dass dieser relativ grosses Rauschen enthält. Verursacht wurde diese Rauschen hauptsächlich von der 5V Speisung. Diese enthält selbst gewisse Störungen, welche nachher den Messwert beeinflussen. Gelöst wurde diese Problem, indem zusätzlich zum Flexsensorwert auch ein Spannungswert relativ zur Speisung eingelesen wird. Aus diesen beiden Messwerte kann das differentielle Signal berechnet werden, aus dem die Störungen am 5V Netz weniger Einfluss haben. Mit dem bereinigtem Signal kann nun der ungefähre Abstand zum Gehsteig berechnet werden. Dies geschieht über eine lineare Funktion. Die Umrechnung vom Widerstandswert zum Abstand stimmt somit nicht sehr genau, sollte aber als Zusatzinformation so reichen.%Todo Führ Bild vom montiertem Flexsensor ein.
