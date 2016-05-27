@@ -1,64 +1,25 @@
 % !TEX root = ../Dokumentation.tex
 \newpage
 \subsection{Beladen und Greifer}
-\textbf{Funktionsbeschrieb}
+\textbf{Änderungen gegenüber PREN1}\\[0.2cm]
+Der Greifer wurde fast so umgesetzt wie in PREN1 geplant. Es musste einzig an den Greiferflächen Änderungen vorgenommen werden. Bei den Tests wurde erkennt, dass die Greifer nicht perfekt parallel greifen und das die Haftung nicht ausreichte. Um eine grössere Auflagefläche zu erreichen, sind auf beiden Seiten Bleche angeklebt. Auf die Bleche wurden Gummimatten aufgeklebt, damit wird die Haftung massiv verbessert und es können die Paralellitätsfehler ausgeglichen werden.\\[0.2cm]
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/greifer3.jpg}
+\includegraphics[width=1\textwidth]{03_Loesungskonzept/pictures/greifer1.png}
 \caption{Greifer}
 \end{figure}
-%
-Der Greifer ist auf der Grundplatte des Fahrzeuges montiert. Im Grundkörper wird die Welle für die Drehung des Greifers montiert. Die Welle wird von einem Servo Motor angetrieben. Um gute Laufeigenschaften zu erreichen werden Lagerbüchsen eingebaut. Auf der Drehachse sind die beiden Seitenplatten des Greifers montiert. Auf den Seitenplatten wird der Greifbackenhalter verschraubt.  Der Servo Motor für die Funktion \glqq{Greifer schliessen/öffnen}\grqq{} wird am Greifbackenhalter befestigt. Auf dem Servo wird ein Zahnrad montiert, das über die gleichen Zahnräder die Greiferbacken öffnet bzw. schliesst. Die Greiferbacken sind so konzipiert, dass die 2 längeren und 2 kürzeren an verschiedenen Flächen greifen. Damit wird erreicht, dass der Container während des ganzen Einladeprozesses stabil bleibt.
-%
+\textbf{Umsetzung}\\[0.2cm]
+Der Grundkörper wurde von der mechanischen Werkstatt der HSLU gefertigt. Die Zeichnung ist im Anhang zu finden. In den Grundkörper wurden auf beiden Seiten Lagerbüchsen eingepresst (Einkaufsteil). Der Grundkörper ist von unten mit 2 Senkschrauben auf der Grundplatte verschraubt.
+Auf der rechten Seiten wurde eine Halterung (3D Druckteil) auf die Grundplatte verschraubt. In der Halterung ist der Servo Motor für die Drehung des Greifers montiert. Dieser ist auf der Halterung verschraubt. Um die Welle und den Servo Motor zu verbinden, wird ein Verbindungsstück (gefertigt von HSLU Werkstatt) benötigt. Das Verbindungsstück wird mit zwei Gewindestiften auf dem Servo und der Welle befestigt. Auf die Welle wird die erste Seitenplatte (3D Druckteil) aufgesetzt, dann durch den Grundkörper geführt und anschliessend die zweite Seitenplatte. Auf der Welle wurden 2 Flächen angebracht auf Position der Gewinde der Seitenplatten. So können die beiden Seitenplatten mit Gewindestiften auf der Welle befestigt werden. Die Greiferplatte (3D Druckteil) wurde mit Senkschrauben auf den beiden Seitenplatten verschraubt. 
+Auf den beiden Seitenplatte ist der Servo Motor um den Greifer zu schliessen bzw. öffen verschraubt. Auf dem Servo ist mit einem Gewindestift ein Zahnrad (Einkaufteil) befestigt. Durch die Greiferplatte sind zwei Wellen frei drehbar gelagert. Auf diesen werden die Greifer (3D Druckteil) mit Gewindestiften wie auch die Zahnräder montiert. Die Greifer wurden möglichst parallel eingestellt und anschliessend Bleche und Gummimatten aufgeklebt.
+\\
+Der Greifer ist während des Fahren in obiger Position gelagert. Sobald der Container auf Höhe des Greifer ist, wird der Greifer heruntergelassen (Greifer komplett geöffnet). Die Greifer schliessen und der Greifer wird das oben gedreht. Das Schüttgut wird nun in das Behältersystem geleert. Danach wird der Greifer wieder auf die untere Stellung gefahren und der Greifer wird geöffnet, damit der Container wieder an der ursprünglichen Position steht. Zum Schluss wird der Greifer geöffnet und in Anfangsposition gedreht.\\[0.2cm]
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/Beladen_1.png}
-\caption{Einladeprozess}
+\includegraphics[width=1\textwidth]{03_Loesungskonzept/pictures/entladen11.png}
+\caption{Entladebehälter}
 \end{figure}
-Der Greifer ist während des Fahrens in der oberen Position gelagert, damit die Abmasse der Aufgabenstellung eingehalten werden können. Der Greifer wird erst auf horizontale Richtung bewegt, nachdem der Wagen still steht und richtig positioniert ist.
-Die rechte Fahrzeugkante wird auf 25mm +/- 5mm zum Trottoirrand positioniert. In Fahrtrichtung beträgt die maximale zulässige Positionierungsgenauigkeit +/- 10mm.
-%
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{03_Loesungskonzept/pictures/behaelter.png}
-\caption{Schüttgutfluss in den beiden Behältern}
-\end{figure}
-Der Container wird in den ersten Behälter entleert. Durch den schrägen Boden rutscht das Schüttgut in den zweiten Behälter. Am Ende des zweiten Behälters wird eine Klappe montiert, damit die Schrauben und Muttern nicht herausfallen. Die Klappe wird durch einen DC-Motor gehalten und erst am Schluss beim Entladebehälter geöffnet.\\[0.2cm]
-%
-\textbf{Komponentenbeschrieb}
-\begin{itemize}
-\item Zahnräder aus Kunststoff, Durchmesser = 15 (Einkaufteil)
-\item Greiferbacken aus Kunststoff (Druckteil)
-\item Grundkörper, Seitenplatte, Greifbackenhalter und Wellen werden aus Aluminium gefertigt.
-\item Behälter aus Acrylglas 3mm Dicke (Laserzuschnitt)
-\item Technische Daten des Motors Greifer:
-\begin{itemize}
-\item Stellzeit bei 4.8 Volt: 0.1 sec (50°) 
-\item Stellzeit bei 6 Volt: 0.08 sec (50°) 
-\item Betriebsspannung: 4.6/6 V
-\item Stell-Moment bei 4.8 Volt: 18 Ncm
-\item Stell-Moment bei 6 Volt: 20 Ncm 
-\end{itemize}
-\end{itemize}
-\textbf{Berechnungen}\\[0.2cm]
-Servo Motor für Greifer schliessen /
-Berechnung des benötigten Drehmoments: 
-\begin{itemize}
-\item Haftreibung auf 0.7 geschätzt
-\item Masse Container $m = 0.075kg$
-\item Gewichtskraft = $m\cdot g = 0.74 N$
-\item Kraft $F = \frac{0.5\cdot 0.74}{0.7} = 0.53 N$
-\item Abstand $l = 80mm$ (Drehpunkt zu Greiffläche)
-\item $M = F\cdot l = 0.04 Nm = 4 Ncm$
-\item Sicherheitsfaktor = 2
-\item M = $4\cdot 2 = 8 Ncm$
-\end{itemize}
-Servo Motor für Greifarm drehen:
-\begin{itemize}
-\item Gewichtskraft Container $Fc = 0.075kg\cdot 9.81 = 0.74 N$
-\item Gewichtskraft Greifarm: $Fgr = 0.3kg\cdot 9.81 = 2.94 N$
-\item Benötigtes Moment:
-$M = Fgr\cdot 0.05m+Fc\cdot 0.1m = 0.147Nm+0.07Nm = 0.217Nm = 21.7Ncm$
-\item Sicherheitsfaktor = 2 wegen Abschätzug des Greifergewichts und vernachlässigter Trägheitskräfte
-\item $M = 2 \cdot 21.7 = 43.4 Ncm$
-\end{itemize}
+Der Container wird in den ersten Behälter entleert. Durch den schrägen Boden und die Geschwindigkeit rutscht das Schüttgut in den zweiten Behälter. Am Ende des zweiten Behälters ist eine Klappe montiert, damit die Schrauben und Muttern nicht herausfallen. Die Klappe wird durch einen Servo Motor gehalten und erst am Schluss beim Entladebehälter geöffnet.\\[0.2cm]
+Die Behälterteile wurde bis auf die zweite Gleitfläche aus Acrylglas (Laserschneiden) gefertigt. Die zweite Gleitfläche ist ein 3D Druckteil.
+Um die Seitenwände zu montieren wurden auf der Grundplatte Schlitze herausgelasert. Damit konnten die Behälterteile auf die Grundplatte gesteckt (0.1 mm Übermass in Länge und Breite in der Grundplatte), zudem wurden sie noch festgeleimt. Die hintere Rückwand ist absichtlich hoch, damit fliegende Schüttgutteile nicht auf die Strasse fallen können.\\[0.2cm] 
+Unter dem Behältersystem befindet sich der grosse Akku. Das Kabel kann rechts durch die Behälterwand geführt werden. In der Rückwand ist ein Rechteck ausgelasert um den Akku herauszuschieben. Auf der linken Seitenwand ist auch noch ein Rechteck ausgelasert. Dort kann der Akku zum Laden entfernt werden.
