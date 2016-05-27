@@ -163,7 +163,9 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 		// check if it is a container
 		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 50
 				&& boundRect[i].height > 40) {
+
 			//m_Controller->printString("Container found: waiting for distance calculation...", m_Controller->OBJECT_FINDER, 0);
+			//cout << boundRect[i].height << endl;
 			// mark the container
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
 					cv::Scalar(0, 255, 0), 1, 8, 0);
@@ -181,14 +183,24 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 				lastCenterX = centerX;
 				lastCenterY = centerY;
 
+
+				int distanceToContainer =
+											m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+													* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+													/ boundRect[i].height;
+				char str[30];
+				bzero(str, sizeof(str));
+				sprintf(str, "Distance to Container: %d", distanceToContainer);
+				m_Controller->printString(str, m_Controller->OBJECT_FINDER, 3);
+
 				// if container needs to be announcecd
 				if (centerX >= 4 * imageToMarkContainer.cols / 5
 						&& !informedController) {
 
-					int distanceToContainer =
+					/*int distanceToContainer =
 							m_Controller->getPrenConfig()->REFERENCE_DISTANCE
 									* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
-									/ boundRect[i].height;
+									/ boundRect[i].height;*/
 
 					m_Controller->setContainerFound(distanceToContainer);
 
