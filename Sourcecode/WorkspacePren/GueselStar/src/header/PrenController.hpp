@@ -52,6 +52,7 @@ public:
 	void setEngineSpeed(uint8_t speed);
 	void setVehicleInCrossing();
 	bool checkObjectOnLane(void);
+	void checkUltraDist(int ultraDistance);
 	int getFlexDistance(void);
 	int getEngineSpeed(void);
 	PrenConfiguration* getPrenConfig(void);

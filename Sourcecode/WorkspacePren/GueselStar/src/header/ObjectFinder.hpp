@@ -26,6 +26,7 @@ public:
 	cv::Mat markFoundContoursInImage(vector<vector<cv::Point> > contours, cv::Mat imageToMarkContainer);
 	vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1, vector<vector<cv::Point> > contours2);
 	void updateCrossingState(bool crossingAhead);
+	void updateObjectOnLaneState(bool objectOnLane);
 	static void* staticEntryPoint(void* threadId);
 
 	cv::Mat getImage();
@@ -42,6 +43,7 @@ private:
 	bool m_state;
 	pthread_mutex_t m_mutex;
 	bool m_crossingAhead;
+	bool m_objectOnLane;
 	int lastCenterX;
 	int lastCenterY;
 	bool informedController;

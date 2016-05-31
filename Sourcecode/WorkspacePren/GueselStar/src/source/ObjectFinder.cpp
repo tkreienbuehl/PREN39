@@ -13,6 +13,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 	pthread_mutex_init(&m_mutex, NULL);
 	informedController = false;
 	m_crossingAhead = false;
+	m_objectOnLane = false;
 	lastCenterX = 0;
 	lastCenterY = 0;
 }
@@ -39,7 +40,7 @@ void ObjectFinder::RunProcess() {
 
 	while (m_state) {
 
-		if (m_Controller->checkObjectOnLane()) { //ultraschall: no object detected
+		if (!m_objectOnLane) { //ultraschall: no object detected
 
 			cv::Mat image = m_PicCreator->GetImage();
 
@@ -227,6 +228,10 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 
 void ObjectFinder::updateCrossingState(bool crossingAhead) {
 	m_crossingAhead = crossingAhead;
+}
+
+void ObjectFinder::updateObjectOnLaneState(bool objectOnLane) {
+	m_objectOnLane = objectOnLane;
 }
 
 cv::Mat ObjectFinder::getImage() {

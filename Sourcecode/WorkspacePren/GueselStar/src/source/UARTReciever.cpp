@@ -100,6 +100,7 @@ void UARTReciever::decodeUltraValue(std::string message) {
 	message.replace(start, 3, "");
 	int value = atoi(message.c_str());
 	m_UltraDist = value;
+	m_Controller->checkUltraDist(value);
 	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 
