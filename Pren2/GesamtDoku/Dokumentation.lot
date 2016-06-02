@@ -1,14 +1,6 @@
 \select@language {ngerman}
-<<<<<<< HEAD
-\contentsline {table}{\numberline {1}{\ignorespaces Risiken im Team}}{49}{table.1}
-\contentsline {table}{\numberline {2}{\ignorespaces Risiken im Projektmanagement}}{50}{table.2}
-\contentsline {table}{\numberline {3}{\ignorespaces Risiken bei der Realisierung}}{51}{table.3}
-\contentsline {table}{\numberline {4}{\ignorespaces andere Risiken}}{52}{table.4}
-\contentsline {table}{\numberline {5}{\ignorespaces Software zur Projektunterst\IeC {\"u}tzung}}{54}{table.5}
-=======
-\contentsline {table}{\numberline {1}{\ignorespaces Risiken im Team}}{47}{table.1}
-\contentsline {table}{\numberline {2}{\ignorespaces Risiken im Projektmanagement}}{48}{table.2}
-\contentsline {table}{\numberline {3}{\ignorespaces Risiken bei der Realisierung}}{49}{table.3}
-\contentsline {table}{\numberline {4}{\ignorespaces andere Risiken}}{50}{table.4}
-\contentsline {table}{\numberline {5}{\ignorespaces Software zur Projektunterst\IeC {\"u}tzung}}{52}{table.5}
->>>>>>> 129c71767942fdbe5589a99bece887498ffaf96a
+\contentsline {table}{\numberline {1}{\ignorespaces Risiken im Team}}{50}{table.1}
+\contentsline {table}{\numberline {2}{\ignorespaces Risiken im Projektmanagement}}{51}{table.2}
+\contentsline {table}{\numberline {3}{\ignorespaces Risiken bei der Realisierung}}{52}{table.3}
+\contentsline {table}{\numberline {4}{\ignorespaces andere Risiken}}{53}{table.4}
+\contentsline {table}{\numberline {5}{\ignorespaces Software zur Projektunterst\IeC {\"u}tzung}}{55}{table.5}
