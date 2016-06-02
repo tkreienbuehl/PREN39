@@ -34,7 +34,7 @@ private:
 	WINDOW* createNewWindow(int height, int width, int startY, int startX);
 	void destroyWindowin(WINDOW* window);
 	void initView();
-
+	pthread_mutex_t m_mutex;
 	WINDOW* m_RtFinderView, *m_UARTState, *m_ObjFinderView, *m_ControllerView;
 	unsigned int m_width, m_height;
 	bool m_State;

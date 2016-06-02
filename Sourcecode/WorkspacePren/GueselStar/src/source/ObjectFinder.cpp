@@ -162,7 +162,7 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
 		// check if it is a container
-		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 50
+		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 25
 				&& boundRect[i].height > 40) {
 
 			//m_Controller->printString("Container found: waiting for distance calculation...", m_Controller->OBJECT_FINDER, 0);
