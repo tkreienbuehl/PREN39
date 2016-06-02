@@ -80,6 +80,8 @@ void UARTReciever::decodeRecievedString(std::string message) {
 		decodeUltraValue(message);
 	} else if(message.find("Fld1") != std::string::npos) {
 		decodeFlexValue(message);
+	} else if(message.find("StAf") != std::string::npos) {
+		m_Controller->setContainerLoadingFinished(true);
 	} else if(message.find("There") != std::string::npos) {
 		decodeStillThere(message);
 	} else if(message.find("Stop") != std::string::npos) {

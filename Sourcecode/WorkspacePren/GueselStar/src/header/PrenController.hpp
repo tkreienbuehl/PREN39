@@ -53,6 +53,7 @@ public:
 	void setVehicleInCrossing();
 	bool checkObjectOnLane(void);
 	void checkUltraDist(int ultraDistance);
+	void setContainerLoadingFinished(bool finished);
 	int getFlexDistance(void);
 	int getEngineSpeed(void);
 	PrenConfiguration* getPrenConfig(void);

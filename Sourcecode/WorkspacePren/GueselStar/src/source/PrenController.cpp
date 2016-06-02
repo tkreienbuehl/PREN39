@@ -179,6 +179,11 @@ void PrenController::setObjectStateObserver(ObjectStateObserver* observer) {
 	objectStateObserver = observer;
 }
 
+void PrenController::setContainerLoadingFinished(bool finished) {
+	uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+}
+
+
 void PrenController::setCameraPos(CameraStatesE pos) {
 	char str[40];
 	sprintf(str, "Cam-Pos changed to: %d", pos);
