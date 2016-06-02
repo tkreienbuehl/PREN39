@@ -28,7 +28,7 @@
 		m_state = true;
 		uint32_t imgNr = 0;
 		char str[20];
-
+		char strO[20];
 		if (!conf.IS_ON_PI) {
 			cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
 		}
@@ -36,10 +36,14 @@
 			try {
 				origImg = m_rtFinder->getOriginalImage();
 				fltImage = m_rtFinder->getFilteredImage();
+				objectImg =  m_objectFinder->getImage();
+
 				if (!origImg.empty()) {
 					if (conf.IS_ON_PI) {
 						sprintf(str,"/tmp/img_%i.jpg",imgNr);
 						cv::imwrite(str, origImg);
+						sprintf(strO,"/tmp/object/img_%i.jpg",imgNr);
+						cv::imwrite(strO, objectImg);
 						imgNr++;
 					} else {
 						try {
@@ -53,7 +57,6 @@
 							cout << "Error occured" << endl;
 						}
 						try {
-							objectImg =  m_objectFinder->getImage();
 							cv::imshow("Object Detection", objectImg);
 						} catch (...) {
 							cout << "Error occured" << endl;
