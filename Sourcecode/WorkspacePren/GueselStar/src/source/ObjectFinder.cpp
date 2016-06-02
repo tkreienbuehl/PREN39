@@ -13,6 +13,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 	pthread_mutex_init(&m_mutex, NULL);
 	informedController = false;
 	m_crossingAhead = false;
+	m_objectOnLane = false;
 	lastCenterX = 0;
 	lastCenterY = 0;
 }
@@ -39,7 +40,7 @@ void ObjectFinder::RunProcess() {
 
 	while (m_state) {
 
-		if (m_Controller->checkObjectOnLane()) { //ultraschall: no object detected
+		if (!m_objectOnLane) { //ultraschall: no object detected
 
 			cv::Mat image = m_PicCreator->GetImage();
 
@@ -161,9 +162,11 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
 		// check if it is a container
-		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 50
+		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 25
 				&& boundRect[i].height > 40) {
+
 			//m_Controller->printString("Container found: waiting for distance calculation...", m_Controller->OBJECT_FINDER, 0);
+			//cout << boundRect[i].height << endl;
 			// mark the container
 			rectangle(markedImage, boundRect[i].tl(), boundRect[i].br(),
 					cv::Scalar(0, 255, 0), 1, 8, 0);
@@ -181,14 +184,24 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 				lastCenterX = centerX;
 				lastCenterY = centerY;
 
+
+				int distanceToContainer =
+											m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+													* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+													/ boundRect[i].height;
+				char str[30];
+				bzero(str, sizeof(str));
+				sprintf(str, "Distance to Container: %d", distanceToContainer);
+				m_Controller->printString(str, m_Controller->OBJECT_FINDER, 3);
+
 				// if container needs to be announcecd
 				if (centerX >= 4 * imageToMarkContainer.cols / 5
 						&& !informedController) {
 
-					int distanceToContainer =
+					/*int distanceToContainer =
 							m_Controller->getPrenConfig()->REFERENCE_DISTANCE
 									* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
-									/ boundRect[i].height;
+									/ boundRect[i].height;*/
 
 					m_Controller->setContainerFound(distanceToContainer);
 
@@ -215,6 +228,10 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 
 void ObjectFinder::updateCrossingState(bool crossingAhead) {
 	m_crossingAhead = crossingAhead;
+}
+
+void ObjectFinder::updateObjectOnLaneState(bool objectOnLane) {
+	m_objectOnLane = objectOnLane;
 }
 
 cv::Mat ObjectFinder::getImage() {

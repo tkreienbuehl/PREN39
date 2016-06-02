@@ -80,10 +80,6 @@ void PrenController::setCrossingFound(int distance) {
 	printString(str, CONTROLLER, 1);
 	// inform MC-Board
 	// inform ObjectFinder
-	/*list<ObjectStateObserver*>::iterator iter = objectStateObserverList.begin();
-	for (; iter != objectStateObserverList.end(); iter++) {
-		(*iter)->updateCrossingState(true);
-	}*/
 	objectStateObserver->updateCrossingState(true);
 }
 
@@ -123,13 +119,22 @@ void PrenController::setVehicleInCrossing() {
 bool PrenController::checkObjectOnLane(void) {
 
 	bool objectOnLane = false;
-	int distance = 5; //uartReceiver->getUltraDist();
+	/*int distance = uartReceiver->getUltraDist();
 
 	if (distance < 10) {
 		objectOnLane = true;
-	}
+	}*/
 
 	return objectOnLane;
+}
+
+void PrenController::checkUltraDist(int ultraDistance) {
+
+	bool objectOnLane = false;
+	if (ultraDistance < prenConfig->MAX_DISTANCE_TO_OBJECT) {
+		objectOnLane = true;
+	}
+	objectStateObserver->updateObjectOnLaneState(objectOnLane);
 }
 
 int PrenController::getFlexDistance(void) {
@@ -173,6 +178,11 @@ void PrenController::setObjectStateObserver(ObjectStateObserver* observer) {
 	//objectStateObserverList.push_back(observer);
 	objectStateObserver = observer;
 }
+
+void PrenController::setContainerLoadingFinished(bool finished) {
+	uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+}
+
 
 void PrenController::setCameraPos(CameraStatesE pos) {
 	char str[40];

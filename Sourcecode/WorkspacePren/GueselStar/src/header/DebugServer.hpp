@@ -23,7 +23,7 @@ private:
 
 	void runningServer();
 	void requestHandler(int newSocketfd);
-	void prepareAndSendImage(int socketfd, cv::Mat& image);
+	void prepareAndSendImage(int socketfd, cv::Mat* image);
 
 	typedef struct sockaddr_in sockaddressIn_t;
 	typedef struct sockaddr socketAddress_t;
