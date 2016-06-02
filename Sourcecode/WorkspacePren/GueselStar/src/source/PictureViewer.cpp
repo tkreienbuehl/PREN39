@@ -27,6 +27,7 @@
 		usleep(1000000);
 		m_state = true;
 		uint32_t imgNr = 0;
+		char str[20];
 
 		if (!conf.IS_ON_PI) {
 			cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
@@ -37,9 +38,8 @@
 				fltImage = m_rtFinder->getFilteredImage();
 				if (!origImg.empty()) {
 					if (conf.IS_ON_PI) {
-						char str[20];
 						sprintf(str,"/tmp/img_%i.jpg",imgNr);
-						cv::imwrite(str, m_rtFinder->getOriginalImage());
+						cv::imwrite(str, origImg);
 						imgNr++;
 					} else {
 						try {
