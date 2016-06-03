@@ -54,6 +54,7 @@ public:
 	bool checkObjectOnLane(void);
 	void checkUltraDist(int ultraDistance);
 	void setContainerLoadingFinished(bool finished);
+	void setFlexValue(int flexValue);
 	int getFlexDistance(void);
 	int getEngineSpeed(void);
 	PrenConfiguration* getPrenConfig(void);
@@ -72,6 +73,7 @@ private:
 	UARTSender* uartSender;
 	ConsoleView* consoleView;
 	ObjectStateObserver* objectStateObserver;
+	int m_FlexValue;
 	int lastUltraValues[5];
 	bool objectOnLane;
 };

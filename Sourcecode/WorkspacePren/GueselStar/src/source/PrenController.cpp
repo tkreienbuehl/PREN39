@@ -136,11 +136,17 @@ void PrenController::checkUltraDist(int ultraDistance) {
 		objectOnLane = true;
 		uartSender->sendStopCmd();
 		objectStateObserver->updateObjectOnLaneState(objectOnLane);
+		printString("Object on Lane", OBJECT_FINDER, 7);
 	} else if(objectOnLane) {
 		objectOnLane = false;
 		uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
 		objectStateObserver->updateObjectOnLaneState(objectOnLane);
+		printString("lane free", OBJECT_FINDER, 7);
 	}
+}
+
+void PrenController::setFlexValue(int flexValue) {
+	m_FlexValue = flexValue;
 }
 
 int PrenController::getFlexDistance(void) {
