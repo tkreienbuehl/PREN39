@@ -80,6 +80,8 @@ void UARTReciever::decodeRecievedString(std::string message) {
 		decodeUltraValue(message);
 	} else if(message.find("Fld1") != std::string::npos) {
 		decodeFlexValue(message);
+	} else if(message.find("StAf") != std::string::npos) {
+		m_Controller->setContainerLoadingFinished(true);
 	} else if(message.find("There") != std::string::npos) {
 		decodeStillThere(message);
 	} else if(message.find("Stop") != std::string::npos) {
@@ -100,6 +102,7 @@ void UARTReciever::decodeUltraValue(std::string message) {
 	message.replace(start, 3, "");
 	int value = atoi(message.c_str());
 	m_UltraDist = value;
+	m_Controller->checkUltraDist(value);
 	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 

@@ -78,7 +78,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 		else if (message.find("getFilteredImage") != message.npos) {
 			cv::Mat image = m_rtFinder->getFilteredImage();
 			if (!image.empty()) {
-				prepareAndSendImage(newSocketfd, image);
+				prepareAndSendImage(newSocketfd, &image);
 			}
 		}
 		else if (message.find("getObjectImage") != message.npos) {
@@ -90,7 +90,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 		else if (message.find("getGrayImage") != message.npos) {
 			cv::Mat image = m_rtFinder->getGrayImage();
 			if (!image.empty()) {
-				prepareAndSendImage(newSocketfd, image);
+				prepareAndSendImage(newSocketfd, &image);
 			}
 		}
 		else {
@@ -107,15 +107,13 @@ void DebugServer::requestHandler(int newSocketfd) {
 	}
 }
 
-void DebugServer::prepareAndSendImage(int socketfd, cv::Mat& image) {
+void DebugServer::prepareAndSendImage(int socketfd, cv::Mat* image) {
 
-	image = (image.reshape(0,1)); // to make it continuous
+	*image = (image->reshape(0,1)); // to make it continuous
 
-	int  imgSize = image.total()*image.elemSize();
+	int  imgSize = image->total()*image->elemSize();
 
-	//cout << imgSize << endl;
-
-	int bytes = send(socketfd, image.data, imgSize, 0);
+	int bytes = send(socketfd, image->data, imgSize, 0);
 	if (bytes < 0) {
 		cout << "ERROR writing to socket" << endl;
 	}

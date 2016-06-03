@@ -341,15 +341,15 @@ void RouteFinder::routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, ve
 	char numstr[128];
 
 	sprintf(numstr, "Left side dist: %d ", lVal);
-	putText(*edgeImg, numstr, cv::Point(5, 20), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+	//putText(*edgeImg, numstr, cv::Point(5, 20), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 	m_Controller->printString(numstr, me, 2);
 
 	sprintf(numstr, "Right side dist: %d ", rVal);
-	putText(*edgeImg, numstr, cv::Point(160, 20), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+	//putText(*edgeImg, numstr, cv::Point(160, 20), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 	m_Controller->printString(numstr, me, 3);
 
 	sprintf(numstr, "Input angle to PID: %d ", corrAng);
-	putText(*edgeImg, numstr, cv::Point(5, 35), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
+	//putText(*edgeImg, numstr, cv::Point(5, 35), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 
 	if (m_RouteFound && m_CheckBend) {
 		checkRouteDirection(edgeImg, leftLines, rightLines);

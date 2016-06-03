@@ -12,6 +12,22 @@
 \contentsline {figure}{\numberline {11}{\ignorespaces Die Istwert verglichen mit dem Stellwert}}{16}{figure.11}
 \contentsline {figure}{\numberline {12}{\ignorespaces Beispiels Ausgangssignal des Encoders (Quelle:pololu.com)}}{17}{figure.12}
 \contentsline {figure}{\numberline {13}{\ignorespaces Greifer}}{18}{figure.13}
+<<<<<<< HEAD
+\contentsline {figure}{\numberline {14}{\ignorespaces Einladeprozess}}{18}{figure.14}
+\contentsline {figure}{\numberline {15}{\ignorespaces Sch\IeC {\"u}ttgutfluss in den beiden Beh\IeC {\"a}ltern}}{19}{figure.15}
+\contentsline {figure}{\numberline {16}{\ignorespaces Entladen}}{20}{figure.16}
+\contentsline {figure}{\numberline {17}{\ignorespaces Klappe schliessen}}{21}{figure.17}
+\contentsline {figure}{\numberline {18}{\ignorespaces Aufteilung der Akkumulatoren}}{22}{figure.18}
+\contentsline {figure}{\numberline {19}{\ignorespaces Ausschnitt aus dem Elektroschema}}{27}{figure.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces PCB}}{28}{figure.20}
+\contentsline {figure}{\numberline {21}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Grobablauf}}{29}{figure.21}
+\contentsline {figure}{\numberline {22}{\ignorespaces Komponentendiagramm}}{30}{figure.22}
+\contentsline {figure}{\numberline {23}{\ignorespaces Debug-View}}{31}{figure.23}
+\contentsline {figure}{\numberline {24}{\ignorespaces Konfiguration}}{31}{figure.24}
+\contentsline {figure}{\numberline {25}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{32}{figure.25}
+\contentsline {figure}{\numberline {26}{\ignorespaces Definition der \IeC {\"U}bertragungsstrings}}{34}{figure.26}
+\contentsline {figure}{\numberline {27}{\ignorespaces Raspberry Pi Kameramudul}}{36}{figure.27}
+=======
 \contentsline {figure}{\numberline {14}{\ignorespaces Entladebeh\IeC {\"a}lter}}{19}{figure.14}
 \contentsline {figure}{\numberline {15}{\ignorespaces Entladen}}{20}{figure.15}
 \contentsline {figure}{\numberline {16}{\ignorespaces Halterungen f\IeC {\"u}r Kamera, Rasperry Pi, Freedom Board und Print}}{21}{figure.16}
@@ -26,6 +42,7 @@
 \contentsline {figure}{\numberline {25}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{33}{figure.25}
 \contentsline {figure}{\numberline {26}{\ignorespaces Definition der \IeC {\"U}bertragungsstrings}}{35}{figure.26}
 \contentsline {figure}{\numberline {27}{\ignorespaces Raspberry Pi Kameramudul}}{37}{figure.27}
+>>>>>>> d8e8615734ebfdeb3fee8774baa15868bfb20ac6
 \contentsline {figure}{\numberline {28}{\ignorespaces Bild nach Kantenerkennung}}{38}{figure.28}
 \contentsline {figure}{\numberline {29}{\ignorespaces Eingetragene Fahrbahngrenze}}{39}{figure.29}
 \contentsline {figure}{\numberline {30}{\ignorespaces Verzerrung des Bildes}}{40}{figure.30}

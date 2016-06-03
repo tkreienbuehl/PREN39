@@ -13,6 +13,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 	pthread_mutex_init(&m_mutex, NULL);
 	informedController = false;
 	m_crossingAhead = false;
+	m_objectOnLane = false;
 	lastCenterX = 0;
 	lastCenterY = 0;
 }
@@ -39,7 +40,7 @@ void ObjectFinder::RunProcess() {
 
 	while (m_state) {
 
-		if (m_Controller->checkObjectOnLane()) { //ultraschall: no object detected
+		if (!m_objectOnLane) { //ultraschall: no object detected
 
 			cv::Mat image = m_PicCreator->GetImage();
 
@@ -161,7 +162,7 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 		boundRect[i] = cv::boundingRect(cv::Mat(contours_poly[i]));
 
 		// check if it is a container
-		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 50
+		if (boundRect[i].height > boundRect[i].width && boundRect[i].width > 25
 				&& boundRect[i].height > 40) {
 
 			//m_Controller->printString("Container found: waiting for distance calculation...", m_Controller->OBJECT_FINDER, 0);
@@ -227,6 +228,26 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 
 void ObjectFinder::updateCrossingState(bool crossingAhead) {
 	m_crossingAhead = crossingAhead;
+	detectObjectAtCrossing();
+}
+
+void ObjectFinder::updateObjectOnLaneState(bool objectOnLane) {
+	m_objectOnLane = objectOnLane;
+}
+
+void ObjectFinder::detectObjectAtCrossing() {
+	cv::Mat image = m_PicCreator->GetImage();
+	cv::Mat origImage = image.clone();
+	vector<cv::Vec4i> hierarchy;
+
+	cv::findContours(origImage, contours, hierarchy, CV_RETR_TREE,
+				CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+
+	if(hierarchy.size() > 1000) {
+		m_Controller->printString("Vehilce at Crossing", m_Controller->OBJECT_FINDER, 10);
+		m_Controller->setVehicleInCrossing(true);
+	}
+
 }
 
 cv::Mat ObjectFinder::getImage() {
