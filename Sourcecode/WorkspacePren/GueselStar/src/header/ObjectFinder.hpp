@@ -27,6 +27,7 @@ public:
 	vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1, vector<vector<cv::Point> > contours2);
 	void updateCrossingState(bool crossingAhead);
 	void updateObjectOnLaneState(bool objectOnLane);
+	void detectObjectAtCrossing();
 	static void* staticEntryPoint(void* threadId);
 
 	cv::Mat getImage();

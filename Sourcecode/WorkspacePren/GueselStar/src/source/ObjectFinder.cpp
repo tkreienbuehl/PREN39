@@ -228,10 +228,26 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 
 void ObjectFinder::updateCrossingState(bool crossingAhead) {
 	m_crossingAhead = crossingAhead;
+	detectObjectAtCrossing();
 }
 
 void ObjectFinder::updateObjectOnLaneState(bool objectOnLane) {
 	m_objectOnLane = objectOnLane;
+}
+
+void ObjectFinder::detectObjectAtCrossing() {
+	cv::Mat image = m_PicCreator->GetImage();
+	cv::Mat origImage = image.clone();
+	vector<cv::Vec4i> hierarchy;
+
+	cv::findContours(origImage, contours, hierarchy, CV_RETR_TREE,
+				CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+
+	if(hierarchy.size() > 1000) {
+		m_Controller->printString("Vehilce at Crossing", m_Controller->OBJECT_FINDER, 10);
+		m_Controller->setVehicleInCrossing(true);
+	}
+
 }
 
 cv::Mat ObjectFinder::getImage() {

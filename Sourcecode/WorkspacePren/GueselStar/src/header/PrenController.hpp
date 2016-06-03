@@ -50,7 +50,7 @@ public:
 	void setLaneLost();
 	void setSteeringAngle(int angle);
 	void setEngineSpeed(uint8_t speed);
-	void setVehicleInCrossing();
+	void setVehicleInCrossing(bool found);
 	bool checkObjectOnLane(void);
 	void checkUltraDist(int ultraDistance);
 	void setContainerLoadingFinished(bool finished);
@@ -72,4 +72,6 @@ private:
 	UARTSender* uartSender;
 	ConsoleView* consoleView;
 	ObjectStateObserver* objectStateObserver;
+	int lastUltraValues[5];
+	bool objectOnLane;
 };

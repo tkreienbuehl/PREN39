@@ -3,12 +3,10 @@
 PrenController::PrenController(UARTSender* sender, ConsoleView* viewer) {
 	prenConfig = new PrenConfiguration();
 	m_State = STOPPED;
-
 	uartSender = sender;
 	consoleView = viewer;
-
 	objectStateObserver = NULL;
-
+	objectOnLane = false;
 }
 
 PrenController::~PrenController() {
@@ -112,8 +110,12 @@ void PrenController::setEngineSpeed(uint8_t speed) {
 	uartSender->setEngineSpeed(speed);
 }
 
-void PrenController::setVehicleInCrossing() {
-	printString("Vehicle in Crossing", CONTROLLER, 1);
+void PrenController::setVehicleInCrossing(bool found) {
+	if(found) {
+		printString("Vehicle in Crossing", OBJECT_FINDER, 10);
+	} else {
+		uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+	}
 }
 
 bool PrenController::checkObjectOnLane(void) {
@@ -130,11 +132,15 @@ bool PrenController::checkObjectOnLane(void) {
 
 void PrenController::checkUltraDist(int ultraDistance) {
 
-	bool objectOnLane = false;
 	if (ultraDistance < prenConfig->MAX_DISTANCE_TO_OBJECT) {
 		objectOnLane = true;
+		uartSender->sendStopCmd();
+		objectStateObserver->updateObjectOnLaneState(objectOnLane);
+	} else if(objectOnLane) {
+		objectOnLane = false;
+		uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+		objectStateObserver->updateObjectOnLaneState(objectOnLane);
 	}
-	objectStateObserver->updateObjectOnLaneState(objectOnLane);
 }
 
 int PrenController::getFlexDistance(void) {
