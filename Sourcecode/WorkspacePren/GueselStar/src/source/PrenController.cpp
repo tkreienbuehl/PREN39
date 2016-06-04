@@ -121,16 +121,11 @@ void PrenController::setVehicleInCrossing(bool found) {
 }
 
 void PrenController::checkUltraDist(int ultraDistance) {
-
+/*
 	bool objectOnLane = false;
 
 	lastUltraValues[ultraValueIndex] = ultraDistance;
-	ultraValueIndex++;
-	/*if (ultraDistance <= prenConfig->MAX_DISTANCE_TO_OBJECT
-	 || ultraValueIndex > 0) {
-	 lastUltraValues[ultraValueIndex] = ultraDistance;
-	 ultraValueIndex++;
-	 }*/
+
 
 	if (ultraValueIndex == sizeof(lastUltraValues)) {
 
@@ -161,6 +156,7 @@ void PrenController::checkUltraDist(int ultraDistance) {
 			printString("lane free", OBJECT_FINDER, 5);
 		}
 	}
+	*/
 }
 
 void PrenController::setFlexValue(int flexValue) {
@@ -210,7 +206,8 @@ void PrenController::setObjectStateObserver(ObjectStateObserver* observer) {
 }
 
 void PrenController::setContainerLoadingFinished(bool finished) {
-	uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+	setEngineSpeed(prenConfig->MAX_SPEED);
+	printString("Container aufgeladen", OBJECT_FINDER, 11);
 }
 
 void PrenController::setCameraPos(CameraStatesE pos) {
