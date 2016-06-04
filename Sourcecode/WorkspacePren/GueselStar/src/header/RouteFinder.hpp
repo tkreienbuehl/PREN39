@@ -5,7 +5,8 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <math.h>
-#include "GradientMat.hpp"
+
+#include "Gradient.hpp"
 #include "PIDCalculation.hpp"
 
 using namespace std;

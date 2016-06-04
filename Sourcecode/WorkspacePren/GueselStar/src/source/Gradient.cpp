@@ -1,4 +1,4 @@
-#include "../header/GradientMat.hpp"
+#include "../header/Gradient.hpp"
 
 	// Class Gradient
 
