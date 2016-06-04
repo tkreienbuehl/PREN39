@@ -52,19 +52,20 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 	bool loop = true;
 	int selector = 0 ;
 
-	cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
+	cv::namedWindow( "The filtered Image", CV_WINDOW_AUTOSIZE );
 
 	while (loop) {
-		usleep(100000);
+		usleep(1000);
 		switch (selector) {
 		case 0:
 			message = "getFilteredImage";
 			break;
 		case 1:
-			message = "getObjectImage";
+			//message = "getObjectImage";
 			break;
 		case 2:
-			message = "getGrayImage";
+			//message = "getGrayImage";
+			break;
 		}
 		if (selector == 2) {
 			selector = 0;
@@ -72,7 +73,7 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 		else {
 			selector++;
 		}
-		cv::waitKey(10);
+		usleep(100000);
 		if (sendMessageRecieveImage(&message) < 0) {
 			cout << "Connection aborted" << endl;
 			close(m_socketForward);
@@ -101,6 +102,7 @@ int GueselStarObserver::sendMessageRecieveImage(string* message) {
 		getFilteredImageFromServer(fltImg);
 		if (!fltImg.empty()) {
 			cv::imshow("The filtered Image", fltImg);
+			cv::waitKey(10);
 		}
 	}
 	else if (message->find("getObjectImage") != message->npos) {
@@ -109,6 +111,7 @@ int GueselStarObserver::sendMessageRecieveImage(string* message) {
 		getGrayImageFromServer(grayImg);
 		if (!grayImg.empty()) {
 			cv::imshow("The gray Image", grayImg);
+			cv::waitKey(10);
 		}
 	}
 	message->clear();

@@ -18,7 +18,7 @@ public:
 	PIDCalculation(PrenController* controller);
 	~PIDCalculation();
 
-	void pidDoWork(int& calcVal);
+	void pidDoWork(int calcVal);
 
 private:
 	short m_actSpeedValue;

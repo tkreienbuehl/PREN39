@@ -83,7 +83,7 @@ void ConsoleView::runProcess() {
 	usleep(10000);
 	wclear(m_RtFinderView);
 	while (m_State) {
-		usleep(500);
+		usleep(5000);
 	}
 	destroyWindowin(m_RtFinderView);
 	destroyWindowin(m_UARTState);

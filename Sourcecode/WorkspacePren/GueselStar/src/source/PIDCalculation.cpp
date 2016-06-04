@@ -28,7 +28,7 @@ PIDCalculation::~PIDCalculation() {
 
 }
 
-void PIDCalculation::pidDoWork(int& calcVal) {
+void PIDCalculation::pidDoWork(int calcVal) {
 	// readSpeed from Encoder(in value nomValue)
 	m_nomValueOld = m_nomValue;            //ist Wert (old)
 	m_nomValue=calcVal;

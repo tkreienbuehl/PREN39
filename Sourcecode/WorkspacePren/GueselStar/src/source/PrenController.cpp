@@ -67,7 +67,6 @@ int PrenController::stopProgram() {
 
 void PrenController::setContainerFound(int distance) {
 	char str[30];
-	bzero(str, sizeof(str));
 	sprintf(str, "Distance to Container: %d", distance);
 	printString(str, OBJECT_FINDER, 1);
 	// inform MC-Board
@@ -75,7 +74,6 @@ void PrenController::setContainerFound(int distance) {
 }
 void PrenController::setCrossingFound(int distance) {
 	char str[50];
-	bzero(str, sizeof(str));
 	sprintf(str, "Crossing ahead: Distance to Crossing: %d", distance);
 	printString(str, CONTROLLER, 1);
 	// inform MC-Board
@@ -85,8 +83,7 @@ void PrenController::setCrossingFound(int distance) {
 
 void PrenController::setTargetFieldFound(int distance) {
 	char str[50];
-	bzero(str, sizeof(str));
-	sprintf(str, "Targetfield ahead: Distance to Tagetfield: %d", distance);
+	sprintf(str, "Targetfield ahead: Distance to Targetfield: %d", distance);
 	printString(str, CONTROLLER, 1);
 	// inform MC-Board
 	uartSender->setTargetFieldFound(distance);
@@ -94,13 +91,14 @@ void PrenController::setTargetFieldFound(int distance) {
 
 void PrenController::setLaneLost() {
 	// inform MC-Board
-	printString("RouterFinder lost Lane", CONTROLLER, 1);
+	printString("RouteFinder lost Lane", CONTROLLER, 1);
 	uartSender->sendStopCmd();
+	usleep(3000 * 1000);
+	//this->setState(END);
 }
 
 void PrenController::setSteeringAngle(int angle) {
 	char str[20];
-	bzero(str, sizeof(str));
 	sprintf(str, "set new angle %d", angle);
 	printString(str, CONTROLLER, 0);
 	// inform MC-Board
