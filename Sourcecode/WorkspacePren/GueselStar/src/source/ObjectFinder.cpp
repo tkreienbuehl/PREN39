@@ -42,6 +42,7 @@ void ObjectFinder::RunProcess() {
 
 		if (!m_objectOnLane) { //ultraschall: no object detected
 
+			//detectObjectAtCrossing();
 			cv::Mat image = m_PicCreator->GetImage();
 
 			origImage = image.clone();
@@ -184,24 +185,23 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 				lastCenterX = centerX;
 				lastCenterY = centerY;
 
-
 				int distanceToContainer =
-											m_Controller->getPrenConfig()->REFERENCE_DISTANCE
-													* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
-													/ boundRect[i].height;
-				char str[30];
+						m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+								* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+								/ boundRect[i].height;
+				/*char str[30];
 				bzero(str, sizeof(str));
 				sprintf(str, "Distance to Container: %d", distanceToContainer);
-				m_Controller->printString(str, m_Controller->OBJECT_FINDER, 3);
+				m_Controller->printString(str, m_Controller->OBJECT_FINDER, 3);*/
 
 				// if container needs to be announcecd
 				if (centerX >= 4 * imageToMarkContainer.cols / 5
 						&& !informedController) {
 
 					/*int distanceToContainer =
-							m_Controller->getPrenConfig()->REFERENCE_DISTANCE
-									* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
-									/ boundRect[i].height;*/
+					 m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+					 * m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+					 / boundRect[i].height;*/
 
 					m_Controller->setContainerFound(distanceToContainer);
 
@@ -238,13 +238,19 @@ void ObjectFinder::updateObjectOnLaneState(bool objectOnLane) {
 void ObjectFinder::detectObjectAtCrossing() {
 	cv::Mat image = m_PicCreator->GetImage();
 	cv::Mat origImage = image.clone();
+	cv::Mat hsvImage = convertImageToHSV(origImage);
+	vector<vector<cv::Point> > contours;
 	vector<cv::Vec4i> hierarchy;
 
-	cv::findContours(origImage, contours, hierarchy, CV_RETR_TREE,
-				CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+	//cv::findContours(hsvImage, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
-	if(hierarchy.size() > 1000) {
-		m_Controller->printString("Vehilce at Crossing", m_Controller->OBJECT_FINDER, 10);
+	char str[30];
+	bzero(str, sizeof(str));
+	sprintf(str, "Anzahl Konturen: %d", hierarchy.size());
+	m_Controller->printString(str, m_Controller->OBJECT_FINDER, 9);
+	if (hierarchy.size() > 1000) {
+		m_Controller->printString("Vehilce at Crossing",
+				m_Controller->OBJECT_FINDER, 8);
 		m_Controller->setVehicleInCrossing(true);
 	}
 

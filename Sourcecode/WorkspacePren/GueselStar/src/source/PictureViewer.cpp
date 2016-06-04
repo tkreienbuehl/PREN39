@@ -42,8 +42,8 @@
 					if (conf.IS_ON_PI) {
 						sprintf(str,"/tmp/img_%i.jpg",imgNr);
 						cv::imwrite(str, origImg);
-						sprintf(strO,"/tmp/object/img_%i.jpg",imgNr);
-						cv::imwrite(strO, objectImg);
+					//	sprintf(strO,"/tmp/object_img_%i.jpg",imgNr);
+					//	cv::imwrite(strO, objectImg);
 						imgNr++;
 					} else {
 						try {

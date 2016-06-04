@@ -51,7 +51,6 @@ public:
 	void setSteeringAngle(int angle);
 	void setEngineSpeed(uint8_t speed);
 	void setVehicleInCrossing(bool found);
-	bool checkObjectOnLane(void);
 	void checkUltraDist(int ultraDistance);
 	void setContainerLoadingFinished(bool finished);
 	void setFlexValue(int flexValue);
@@ -75,5 +74,6 @@ private:
 	ObjectStateObserver* objectStateObserver;
 	int m_FlexValue;
 	int lastUltraValues[5];
-	bool objectOnLane;
+	int ultraValueIndex;
+	bool m_objectOnLane;
 };
