@@ -17,14 +17,16 @@ private:
 
 	enum routeVals {
 		NOTHING,
-		BEND,
+		BEND_LEFT,
+		BEND_RIGHT,
 		STRAIGHT
 	};
 
 	void lineFilter(cv::Mat* changesMat, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
 	void routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
 	void checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
-	routeVals checkRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos);
+	routeVals checkLeftRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos);
+	routeVals checkRightRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos);
 	void analyzeHorizonalLines(vector<cv::Vec4i>* lines);
 
 	PrenController* m_Controller;
