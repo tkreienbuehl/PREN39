@@ -2,14 +2,14 @@
 \subsection{Intelligente Systeme}
 
 \subsubsection{Software auf Mini-Computer}
-Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinzip, wobei sich die View auf einen reinen Debug-Zweck beschränkt. Der Controller kommunziert mit allen Subprozesse und grenzt an die Schnittstelle zur Hardwaresteuerung. Um die Performance des Rasperry Pi möglichst auszunutzen wird mit Threads gearbeitet. Die parallel laufenden Subprozesse sind:
+Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinzip, wobei sich die View auf einen reinen Debug-Zweck beschränkt. Der Controller kommunziert mit allen Subprozessen und grenzt an die Schnittstelle zur Hardwaresteuerung. Um die Performance des Rasperry Pi möglichst auszunutzen wird mit Threads gearbeitet. Die parallel laufenden Subprozesse sind:
 
 \begin{itemize}
 \item Bilderzeugung,
 \item Objekterkennung und
 \item Fahrbahnerkennung.
 \end{itemize}
-
+Zusätzlich wurden auch die Debug-View und die UART-Kommunikation zum Teil als Threads implementiert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/grobablauf.png}
@@ -17,7 +17,7 @@ Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinz
 \end{figure}
 
 Der Zustand des Fahrzeuges wird im Model gespeichert und steht allen Prozessen zur Verfügung. Die Datenstruktur ist dabei so aufgebaut, dass keine Zugriffskonflikte entstehen sollten.\\
-Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container, hat dieser Priorität vor dem normalen Fahren und das Mikrocontroller-Board erhält die entsprechenden Anweisungen. Das folgende Diagramm zeigt eine Gesamtübersicht von den verschiedenen Komponenten.\\[0.2cm]
+Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container, hat dieser Priorität vor dem normalen Fahren und das Mikrocontroller-Board erhält die entsprechenden Anweisungen und kann jederzeit die Kontrolle übernehmen. Das folgende Diagramm zeigt eine Gesamtübersicht von den verschiedenen Komponenten.\\[0.2cm]
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/Komponentendiagramm_detailliert_v2.jpeg}
