@@ -168,11 +168,6 @@ int PrenController::getFlexDistance(void) {
 	return m_FlexValue;
 }
 
-int PrenController::getEngineSpeed(void) {
-
-	return 7; //uartReceiver->getEngineSpeed();
-}
-
 void PrenController::responseStillThere() {
 	uartSender->stillThereResponse();
 }

@@ -33,7 +33,7 @@ public:
 
 	enum CameraStatesE {
 		CAM_STRAIGHT = 120,
-		CAM_TURN_LEFT = 162,
+		CAM_TURN_LEFT = 130,
 		CAM_TURN_RIGHT = 86,
 		CAM_CHECK_STREET = 50
 	};
@@ -55,7 +55,6 @@ public:
 	void setContainerLoadingFinished(bool finished);
 	void setFlexValue(int flexValue);
 	int getFlexDistance(void);
-	int getEngineSpeed(void);
 	PrenConfiguration* getPrenConfig(void);
 	ConsoleView* getConsoleView();
 	void printString(string str, classes cl, uint line = 0);

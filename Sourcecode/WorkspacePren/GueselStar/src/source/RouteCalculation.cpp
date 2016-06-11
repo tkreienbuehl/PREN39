@@ -266,7 +266,7 @@ void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& 
 	}
 	else if (m_CamPos == m_Controller->CAM_TURN_LEFT) {
 		//m_Controller->printString("CAM-State: CAM_TURN_LEFT", me, 14);
-		m_DistCorrAng = -CAM_ANG_CORR_VAL/2;
+		m_DistCorrAng = CAM_ANG_CORR_VAL/8;
 	}
 	sprintf(str,"Cam position change counter: %d", m_CamPosCorrCnt);
 	m_Controller->printString(str, me, 15);

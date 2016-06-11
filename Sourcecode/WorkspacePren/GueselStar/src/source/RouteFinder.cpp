@@ -68,8 +68,8 @@ int RouteFinder::runProcess() {
 				m_Cols = grayImg.cols;
 			}
 			edgeDetection(&grayImg, &fltImg);
-			m_GrayImg = grayImg;
-			m_FinalFltImg = fltImg;
+			m_GrayImg = grayImg.clone();
+			m_FinalFltImg = fltImg.clone();
 			if (i%100 == 0) {
 				char str[50];
 				bzero(str,sizeof(str));
