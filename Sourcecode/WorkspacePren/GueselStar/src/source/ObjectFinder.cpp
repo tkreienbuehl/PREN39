@@ -9,6 +9,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 		PictureCreator* picCreator) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
+	prenConfig = m_Controller->getPrenConfig();
 	m_state = false;
 	pthread_mutex_init(&m_mutex, NULL);
 	informedController = false;
@@ -54,16 +55,26 @@ void ObjectFinder::RunProcess() {
 
 				cv::medianBlur(croppedImage, croppedImage, 3);
 				hsvImage = convertImageToHSV(croppedImage);
-				filteredImageGreen = filterColorInImage("green", hsvImage);
-				filteredImageBlue = filterColorInImage("blue", hsvImage);
+				if(prenConfig->DETECT_GREEN) {
+					filteredImageGreen = filterColorInImage("green", hsvImage);
+					contoursGreen = findContainersInImage(filteredImageGreen);
+				}
+				if(prenConfig->DETECT_BLUE) {
+					filteredImageBlue = filterColorInImage("blue", hsvImage);
+					contoursBlue = findContainersInImage(filteredImageBlue);
+				}
 
-				cv::Mat blue_green_combined;
+				/*cv::Mat blue_green_combined;
 				cv::addWeighted(filteredImageGreen, 1.0, filteredImageBlue, 1.0,
 						0.0, blue_green_combined);
-
-				contoursGreen = findContainersInImage(filteredImageGreen);
-				contoursBlue = findContainersInImage(filteredImageBlue);
-				contours = mergeContours(contoursGreen, contoursBlue);
+*/
+				if(prenConfig->DETECT_BLUE && prenConfig->DETECT_GREEN) {
+					contours = mergeContours(contoursGreen, contoursBlue);
+				} else if(prenConfig->DETECT_BLUE) {
+					contours = contoursBlue;
+				} else if(prenConfig->DETECT_GREEN) {
+					contours = contoursGreen;
+				}
 
 				// TODO: IDEA for two following containers with same color
 				//cv::Scalar color( 255, 255, 255 );

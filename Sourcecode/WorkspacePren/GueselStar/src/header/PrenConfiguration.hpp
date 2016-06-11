@@ -18,6 +18,8 @@ public:
 	string IF_NAME;
 	int TEST_IMG_FIRST;
 	int TEST_IMG_LAST;
+	bool DETECT_BLUE;
+	bool DETECT_GREEN;
 	int BLUE_RANGE_H_LOW;
 	int BLUE_RANGE_H_HIGH;
 	int BLUE_RANGE_S_LOW;

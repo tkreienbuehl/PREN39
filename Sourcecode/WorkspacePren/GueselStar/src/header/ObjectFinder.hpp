@@ -35,6 +35,7 @@ public:
 
 private:
 	void RunProcess();
+	PrenConfiguration* prenConfig;
 	vector<vector<cv::Point> > contoursGreen;
 	vector<vector<cv::Point> > contoursBlue;
 	vector<vector<cv::Point> > contours;
