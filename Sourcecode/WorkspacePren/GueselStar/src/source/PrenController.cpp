@@ -93,8 +93,10 @@ void PrenController::setLaneLost() {
 	// inform MC-Board
 	printString("RouteFinder lost Lane", CONTROLLER, 1);
 	uartSender->sendStopCmd();
-	usleep(3000 * 1000);
-	//this->setState(END);
+	if(prenConfig->IS_ON_PI) {
+		usleep(3000 * 1000);
+		this->setState(END);
+	}
 }
 
 void PrenController::setSteeringAngle(int angle) {
@@ -119,7 +121,7 @@ void PrenController::setVehicleInCrossing(bool found) {
 }
 
 void PrenController::checkUltraDist(int ultraDistance) {
-
+/*
 	bool objectOnLane = false;
 
 	lastUltraValues[ultraValueIndex] = ultraDistance;
@@ -154,6 +156,7 @@ void PrenController::checkUltraDist(int ultraDistance) {
 			printString("lane free", OBJECT_FINDER, 5);
 		}
 	}
+	*/
 }
 
 void PrenController::setFlexValue(int flexValue) {
