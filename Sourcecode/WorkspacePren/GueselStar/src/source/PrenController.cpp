@@ -121,7 +121,7 @@ void PrenController::setVehicleInCrossing(bool found) {
 }
 
 void PrenController::checkUltraDist(int ultraDistance) {
-/*
+
 	bool objectOnLane = false;
 
 	lastUltraValues[ultraValueIndex] = ultraDistance;
@@ -156,7 +156,6 @@ void PrenController::checkUltraDist(int ultraDistance) {
 			printString("lane free", OBJECT_FINDER, 5);
 		}
 	}
-	*/
 }
 
 void PrenController::setFlexValue(int flexValue) {

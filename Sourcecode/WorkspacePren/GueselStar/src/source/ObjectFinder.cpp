@@ -257,7 +257,7 @@ void ObjectFinder::detectObjectAtCrossing() {
 
 	char str[30];
 	bzero(str, sizeof(str));
-	sprintf(str, "Anzahl Konturen: %d", hierarchy.size());
+	sprintf(str, "Anzahl Konturen: %d", (int)hierarchy.size());
 	m_Controller->printString(str, m_Controller->OBJECT_FINDER, 9);
 	if (hierarchy.size() > 1000) {
 		m_Controller->printString("Vehilce at Crossing",
