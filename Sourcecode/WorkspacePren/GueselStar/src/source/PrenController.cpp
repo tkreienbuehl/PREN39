@@ -121,28 +121,31 @@ void PrenController::setVehicleInCrossing(bool found) {
 }
 
 void PrenController::checkUltraDist(int ultraDistance) {
-
+/*
 	bool objectOnLane = false;
 
 	lastUltraValues[ultraValueIndex] = ultraDistance;
+	char str[20];
+	sprintf(str, "UltraValue to check: %d", ultraDistance);
+	printString(str, OBJECT_FINDER, 4);
 
 	if (ultraValueIndex == 5) {
 		int counter = 0;
-		for (int i = 0; i < ultraValueIndex; i++) {
+		for (int i = 0; i < 5; i++) {
 			if (lastUltraValues[i] < prenConfig->MAX_DISTANCE_TO_OBJECT) {
 				counter++;
 			}
 		}
 		if (counter >= 3) {
 			objectOnLane = true;
-			ultraValueIndex = 0;
 		} else {
 			objectOnLane = false;
-			ultraValueIndex = 0;
 		}
-	}
+		ultraValueIndex = 0;
 
-	ultraValueIndex++;
+	} else {
+		ultraValueIndex++;
+	}
 
 	if (m_objectOnLane != objectOnLane) {
 		m_objectOnLane = objectOnLane;
@@ -156,6 +159,7 @@ void PrenController::checkUltraDist(int ultraDistance) {
 			printString("lane free", OBJECT_FINDER, 5);
 		}
 	}
+	*/
 }
 
 void PrenController::setFlexValue(int flexValue) {

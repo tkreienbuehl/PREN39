@@ -23,7 +23,7 @@ Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise di
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/Komponentendiagramm_detailliert_v2.jpeg}
 \caption{Komponentendiagramm}
 \end{figure}
-Damit keine zyklischen Abhängigkeiten enstehen, wurde entschieden, dass ein Oberserver nach dem Observer-Entwurfsmusster (GoF) implementiert wird. Normalerweise senden der RouteFinder und der ObjectFinder die Informationen an den Controller. Beim Eintreffen an der Kreuzung aber, muss der Controller Informationen an den ObjectFinder senden. Dazu muss sich der ObjectFinder zuerst beim Controller als Observer registrieren.
+Damit keine zyklischen Abhängigkeiten enstehen, wurde entschieden, dass ein Oberserver nach dem Observer-Entwurfsmusster (GoF) implementiert wird. Normalerweise senden der RouteFinder und der ObjectFinder die Informationen an den Controller. Beim Eintreffen an der Kreuzung zum Beispiel, muss aber der Controller Informationen an den ObjectFinder senden. Diese Informationen werden über den ObjectStateObserver gesendent, wobei sich der ObjectFinder zuerst beim Controller als Observer registrieren muss.
 
 \textbf{Debug-View}\\[0.2cm]
 Um während der Implementierungs-Phase der geschriebene Code zu testen wurde eine Debug-View entwickelt. Mit dieser kann auf den Debug-Server, welcher auf dem Raspberry Pi gestartet wird, zugegriffen werden. Nach einer erfolgreichen Verbindung werden die aufgenommenen Bilder vom Server an den Client (GueselStarObserver) gesendet.
@@ -46,6 +46,9 @@ Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, wel
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/Configuration.jpeg}
 \caption{Konfiguration}
 \end{figure}
+
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Die Planung der Softwarearchitektur war nach Pren1 noch nicht weit fortgeschritten, daher wurden die meisten Entscheidungen erst in Pren2 getroffen. Die parallelisierte Ausführung der Threads "{}Fahrbahnerkennung"{}, "{}Objekterkennung"{} und "{}Bilderzeugung"{} wurde beibehalten, jedoch kamen noch einige Threads, wie die Klassen für die UART-Kommunikation dazu.
  
 %***************************
 \subsubsection{Software auf Mikrocontrollerboard}
