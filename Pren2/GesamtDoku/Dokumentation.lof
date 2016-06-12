@@ -26,19 +26,6 @@
 \contentsline {figure}{\numberline {25}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{33}{figure.25}
 \contentsline {figure}{\numberline {26}{\ignorespaces Definition der \IeC {\"U}bertragungsstrings}}{35}{figure.26}
 \contentsline {figure}{\numberline {27}{\ignorespaces Raspberry Pi Kameramudul}}{37}{figure.27}
-<<<<<<< HEAD
-\contentsline {figure}{\numberline {28}{\ignorespaces Bild nach Kantenerkennung}}{38}{figure.28}
-\contentsline {figure}{\numberline {29}{\ignorespaces Eingetragene Fahrbahngrenze}}{39}{figure.29}
-\contentsline {figure}{\numberline {30}{\ignorespaces Verzerrung des Bildes}}{40}{figure.30}
-\contentsline {figure}{\numberline {31}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Fahrbahnerkennung}}{41}{figure.31}
-\contentsline {figure}{\numberline {32}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Obkjekterkennung: Container}}{44}{figure.32}
-\contentsline {figure}{\numberline {33}{\ignorespaces Ablauf der Obkjekterkennung: Container}}{45}{figure.33}
-\contentsline {figure}{\numberline {34}{\ignorespaces Distanzbemessung}}{46}{figure.34}
-\contentsline {figure}{\numberline {35}{\ignorespaces Zeitplan}}{49}{figure.35}
-\contentsline {figure}{\numberline {36}{\ignorespaces Risikomatrix}}{50}{figure.36}
-\contentsline {figure}{\numberline {37}{\ignorespaces Budgetplanung}}{54}{figure.37}
-\contentsline {figure}{\numberline {38}{\ignorespaces Scrum-Board}}{55}{figure.38}
-=======
 \contentsline {figure}{\numberline {28}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Fahrbahnerkennung}}{38}{figure.28}
 \contentsline {figure}{\numberline {29}{\ignorespaces Bild nach Kantenerkennung}}{39}{figure.29}
 \contentsline {figure}{\numberline {30}{\ignorespaces Eingetragene Fahrbahngrenze}}{40}{figure.30}
@@ -51,4 +38,3 @@
 \contentsline {figure}{\numberline {37}{\ignorespaces Risikomatrix}}{51}{figure.37}
 \contentsline {figure}{\numberline {38}{\ignorespaces Budgetplanung}}{55}{figure.38}
 \contentsline {figure}{\numberline {39}{\ignorespaces Scrum-Board}}{56}{figure.39}
->>>>>>> 532f9fdd4962655a0a77eb9b22d4bbab6c93402a
