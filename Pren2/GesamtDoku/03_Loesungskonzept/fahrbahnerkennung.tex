@@ -1,7 +1,14 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Fahrbahnerkennung}
 \textbf{Umsetzung}\\[0.2cm]
-Die Fahrbahnerkennung ist primär mittels Kamera realisiert. Es wird jeweils das aktuelle Bild von der Klasse \code{PictureCreator} entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend an die Kantenerkennung weitergegeben. Für die Kanten wird eine eigene Matrix erstellt, vorgelegt mit dem Graustufenwert 0. Die Kantenerkennung basiert auf der Differentialrechnung und betrachtet vom aktuellen Pixel aus in $x$ (Spalte) und $y$ (Zeile) den Graustufenwert des nächsten Pixels und des vorherigen Pixels.
+Die Fahrbahnerkennung ist primär mittels Kamera realisiert. der gesamte Prozess ist in Abbildung \ref{fig:activityRoute} dargestellt. Nebst der Bildverarbeitung meldet die Fahrbahnerkennung alle notwendigen Informationen an den Controller.
+\begin{figure}[H]%Position festigen
+\centering
+\includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
+\caption{Aktivitätendiagramm Fahrbahnerkennung}
+\label{fig:activityRoute}
+\end{figure}
+Es wird jeweils das aktuelle Bild von der Klasse \code{PictureCreator} entnommen, mit OpenCV in Graustufen umgewandelt und anschliessend an die Kantenerkennung weitergegeben. Für die Kanten wird eine eigene Matrix erstellt, vorgelegt mit dem Graustufenwert 0. Die Kantenerkennung basiert auf der Differentialrechnung und betrachtet vom aktuellen Pixel aus in $x$ (Spalte) und $y$ (Zeile) den Graustufenwert des nächsten Pixels und des vorherigen Pixels.
 $z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
 \[
 \frac{\partial{z}}{\partial{x}}=\frac{f(x+\Delta{x})-f(x-\Delta{x})}{2\Delta{x}} = \frac{f(x+1)-f(x-1)}{2}
@@ -18,7 +25,7 @@ $z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
 \[
 \lVert\nabla f(x,y)\rVert = \sqrt{\Biggl(\frac{\partial{z}}{\partial{x}}\Biggr)^2 + \Biggl(\frac{\partial{z}}{\partial{y}}\Biggr)^2}
 \]
-Übersteigt die Änderung der Graustufe den vorgegebenen Schwellwert wird eine Kante erkannt, an die entsprechende Pixelposition der Zielmatrix wird der Wert 255 geschrieben, ansonsten nicht. Mit der Festgelegten Kameraposition beschränkt sich die Fahrbahnerkennung auf die untere Bildhälfte. Damit werden störende Effekte in der Umgebung vermieden (Abbildung: \ref{fig:edges}). 
+Übersteigt die Änderung der Graustufe den vorgegebenen Schwellwert wird eine Kante erkannt, an die entsprechende Pixelposition der Zielmatrix wird der Wert 255 geschrieben, ansonsten nicht. Der Schwellwert kann in der Konfigurationsdatei festgelegt werden und wurde mit einer Reihe von Testbildern bei unterschiedlichen Lichtverhältnissen ermittelt. Mit der Festgelegten Kameraposition beschränkt sich die Fahrbahnerkennung auf die untere Bildhälfte. Damit werden störende Effekte in der Umgebung vermieden (Abbildung: \ref{fig:edges}). 
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.6\textwidth]{03_Loesungskonzept/pictures/Kantengrafik.png}
@@ -42,7 +49,7 @@ D = \frac{y}{2} + 40
 Wobei $D$ der Solldistanz und $y$ der höheren Bildzeile der Linie entspricht. Diese Formel ist nur gültig, da bei gerader Fahrbahn die Differenz zwischen oberer und unterer Distanz der Fahrbahnlinien exakt der Hälfte der Bildhöhe entspricht (Abbildung: \ref{fig:routeCorr}).
 \item Abstand mit Sollwert vergleichen und die Differenz ermitteln.
 \item Den Winkel der Korrektur berechnen. Die Kamera schaut 200mm vor die Mitte der Vorderachse, was 160 Bildpixel entspricht.
-\item Der ermittelte Korrekturwinkel wird an den PID-Regler weitergegeben.
+\item Der ermittelte Korrekturwinkel wird an den PD-Regler weitergegeben, die detaillierte Übersicht folgt später in diesem Abschnitt.
 \end{enumerate}
 \begin{figure}[H]%Position festigen
 \centering
@@ -50,28 +57,32 @@ Wobei $D$ der Solldistanz und $y$ der höheren Bildzeile der Linie entspricht. D
 \caption{Verzerrung des Bildes}
 \label{fig:routeCorr}
 \end{figure}
-Zugleich der Fahrbahnermittlung wird für jedes Bild die Steigung der Fahrbahnkanten überwacht. Unterschreiten diese die Mindestgrenze, wird eine Kurve erkannt und die Kamera auf einen Winkel von 30° eingelenkt. Entprechend wird die Solldistanz um den entsprechenden Pixelwert aus der Mitte versetzt um die veränderte Perspektive auszugleichen. Uberschreitet die Steigung der Fahrbahnlinien die Obergrenze wird die Kamera wieder auf die gerade Position zurückgeschwenkt.\\
-Um zu Beginn ein Einlenken der Kamera zu verhindern wird diese Funktion erst nach einer gewissen Anzahl verarbeiteter Bilder aktiviert. Der Wert kann, wie auch die Unter- und Obergrenze der Steigung, in der Konfigurationsdatei festgelegt werden.\\
-Sobald die Fahrbahn erkannt ist, erhält der Controller den Auftrag zu fahren. Sollte die Fahrbahn verloren gehen, wird ein Counter aktiviert und eine in der Konfigurationsdatei einstellbare Anzahl Bilder in der letzten Richtung weitergefahren. Wird die Fahrbahn nicht wiedergefunden erhält der Controller die Information und stoppt das Programm.\\
-Das Zielfeld und die Kreuzung werden anahd der Steigungen der Querlinien ermittelt. Wird eine Linie, mit entsprechender Länge identifiziert, erhält der Controller die entsprechende Information.
+Zugleich der Fahrbahnermittlung wird für jedes Bild die Steigung der Fahrbahnkanten überwacht. Unterschreiten diese die Mindestgrenze, wird eine Kurve erkannt und die Kamera auf einen Winkel von 20° bei Aussenkurven und 25° bei Innenkurven eingelenkt. Der Stellwert $s$ für den Servo kann unter Anwendung, dass 30° einer Stellwertdifferenz von 50 entspricht, wie folgt berechnet werden: 
+\[
+s = \frac{5}{3}\alpha_{cam}
+\]
+Entprechend wird die Solldistanz um den entsprechenden Pixelwert aus der Mitte versetzt um die veränderte Perspektive auszugleichen. Uberschreitet die Steigung der Fahrbahnlinien die Obergrenze wird die Kamera wieder auf die gerade Position zurückgeschwenkt. Der Korrekturwert $A$ lässt sich gemäss Schema in Abbildung \ref{fig:corrCam} mit folgender Formel approxximieren, die Abweichung vom Bogensegment zur Geraden ist vernachlässigbar klein:
+\[
+A \approx \frac{r\pi\alpha_{cam}}{180} \,, \text{ mit }r=160px = \frac{160\pi\alpha_{cam}}{180} = \frac{8}{9}\pi\alpha_{cam}
+\]
 \begin{figure}[H]%Position festigen
 \centering
-\includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
-\caption{Aktivitätendiagramm Fahrbahnerkennung}
-\label{fig:activityRoute}
+\includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Kamerawinkelkorrektur.png}
+\caption{Korrekturschema für den Kamerawinkel}
+\label{fig:corrCam}
 \end{figure}
-Die Parameter für die Regelung werden mit folgender Formel ermittelt:
+Um zu Beginn ein Einlenken der Kamera zu verhindern wird diese Funktion erst nach einer gewissen Anzahl verarbeiteter Bilder aktiviert. Der Wert kann, wie auch die Unter- und Obergrenze der Steigung, in der Konfigurationsdatei festgelegt werden. 
+Sobald die Fahrbahn erkannt ist, erhält der Controller den Auftrag zu fahren. Sollte die Fahrbahn verloren gehen, wird ein Counter aktiviert und eine in der Konfigurationsdatei einstellbare Anzahl Bilder in der letzten Richtung weitergefahren. Wird die Fahrbahn nicht wiedergefunden erhält der Controller die Information und stoppt das Programm.\\
+Das Zielfeld und die Kreuzung werden anhand der Steigungen der Querlinien ermittelt. Wird eine Linie, mit entsprechender Länge identifiziert, erhält der Controller die entsprechende Information.
+Die Parameter für die Regelung der Lenkung werden im Anschluss an die Winkelberechnung mit folgender Formel ermittelt:
 \[
-G_R = K_p\left(1 + \frac{1}{T_{n^S} + T_{v^S}}\right)
+u(t) = K_p\left(T_v\frac{d}{dt}e(t) + e(t)\right)
 \]
-Danach werden die ermittelten Werte in die Korrekturformel eingesetzt:
-\[
-y = K_{PR}\left(e + \frac{1}{T_n}\int{edt} + T_v\dot{e}\right)
-\]
-wobei $y$ dem zu korrigierenden Winkelwert in Grad entspricht. Die Parameter $T_v$, $T_n$ und $K_{PR}$ sind für die Feineinstellung justierbar und können in der Konfigurationsdatei festgelegt werden.\\[0.2cm]
+wobei $e(t)$ dem ermittelten Winkel entspricht. Im Anschluss wird der Stellwert $u(t)$ geprüft, ob er im zulässigen Bereich von $\pm 125$ entspricht. Über- oder unterschreitet $u(t)$ diese Grenze wird er entsprechend auf diese Limits korrigiert. Die Parameter $T_v$ (D-Anteil) und $K_{P}$ (P-Anteil) sind für die Feineinstellung justierbar und können in der Konfigurationsdatei festgelegt werden.\\[0.2cm]
 \textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
 Im Unterschied zum geplanten Konzept der Fahrbahnerkennung ist die Hough-Transformation für die Fahrbahnverankerung. Die Tests der ursprünglich geplanten Fahrbahnverankerung über ein Abtasten der Pixelwerte von innen nach aussen haben zu viele Störfaktoren aufgezeigt, wie kleine Risse in der Fahrbahn oder die Übergänge der Bauteile der Strecke. Deshalb ist an dieser Stelle eine Hough-Transformation implementiert. Diese Lösung hat sich als sehr robust erwiesen und die Filterung der Linien ermöglicht ein präzises aussortieren der Linien, die zu stark von der aktuellen Fahrtrichtung abweichen. Die ursprüngliche Befürchtung, die Hough-Transformation könnte zu viele Ressourcen beanspruchen, hat sich nach intensiven Tests als unbegründet herausgestellt. Die optimale Framerate von ca. 20 Bilder pro Sekunde kann eingehalten werden.\\
-Weiter ist der Kantendetektionsalgorithmus leicht angepasst. Es wird neu über zwei Pixel hinweg geprüft und nicht nur über das unmittelbar benachbarte Pixel. Diese Änderung hat eine Erhöhung des Schwellwertes für den Gradienten ermöglicht was zu kleineren Bildstörungen durch Kratzer oder Spiegelungen führt.\\[0.2cm]
+Weiter ist der Kantendetektionsalgorithmus leicht angepasst. Es wird neu über zwei Pixel hinweg geprüft und nicht nur über das unmittelbar benachbarte Pixel. Diese Änderung hat eine Erhöhung des Schwellwertes für den Gradienten ermöglicht was zu kleineren Bildstörungen durch Kratzer oder Spiegelungen führt.\\
+Ein weitere Abweichung zum ursprünglichen Konzept ist die Regelung der Lenkung. Im Verlaufe der Tests ist der I-Antel des PID-Reglers auf 0 gesetzt worden und somit ein PD-Regler entstanden. Dies aufgrund der ausreichenden Trägheit des Lenkungssystems, was eine Dämpfung des Reglers unnötig werden lässt.\\[0.2cm]
 \textbf{Bewertung}\\[0.2cm]
 Die Fahrbahnerkennung hat sich als robust und Bildstörungsresistent erwiesen. Die Realisierung ist komplex, da diverse Parameter beachtet und eingestellt werden müssen um ein optimales Resultat zu erhalten. Die gewählte Kameraposition ermöglicht es, vorausschauend zu fahren, da ein grösserer Bereich vor dem Fahrzeug betrachtet wird. Zudem ist der Einsatz von weiteren Kameras nicht notwendig, da auch die Objekterkennung über die gleiche Bildquelle möglich ist.
 \newpage

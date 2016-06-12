@@ -111,6 +111,7 @@ void UARTReciever::decodeFlexValue(std::string message) {
 	message.replace(start, 5, "");
 	int value = atoi(message.c_str());
 	m_FlexDistance = value;
+	m_Controller->setFlexValue(value);
 	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 

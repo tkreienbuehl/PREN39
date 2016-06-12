@@ -2,14 +2,14 @@
 \subsection{Intelligente Systeme}
 
 \subsubsection{Software auf Mini-Computer}
-Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinzip, wobei sich die View auf einen reinen Debug-Zweck beschränkt. Der Controller kommunziert mit allen Subprozesse und grenzt an die Schnittstelle zur Hardwaresteuerung. Um die Performance des Rasperry Pi möglichst auszunutzen wird mit Threads gearbeitet. Die parallel laufenden Subprozesse sind:
+Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinzip, wobei sich die View auf einen reinen Debug-Zweck beschränkt. Der Controller kommunziert mit allen Subprozessen und grenzt an die Schnittstelle zur Hardwaresteuerung. Um die Performance des Rasperry Pi möglichst auszunutzen wird mit Threads gearbeitet. Die parallel laufenden Subprozesse sind:
 
 \begin{itemize}
 \item Bilderzeugung,
 \item Objekterkennung und
 \item Fahrbahnerkennung.
 \end{itemize}
-
+Zusätzlich wurden auch die Debug-View und die UART-Kommunikation zum Teil als Threads implementiert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/grobablauf.png}
@@ -17,13 +17,13 @@ Das Softwarekonzept basiert auf dem MVC\footnote{MVC = Model-View-Control}-Prinz
 \end{figure}
 
 Der Zustand des Fahrzeuges wird im Model gespeichert und steht allen Prozessen zur Verfügung. Die Datenstruktur ist dabei so aufgebaut, dass keine Zugriffskonflikte entstehen sollten.\\
-Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container, hat dieser Priorität vor dem normalen Fahren und das Mikrocontroller-Board erhält die entsprechenden Anweisungen. Das folgende Diagramm zeigt eine Gesamtübersicht von den verschiedenen Komponenten.\\[0.2cm]
+Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise die Objekterkennung einen Container, hat dieser Priorität vor dem normalen Fahren und das Mikrocontroller-Board erhält die entsprechenden Anweisungen und kann jederzeit die Kontrolle übernehmen. Das folgende Diagramm zeigt eine Gesamtübersicht von den verschiedenen Komponenten.\\[0.2cm]
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/Komponentendiagramm_detailliert_v2.jpeg}
 \caption{Komponentendiagramm}
 \end{figure}
-Damit keine zyklischen Abhängigkeiten enstehen, wurde entschieden, dass ein Oberserver nach dem Observer-Entwurfsmusster (GoF) implementiert wird. Normalerweise senden der RouteFinder und der ObjectFinder die Informationen an den Controller. Beim Eintreffen an der Kreuzung aber, muss der Controller Informationen an den ObjectFinder senden. Dazu muss sich der ObjectFinder zuerst beim Controller als Observer registrieren.
+Damit keine zyklischen Abhängigkeiten enstehen, wurde entschieden, dass ein Oberserver nach dem Observer-Entwurfsmusster (GoF) implementiert wird. Normalerweise senden der RouteFinder und der ObjectFinder die Informationen an den Controller. Beim Eintreffen an der Kreuzung zum Beispiel, muss aber der Controller Informationen an den ObjectFinder senden. Diese Informationen werden über den ObjectStateObserver gesendent, wobei sich der ObjectFinder zuerst beim Controller als Observer registrieren muss.
 
 \textbf{Debug-View}\\[0.2cm]
 Um während der Implementierungs-Phase der geschriebene Code zu testen wurde eine Debug-View entwickelt. Mit dieser kann auf den Debug-Server, welcher auf dem Raspberry Pi gestartet wird, zugegriffen werden. Nach einer erfolgreichen Verbindung werden die aufgenommenen Bilder vom Server an den Client (GueselStarObserver) gesendet.
@@ -39,13 +39,16 @@ Die Kommunikation zwischen Server und Client läuft über TCP/IP. Auf dem Server
 Zusätzlich werden über die Konsole der SSH-Verbindung Werte ausgegeben. Dazu wurde die Bibliothek ncurses verwendet, welche es ermöglicht Daten schön übersichtlich und gruppiert darzustellen.
 
 \textbf{Konfiguration}\\[0.2cm]
-Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, welcher Zeit benötigt, zu unterbinden wurde eine Konfigurations-Datei erstellt, in welcher alle benötigten Parameter angepasst werden können. Das Einlesen der Konfiguration erfolgt über einen selbstentwickelten Parser und wird anschliessend in einem Objekt der Klasse "PRENConfiguration" abgespeichert.
+Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, welcher Zeit benötigt, zu unterbinden wurde eine Konfigurations-Datei erstellt, in welcher alle benötigten Parameter angepasst werden können. Das Einlesen der Konfiguration erfolgt über einen selbstentwickelten Parser und wird anschliessend in einem Objekt der Klasse "{}PRENConfiguration"{} abgespeichert.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{03_Loesungskonzept/pictures/Configuration.jpeg}
 \caption{Konfiguration}
 \end{figure}
+
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+Die Planung der Softwarearchitektur war nach Pren1 noch nicht weit fortgeschritten, daher wurden die meisten Entscheidungen erst in Pren2 getroffen. Die parallelisierte Ausführung der Threads "{}Fahrbahnerkennung"{}, "{}Objekterkennung"{} und "{}Bilderzeugung"{} wurde beibehalten, jedoch kamen noch einige Threads, wie die Klassen für die UART-Kommunikation dazu.
  
 %***************************
 \subsubsection{Software auf Mikrocontrollerboard}
@@ -67,7 +70,7 @@ Dieser Task übernimmt die Auswertung der erhaltenen Kommandos über die UART Sc
 \textbf{Analog-Digitalwandlung}\\[0.2cm]
 Dieser Task holt und verarbeitet die Daten aus dem Analog Digitalwandler des KL25Z. Das heisst konkret, es werden beide Akku Spannungen ausgelesen und überwacht. Zudem wird der Widerstandswert des Flexsensensors eingelesen und damit der Abstand zum Gehsteig berechnet. Zur Akkuüberwachung folgen weiter im Text weitere Informationen.\\[0.2cm]
 \textbf{Geschwindigkeitsregelung}\\[0.2cm]
-Der Geschwindigkeitsregelungstask regelt die Geschwindigkeit des DC-Antriebmotors. Dies geschieht über einen PID Regler. Dieser wurde vom Modul Mikrocontrollertechnik an der Hochschule Luzern übernommen und nach den eigenen Bedürfnissen angepasst. Wie die PID Werte berechnet wurden und der Regelkreis aussieht wird noch separat erläutert.\\[0.2cm]
+Der Geschwindigkeitsregelungstask regelt die Geschwindigkeit des DC-Antriebmotors. Dies geschieht über einen PID Regler. Dieser wurde vom Modul Mikrocontrollertechnik an der Hochschule Luzern übernommen und nach den eigenen Bedürfnissen angepasst.\\[0.2cm]
 \textbf{Ultraschall}\\[0.2cm]
 Dieser Task steuert den Ultraschallsensor an. Dies wurde nach einem Tutorial von mcuoneclipse.com realisiert und auf die Softwareumgebung noch weiter angepasst.\\[0.2cm]
 \textbf{Master check}\\[0.2cm]

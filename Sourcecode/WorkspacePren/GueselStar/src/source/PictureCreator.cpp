@@ -10,6 +10,7 @@
 PictureCreator::PictureCreator(PrenController* controller) {
 	m_Controller = controller;
 	m_State = false;
+	m_ImageLocked = false;
 	pthread_mutex_init(&m_mutex, NULL);
 }
 
@@ -25,7 +26,7 @@ void* PictureCreator::staticEntryPoint(void* threadId) {
 
 cv::Mat PictureCreator::GetImage() {
 	pthread_mutex_lock(&m_mutex);
-		cv::Mat retImg = m_TheImage;
+		cv::Mat retImg = m_TheImage.clone();
 	pthread_mutex_unlock(&m_mutex);
 	return retImg;
 }
@@ -63,7 +64,9 @@ void PictureCreator::RecordFromCam(PrenConfiguration conf) {
 	while (m_State) {
 	    IplImage* iplImg = cvQueryFrame( capture );
 	    cv::Mat capturedImage =  cv::cvarrToMat(iplImg);
+	    m_ImageLocked = true;
 	    cv::resize(capturedImage, m_TheImage, m_TheImage.size(),0.5,0.5,cv::INTER_LANCZOS4);
+	    m_ImageLocked = false;
 	    usleep(5);
 
         if( m_TheImage.empty() ) {

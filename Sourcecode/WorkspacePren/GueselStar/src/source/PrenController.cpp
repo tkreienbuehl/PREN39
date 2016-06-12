@@ -3,12 +3,12 @@
 PrenController::PrenController(UARTSender* sender, ConsoleView* viewer) {
 	prenConfig = new PrenConfiguration();
 	m_State = STOPPED;
-
 	uartSender = sender;
 	consoleView = viewer;
-
 	objectStateObserver = NULL;
-
+	m_FlexValue = 0;
+	ultraValueIndex = 0;
+	m_objectOnLane = false;
 }
 
 PrenController::~PrenController() {
@@ -67,7 +67,6 @@ int PrenController::stopProgram() {
 
 void PrenController::setContainerFound(int distance) {
 	char str[30];
-	bzero(str, sizeof(str));
 	sprintf(str, "Distance to Container: %d", distance);
 	printString(str, OBJECT_FINDER, 1);
 	// inform MC-Board
@@ -75,7 +74,6 @@ void PrenController::setContainerFound(int distance) {
 }
 void PrenController::setCrossingFound(int distance) {
 	char str[50];
-	bzero(str, sizeof(str));
 	sprintf(str, "Crossing ahead: Distance to Crossing: %d", distance);
 	printString(str, CONTROLLER, 1);
 	// inform MC-Board
@@ -85,8 +83,7 @@ void PrenController::setCrossingFound(int distance) {
 
 void PrenController::setTargetFieldFound(int distance) {
 	char str[50];
-	bzero(str, sizeof(str));
-	sprintf(str, "Targetfield ahead: Distance to Tagetfield: %d", distance);
+	sprintf(str, "Targetfield ahead: Distance to Targetfield: %d", distance);
 	printString(str, CONTROLLER, 1);
 	// inform MC-Board
 	uartSender->setTargetFieldFound(distance);
@@ -94,13 +91,16 @@ void PrenController::setTargetFieldFound(int distance) {
 
 void PrenController::setLaneLost() {
 	// inform MC-Board
-	printString("RouterFinder lost Lane", CONTROLLER, 1);
+	printString("RouteFinder lost Lane", CONTROLLER, 1);
 	uartSender->sendStopCmd();
+	if(prenConfig->IS_ON_PI) {
+		usleep(3000 * 1000);
+		this->setState(END);
+	}
 }
 
 void PrenController::setSteeringAngle(int angle) {
 	char str[20];
-	bzero(str, sizeof(str));
 	sprintf(str, "set new angle %d", angle);
 	printString(str, CONTROLLER, 0);
 	// inform MC-Board
@@ -112,39 +112,63 @@ void PrenController::setEngineSpeed(uint8_t speed) {
 	uartSender->setEngineSpeed(speed);
 }
 
-void PrenController::setVehicleInCrossing() {
-	printString("Vehicle in Crossing", CONTROLLER, 1);
-}
-
-bool PrenController::checkObjectOnLane(void) {
-
-	bool objectOnLane = false;
-	/*int distance = uartReceiver->getUltraDist();
-
-	if (distance < 10) {
-		objectOnLane = true;
-	}*/
-
-	return objectOnLane;
+void PrenController::setVehicleInCrossing(bool found) {
+	if (found) {
+		printString("Vehicle in Crossing", OBJECT_FINDER, 10);
+	} else {
+		uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+	}
 }
 
 void PrenController::checkUltraDist(int ultraDistance) {
-
+/*
 	bool objectOnLane = false;
-	if (ultraDistance < prenConfig->MAX_DISTANCE_TO_OBJECT) {
-		objectOnLane = true;
+
+	lastUltraValues[ultraValueIndex] = ultraDistance;
+	char str[20];
+	sprintf(str, "UltraValue to check: %d", ultraDistance);
+	printString(str, OBJECT_FINDER, 4);
+
+	if (ultraValueIndex == 5) {
+		int counter = 0;
+		for (int i = 0; i < 5; i++) {
+			if (lastUltraValues[i] < prenConfig->MAX_DISTANCE_TO_OBJECT) {
+				counter++;
+			}
+		}
+		if (counter >= 3) {
+			objectOnLane = true;
+		} else {
+			objectOnLane = false;
+		}
+		ultraValueIndex = 0;
+
+	} else {
+		ultraValueIndex++;
 	}
-	objectStateObserver->updateObjectOnLaneState(objectOnLane);
+
+	if (m_objectOnLane != objectOnLane) {
+		m_objectOnLane = objectOnLane;
+		objectStateObserver->updateObjectOnLaneState(m_objectOnLane);
+
+		if (m_objectOnLane) {
+			uartSender->setEngineSpeed(0);
+			printString("Object on Lane", OBJECT_FINDER, 5);
+		} else {
+			uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+			printString("lane free", OBJECT_FINDER, 5);
+		}
+	}
+	*/
+}
+
+void PrenController::setFlexValue(int flexValue) {
+	m_FlexValue = flexValue;
 }
 
 int PrenController::getFlexDistance(void) {
 
-	return 7; //uartReceiver->getFlexDistance();
-}
-
-int PrenController::getEngineSpeed(void) {
-
-	return 7; //uartReceiver->getEngineSpeed();
+	return m_FlexValue;
 }
 
 void PrenController::responseStillThere() {
@@ -175,14 +199,14 @@ void PrenController::printString(string str, classes cl, uint line) {
 }
 
 void PrenController::setObjectStateObserver(ObjectStateObserver* observer) {
-	//objectStateObserverList.push_back(observer);
+//objectStateObserverList.push_back(observer);
 	objectStateObserver = observer;
 }
 
 void PrenController::setContainerLoadingFinished(bool finished) {
-	uartSender->setEngineSpeed(prenConfig->MAX_SPEED);
+	setEngineSpeed(prenConfig->MAX_SPEED);
+	printString("Container aufgeladen", OBJECT_FINDER, 11);
 }
-
 
 void PrenController::setCameraPos(CameraStatesE pos) {
 	char str[40];

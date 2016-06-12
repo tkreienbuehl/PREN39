@@ -27,6 +27,7 @@ public:
 	vector<vector<cv::Point> > mergeContours(vector<vector<cv::Point> > contours1, vector<vector<cv::Point> > contours2);
 	void updateCrossingState(bool crossingAhead);
 	void updateObjectOnLaneState(bool objectOnLane);
+	void detectObjectAtCrossing();
 	static void* staticEntryPoint(void* threadId);
 
 	cv::Mat getImage();
@@ -34,6 +35,7 @@ public:
 
 private:
 	void RunProcess();
+	PrenConfiguration* prenConfig;
 	vector<vector<cv::Point> > contoursGreen;
 	vector<vector<cv::Point> > contoursBlue;
 	vector<vector<cv::Point> > contours;

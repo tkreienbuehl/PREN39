@@ -14,7 +14,8 @@ PrenConfiguration::PrenConfiguration() {
 	    TEST_IMG_DIR = parser.readStringParam("TEST_IMG_DIR");
 	    TEST_IMG_FIRST = parser.readIntParam("TEST_IMG_FIRST");
 	    TEST_IMG_LAST = parser.readIntParam("TEST_IMG_LAST");
-
+	    DETECT_BLUE = parser.readBoolParam("DETECT_BLUE");
+	    DETECT_GREEN = parser.readBoolParam("DETECT_GREEN");
 	    BLUE_RANGE_H_LOW = parser.readIntParam("BLUE_RANGE_H_LOW");
         BLUE_RANGE_H_HIGH = parser.readIntParam("BLUE_RANGE_H_HIGH");
         BLUE_RANGE_S_LOW = parser.readIntParam("BLUE_RANGE_S_LOW");

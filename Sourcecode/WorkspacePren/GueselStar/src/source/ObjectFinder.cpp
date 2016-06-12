@@ -9,6 +9,7 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 		PictureCreator* picCreator) {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
+	prenConfig = m_Controller->getPrenConfig();
 	m_state = false;
 	pthread_mutex_init(&m_mutex, NULL);
 	informedController = false;
@@ -42,6 +43,7 @@ void ObjectFinder::RunProcess() {
 
 		if (!m_objectOnLane) { //ultraschall: no object detected
 
+			//detectObjectAtCrossing();
 			cv::Mat image = m_PicCreator->GetImage();
 
 			origImage = image.clone();
@@ -53,16 +55,26 @@ void ObjectFinder::RunProcess() {
 
 				cv::medianBlur(croppedImage, croppedImage, 3);
 				hsvImage = convertImageToHSV(croppedImage);
-				filteredImageGreen = filterColorInImage("green", hsvImage);
-				filteredImageBlue = filterColorInImage("blue", hsvImage);
+				if(prenConfig->DETECT_GREEN) {
+					filteredImageGreen = filterColorInImage("green", hsvImage);
+					contoursGreen = findContainersInImage(filteredImageGreen);
+				}
+				if(prenConfig->DETECT_BLUE) {
+					filteredImageBlue = filterColorInImage("blue", hsvImage);
+					contoursBlue = findContainersInImage(filteredImageBlue);
+				}
 
-				cv::Mat blue_green_combined;
+				/*cv::Mat blue_green_combined;
 				cv::addWeighted(filteredImageGreen, 1.0, filteredImageBlue, 1.0,
 						0.0, blue_green_combined);
-
-				contoursGreen = findContainersInImage(filteredImageGreen);
-				contoursBlue = findContainersInImage(filteredImageBlue);
-				contours = mergeContours(contoursGreen, contoursBlue);
+*/
+				if(prenConfig->DETECT_BLUE && prenConfig->DETECT_GREEN) {
+					contours = mergeContours(contoursGreen, contoursBlue);
+				} else if(prenConfig->DETECT_BLUE) {
+					contours = contoursBlue;
+				} else if(prenConfig->DETECT_GREEN) {
+					contours = contoursGreen;
+				}
 
 				// TODO: IDEA for two following containers with same color
 				//cv::Scalar color( 255, 255, 255 );
@@ -184,24 +196,23 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 				lastCenterX = centerX;
 				lastCenterY = centerY;
 
-
 				int distanceToContainer =
-											m_Controller->getPrenConfig()->REFERENCE_DISTANCE
-													* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
-													/ boundRect[i].height;
-				char str[30];
+						m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+								* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+								/ boundRect[i].height;
+				/*char str[30];
 				bzero(str, sizeof(str));
 				sprintf(str, "Distance to Container: %d", distanceToContainer);
-				m_Controller->printString(str, m_Controller->OBJECT_FINDER, 3);
+				m_Controller->printString(str, m_Controller->OBJECT_FINDER, 3);*/
 
 				// if container needs to be announcecd
 				if (centerX >= 4 * imageToMarkContainer.cols / 5
 						&& !informedController) {
 
 					/*int distanceToContainer =
-							m_Controller->getPrenConfig()->REFERENCE_DISTANCE
-									* m_Controller->getPrenConfig()->REFERENCE_HEIGHT
-									/ boundRect[i].height;*/
+					 m_Controller->getPrenConfig()->REFERENCE_DISTANCE
+					 * m_Controller->getPrenConfig()->REFERENCE_HEIGHT
+					 / boundRect[i].height;*/
 
 					m_Controller->setContainerFound(distanceToContainer);
 
@@ -228,10 +239,32 @@ cv::Mat ObjectFinder::markFoundContoursInImage(
 
 void ObjectFinder::updateCrossingState(bool crossingAhead) {
 	m_crossingAhead = crossingAhead;
+	detectObjectAtCrossing();
 }
 
 void ObjectFinder::updateObjectOnLaneState(bool objectOnLane) {
 	m_objectOnLane = objectOnLane;
+}
+
+void ObjectFinder::detectObjectAtCrossing() {
+	cv::Mat image = m_PicCreator->GetImage();
+	cv::Mat origImage = image.clone();
+	cv::Mat hsvImage = convertImageToHSV(origImage);
+	vector<vector<cv::Point> > contours;
+	vector<cv::Vec4i> hierarchy;
+
+	//cv::findContours(hsvImage, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+
+	char str[30];
+	bzero(str, sizeof(str));
+	sprintf(str, "Anzahl Konturen: %d", (int)hierarchy.size());
+	m_Controller->printString(str, m_Controller->OBJECT_FINDER, 9);
+	if (hierarchy.size() > 1000) {
+		m_Controller->printString("Vehilce at Crossing",
+				m_Controller->OBJECT_FINDER, 8);
+		m_Controller->setVehicleInCrossing(true);
+	}
+
 }
 
 cv::Mat ObjectFinder::getImage() {

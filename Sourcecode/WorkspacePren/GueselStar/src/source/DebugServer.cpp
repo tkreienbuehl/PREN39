@@ -26,7 +26,7 @@ void DebugServer::runningServer() {
 
 	sockaddressIn_t serverAddress, clientAddress;
 
-	cout << "Hallo! " << endl;
+	//cout << "Hallo! " << endl;
 
 	socketfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (socketfd < 0 ) {
@@ -42,13 +42,13 @@ void DebugServer::runningServer() {
 		cout << "ERROR on binding" << endl;
 	}
 
-	cout << "server listens" << endl;
+	//cout << "server listens" << endl;
 	listen(socketfd,5);
 
 	clientLength = sizeof(clientAddress);
 	newSocketfd = accept(socketfd, reinterpret_cast<socketAddress_t*>(&clientAddress), &clientLength);
 	usleep(1000);
-	cout << "server connected" << endl;
+	//cout << "server connected" << endl;
 
 	if (newSocketfd < 0) {
 		cout << "ERROR on accept" << endl;
@@ -69,7 +69,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 		bzero(buffer,50);
 		int n = read(newSocketfd, buffer, 49);
 		if (n < 0) {
-			cout << "ERROR reading from socket" << endl;
+			//cout << "ERROR reading from socket" << endl;
 		}
 		string message(buffer);
 		if (message.find("end connection") != message.npos) {
@@ -97,7 +97,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 			string msg = "I got your message, but i dont't understand";
 			n = write(newSocketfd, msg.c_str(), msg.length());
 			if (n < 0) {
-				cout << "ERROR writing to socket" << endl;
+				//cout << "ERROR writing to socket" << endl;
 			}
 			msg.clear();
 		}

@@ -33,8 +33,8 @@ public:
 
 	enum CameraStatesE {
 		CAM_STRAIGHT = 120,
-		CAM_TURN_LEFT = 170,
-		CAM_TURN_RIGHT = 70,
+		CAM_TURN_LEFT = 130,
+		CAM_TURN_RIGHT = 86,
 		CAM_CHECK_STREET = 50
 	};
 
@@ -50,12 +50,11 @@ public:
 	void setLaneLost();
 	void setSteeringAngle(int angle);
 	void setEngineSpeed(uint8_t speed);
-	void setVehicleInCrossing();
-	bool checkObjectOnLane(void);
+	void setVehicleInCrossing(bool found);
 	void checkUltraDist(int ultraDistance);
 	void setContainerLoadingFinished(bool finished);
+	void setFlexValue(int flexValue);
 	int getFlexDistance(void);
-	int getEngineSpeed(void);
 	PrenConfiguration* getPrenConfig(void);
 	ConsoleView* getConsoleView();
 	void printString(string str, classes cl, uint line = 0);
@@ -72,4 +71,8 @@ private:
 	UARTSender* uartSender;
 	ConsoleView* consoleView;
 	ObjectStateObserver* objectStateObserver;
+	int m_FlexValue;
+	int lastUltraValues[5];
+	int ultraValueIndex;
+	bool m_objectOnLane;
 };

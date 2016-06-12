@@ -40,5 +40,6 @@ private:
     bool m_State;
     PrenController* m_Controller;
     pthread_mutex_t m_mutex;
+    bool m_ImageLocked;
 
 };
