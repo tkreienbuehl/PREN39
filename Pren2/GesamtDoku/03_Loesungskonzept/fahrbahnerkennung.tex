@@ -1,7 +1,7 @@
 % !TEX root = ../Dokumentation.tex
 \subsection{Fahrbahnerkennung}
 \textbf{Umsetzung}\\[0.2cm]
-Die Fahrbahnerkennung ist primär mittels Kamera realisiert. der gesamte Prozess ist in Abbildung \ref{fig:activityRoute} dargestellt. Nebst der Bildverarbeitung meldet die Fahrbahnerkennung alle notwendigen Informationen an den Controller.
+Die Fahrbahnerkennung ist primär mittels Kamera realisiert. der gesamte Prozess ist in Abbildung \ref{fig:activityRoute} dargestellt. Nebst der Bildverarbeitung meldet die Fahrbahnerkennung alle notwendigen Informationen an den Controller. Eine weitere Aufgabe der Fahrbahnerkennung ist die Identifikation der Kreuzungen und des Zielfeldes.
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Fahrbahnerkennung.png}
@@ -32,8 +32,11 @@ $z = f(x,y) = \text{ Graustufen des Pixels }0 \leq z \leq 255$\\
 \caption{Bild nach Kantenerkennung}
 \label{fig:edges}
 \end{figure}
-Im Anschluss an die Kantendetektion folgt eine Linienerkennung mittels Hough-Transformation. Dabei werden alle Linien vorgefiltert, die nicht zur Fahrbahn gehören können. Dies wird anhand der Steigung ermittelt. Die gültigen Linien werden im Anschluss harmonisiert, das Heisst ihr Start- und Endpunkt wird so angepasst, dass 
-immer der Startpunkt in $y$-Richtung am Maximum liegt. Weiter wird die Linie auf die untere Bildkante verlängert. Im Anschluss werden nur die innersten Linien behalten und zur Berechnung der Fahrtrichtung weitergegeben (Abbildung: \ref{fig:routeLimits}). Zur optischen Hilfe ist die Bildmitte markiert um die ermittelten Abstände visuell prüfen zu können.
+Im Anschluss an die Kantendetektion folgt eine Linienerkennung mittels Hough-Transformation. Dabei werden alle Linien vorgefiltert, die nicht zur Fahrbahn gehören können. Dies wird anhand der Steigung $s$ ermittelt. Dabei wird zur Vorselektion die vereinfachte Ganzzahldivision verwendet, sofern $x_1 - x_2 > 2$ Pixel beträgt:
+\[
+s = \Biggl\lfloor \frac{y_1 - y_2}{x_1 - x_2} \Biggr\rfloor
+\]
+Aus den ermittelten Steigungen lassen sich drei Gruppen bilden. Steigung 0 bedeutet, es könnte sich um eine Kreuzung oder das Zielfeld handeln. Diese linien werden zur weiteren Analyse in einen Vektor gepackt. Der Prozess der Kreuzungserkennung wird später noch ausfürlicher beschrieben. Die weiteren Gruppen bestehen aus den rechten und linken Fahrbahnkanten. Dazu werden nur die Kanten behalten, die links eine positive Steigung aufweisen, respektive auf der rechten Seite eine negative Steigung. Die Linien dieser beiden Gruppen werden im Anschluss harmonisiert, das heisst ihr Start- und Endpunkt wird so angepasst, dass immer der Startpunkt in $y$-Richtung am Maximum liegt. Weiter wird die Linie auf die untere Bildkante verlängert. Im Anschluss werden nur die innersten Linien behalten und zur Berechnung der Fahrtrichtung weitergegeben (Abbildung: \ref{fig:routeLimits}). Zur optischen Hilfe ist die Bildmitte markiert um die ermittelten Abstände visuell prüfen zu können.
 \begin{figure}[H]%Position festigen
 \centering
 \includegraphics[width=0.7\textwidth]{03_Loesungskonzept/pictures/Fahrbahnlinien.png}
@@ -78,7 +81,14 @@ Die Parameter für die Regelung der Lenkung werden im Anschluss an die Winkelber
 \[
 u(t) = K_p\left(T_v\frac{d}{dt}e(t) + e(t)\right)
 \]
-wobei $e(t)$ dem ermittelten Winkel entspricht. Im Anschluss wird der Stellwert $u(t)$ geprüft, ob er im zulässigen Bereich von $\pm 125$ entspricht. Über- oder unterschreitet $u(t)$ diese Grenze wird er entsprechend auf diese Limits korrigiert. Die Parameter $T_v$ (D-Anteil) und $K_{P}$ (P-Anteil) sind für die Feineinstellung justierbar und können in der Konfigurationsdatei festgelegt werden.\\[0.2cm]
+wobei $e(t)$ dem ermittelten Winkel entspricht. Im Anschluss wird der Stellwert $u(t)$ geprüft, ob er im zulässigen Bereich von $\pm 125$ entspricht. Über- oder unterschreitet $u(t)$ diese Grenze wird er entsprechend auf diese Limits korrigiert. Die Parameter $T_v$ (D-Anteil) und $K_{P}$ (P-Anteil) sind für die Feineinstellung justierbar und können in der Konfigurationsdatei festgelegt werden.
+Die Erkennung der Kreuzungen und des Zielfeldes erfolgt parallel zur Fahrbahnerekennung und wird, da die Linien im Startbereich bewusst unbeachtet gelassen werden, gleichzeitig mit der Kurvenprüfung gestartet. Um eine Kreuzung zu akzeptieren werden folgende Filter verwendet:
+\begin{itemize}
+\item Es müssen sich mindestens vier Linien im Vektor befinden, die in der ersten Selektion die Steigung 0 aufweisen.
+\item Ist die erste Bedingung erfüllt wird die Länge aller Linien berechnet. Ist diese grösser als 200 Pixel wird eine Querung registriert.
+\item Werden fünf Querungen in Serie registriert wird eine Kreuzung gemeldet, und der Kruezungszaähler erhöht.
+\end{itemize}
+Im Anschluss wird eine Wartephase von 100 Bildern aktiviert. in dieser Zeiot wird die Kreuzungserkennung ausgesetzt um die Ressourcen zu schonen. Im Zielbereich ist dann die Linie durchgezogen, das bedeutet die maximale Länge der Linien muss 300 Pixel betragen. Wird dieser Wert entsprechend dem Filter überschritten wird das Ziel markiert und der Programmabschluss eingeleitet.\\[0.2cm]
 \textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
 Im Unterschied zum geplanten Konzept der Fahrbahnerkennung ist die Hough-Transformation für die Fahrbahnverankerung. Die Tests der ursprünglich geplanten Fahrbahnverankerung über ein Abtasten der Pixelwerte von innen nach aussen haben zu viele Störfaktoren aufgezeigt, wie kleine Risse in der Fahrbahn oder die Übergänge der Bauteile der Strecke. Deshalb ist an dieser Stelle eine Hough-Transformation implementiert. Diese Lösung hat sich als sehr robust erwiesen und die Filterung der Linien ermöglicht ein präzises aussortieren der Linien, die zu stark von der aktuellen Fahrtrichtung abweichen. Die ursprüngliche Befürchtung, die Hough-Transformation könnte zu viele Ressourcen beanspruchen, hat sich nach intensiven Tests als unbegründet herausgestellt. Die optimale Framerate von ca. 20 Bilder pro Sekunde kann eingehalten werden.\\
 Weiter ist der Kantendetektionsalgorithmus leicht angepasst. Es wird neu über zwei Pixel hinweg geprüft und nicht nur über das unmittelbar benachbarte Pixel. Diese Änderung hat eine Erhöhung des Schwellwertes für den Gradienten ermöglicht was zu kleineren Bildstörungen durch Kratzer oder Spiegelungen führt.\\
