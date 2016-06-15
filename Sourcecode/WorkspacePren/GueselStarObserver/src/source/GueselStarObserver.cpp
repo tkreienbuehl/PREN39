@@ -7,8 +7,8 @@ int main(int argc, char** argv) {
 }
 
 GueselStarObserver::GueselStarObserver() {
-	//connectToServer("10.10.0.1");
-	connectToServer("127.0.0.1");
+	connectToServer("10.10.0.1");
+	//connectToServer("127.0.0.1");
 }
 
 GueselStarObserver::~GueselStarObserver() {
@@ -55,7 +55,7 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 	cv::namedWindow( "The filtered Image", CV_WINDOW_AUTOSIZE );
 
 	while (loop) {
-		usleep(1000);
+		//usleep(1000);
 		switch (selector) {
 		case 0:
 			message = "getFilteredImage";
@@ -64,7 +64,7 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 			//message = "getObjectImage";
 			break;
 		case 2:
-			//message = "getGrayImage";
+			message = "getGrayImage";
 			break;
 		}
 		if (selector == 2) {
