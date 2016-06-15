@@ -28,6 +28,16 @@ private:
 	int runProcess();
 	void edgeDetection(cv::Mat* mat, cv::Mat* changesMat);
 
+	void outPutNrOfIms(uint imgCnt);
+
+	void setDriveState(ushort& setSpeedCnt);
+
+	void checkLaneLost();
+
+	void setBendCheck(ushort& imgCnt);
+
+	void setCrossingSearchState(ushort imgCnt);
+
 	ushort MINLENGTH;
 	ushort MINXDIFF;
 	ushort MINYDIFF;
@@ -47,5 +57,6 @@ private:
 	PIDCalculation* m_pidCalc;
 	PrenController::classes me;
 	RouteCalculation* m_RouteCalculator;
+	ushort m_waitImgCnt;
 
 };

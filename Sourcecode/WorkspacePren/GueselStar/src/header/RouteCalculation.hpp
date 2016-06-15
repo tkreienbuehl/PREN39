@@ -9,6 +9,7 @@ public:
 
 	int lineDetection(cv::Mat* edgeImg);
 	void startCheckForBend();
+	bool startCheckForCrossing();
 	bool getRouteFoundState();
 	ushort getLineLostCnt();
 	int getCamCorrVal();
@@ -43,7 +44,8 @@ private:
 	bool m_CheckBend;
 	bool m_RouteFound;
 	bool m_CrossingFound;
-	ushort m_CrossingCnt;
+	bool m_SearchCrossing;
+	ushort m_CrossingCnt, m_CrossingLinesCnt;
 
 	ushort MAX_PIX_DIFF;
 	ushort CAM_ANG_CORR_VAL;

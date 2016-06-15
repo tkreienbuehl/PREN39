@@ -6,7 +6,8 @@ RouteCalculation::RouteCalculation(PrenController* controller) {
 	m_RouteFound = false;
 	m_CheckBend = false;
 	m_CrossingFound = false;
-	m_CrossingCnt = 0;
+	m_SearchCrossing = false;
+	m_CrossingCnt = m_CrossingLinesCnt = 0;
 	m_DistCorrAng = 0;
 	m_CamPos = m_Controller->CAM_STRAIGHT;
 	m_Controller = controller;
@@ -85,6 +86,17 @@ int RouteCalculation::lineDetection(cv::Mat* edgeImg) {
 void RouteCalculation::startCheckForBend() {
 	m_Controller->printString("Start checking for bend",me, 18);
 	m_CheckBend = true;
+}
+
+bool RouteCalculation::startCheckForCrossing() {
+	if (!m_CheckBend) {
+		return false;
+	}
+	if (!m_SearchCrossing) {
+		m_SearchCrossing = true;
+		return true;
+	}
+	return false;
 }
 
 bool RouteCalculation::getRouteFoundState() {
@@ -244,11 +256,11 @@ void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& 
 			m_Controller->setCameraPos(m_Controller->CAM_TURN_LEFT);
 			m_CamPos = m_Controller->CAM_TURN_LEFT;
 		}
-		else if (m_CamPos == m_Controller->CAM_TURN_RIGHT && lRtState == STRAIGHT) {
+		else if (m_CamPos == m_Controller->CAM_TURN_RIGHT && (lRtState == STRAIGHT || rRtState == STRAIGHT)) {
 			m_Controller->setCameraPos(m_Controller->CAM_STRAIGHT);
 			m_CamPos = m_Controller->CAM_STRAIGHT;
 		}
-		else if (m_CamPos == m_Controller->CAM_TURN_LEFT && lRtState == STRAIGHT) {
+		else if (m_CamPos == m_Controller->CAM_TURN_LEFT && (lRtState == STRAIGHT || rRtState == STRAIGHT)) {
 			m_Controller->setCameraPos(m_Controller->CAM_STRAIGHT);
 			m_CamPos = m_Controller->CAM_STRAIGHT;
 		}
@@ -345,9 +357,10 @@ RouteCalculation::routeVals RouteCalculation::checkRightRouteLimit(cv::Mat* edge
 }
 
 void RouteCalculation::analyzeHorizonalLines(vector<cv::Vec4i>* lines) {
-	if (lines->size() < 4 || !m_CheckBend) {
+	if (lines->size() < 4 || !m_SearchCrossing) {
 		return;
 	}
+
 	char str[50];
 	sprintf(str,"Nr. of lines %d", static_cast<int>(lines->size()));
 	m_Controller->printString(str, me, 34);
@@ -363,7 +376,17 @@ void RouteCalculation::analyzeHorizonalLines(vector<cv::Vec4i>* lines) {
 		itr++;
 	}
 
-	if (maxLength > 200 ) {
+	if (maxLength > 500 ) {
 		m_Controller->printString("Crossing line found", me, 35);
+		if (m_CrossingLinesCnt >= 5) {
+			m_CrossingCnt++;
+			sprintf(str,"Nr. of crossings found: %d %d", m_CrossingCnt, maxLength);
+			m_Controller->printString(str, me, 36);
+			m_CrossingLinesCnt = 0;
+			m_SearchCrossing = false;
+		}
+		else {
+			m_CrossingLinesCnt++;
+		}
 	}
 }

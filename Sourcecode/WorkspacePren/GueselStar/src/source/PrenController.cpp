@@ -72,6 +72,7 @@ void PrenController::setContainerFound(int distance) {
 	// inform MC-Board
 	uartSender->setContainerFound(distance);
 }
+
 void PrenController::setCrossingFound(int distance) {
 	char str[50];
 	sprintf(str, "Crossing ahead: Distance to Crossing: %d", distance);
@@ -121,7 +122,7 @@ void PrenController::setVehicleInCrossing(bool found) {
 }
 
 void PrenController::checkUltraDist(int ultraDistance) {
-/*
+	///*
 	bool objectOnLane = false;
 
 	lastUltraValues[ultraValueIndex] = ultraDistance;
@@ -129,7 +130,7 @@ void PrenController::checkUltraDist(int ultraDistance) {
 	sprintf(str, "UltraValue to check: %d", ultraDistance);
 	printString(str, OBJECT_FINDER, 4);
 
-	if (ultraValueIndex == 5) {
+	if (ultraValueIndex == 4) {
 		int counter = 0;
 		for (int i = 0; i < 5; i++) {
 			if (lastUltraValues[i] < prenConfig->MAX_DISTANCE_TO_OBJECT) {
@@ -159,7 +160,7 @@ void PrenController::checkUltraDist(int ultraDistance) {
 			printString("lane free", OBJECT_FINDER, 5);
 		}
 	}
-	*/
+	//*/
 }
 
 void PrenController::setFlexValue(int flexValue) {

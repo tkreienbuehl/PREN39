@@ -14,6 +14,7 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	NR_OF_IMS_FOR_CHECK_BEND = m_Controller->getPrenConfig()->NR_OF_IMS_FOR_CHECK_BEND;
 	//
 	m_PicCreator = picCreator;
+	m_waitImgCnt = 0;
 	m_State = false;
 	pthread_mutex_init(&m_mutex, NULL);
 	m_Cols = m_Rows = 0;
@@ -70,30 +71,11 @@ int RouteFinder::runProcess() {
 			edgeDetection(&grayImg, &fltImg);
 			m_GrayImg = grayImg.clone();
 			m_FinalFltImg = fltImg.clone();
-			if (i%100 == 0) {
-				char str[50];
-				bzero(str,sizeof(str));
-				sprintf(str,"image processed nr: %d",i);
-				m_Controller->printString(str, me, 5);
-			}
-			if (m_RouteCalculator->getRouteFoundState() && !m_Driving) {
-				m_Controller->setEngineSpeed(MAX_ENGINE_SPEED);
-				if (setSpeedCnt == 3) {
-					m_Driving = true;
-				}
-				else {
-					setSpeedCnt++;
-				}
-			}
-			if (m_RouteCalculator->getLineLostCnt() >= LINE_LOST_LIMIT) {
-				m_Controller->setLaneLost();
-			}
-			if (imgCnt >= NR_OF_IMS_FOR_CHECK_BEND) {
-				m_RouteCalculator->startCheckForBend();
-			}
-			else {
-				imgCnt++;
-			}
+			outPutNrOfIms(i);
+			setDriveState(setSpeedCnt);
+			checkLaneLost();
+			setBendCheck(imgCnt);
+			setCrossingSearchState(imgCnt);
         }
         else {
         	i--;
@@ -128,5 +110,55 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
 
 }
 
+void RouteFinder::outPutNrOfIms(uint imgCnt) {
+	if (imgCnt%100 == 0) {
+		char str[50];
+		bzero(str,sizeof(str));
+		sprintf(str,"image processed nr: %d",imgCnt);
+		m_Controller->printString(str, me, 5);
+	}
+}
 
+void RouteFinder::setDriveState(ushort& setSpeedCnt) {
+	if (m_RouteCalculator->getRouteFoundState() && !m_Driving) {
+		m_Controller->setEngineSpeed(MAX_ENGINE_SPEED);
+		if (setSpeedCnt == 3) {
+			m_Driving = true;
+		}
+		else {
+			setSpeedCnt++;
+		}
+	}
+}
 
+void RouteFinder::checkLaneLost() {
+	if (m_RouteCalculator->getLineLostCnt() >= LINE_LOST_LIMIT) {
+		m_Controller->setLaneLost();
+	}
+}
+
+void RouteFinder::setBendCheck(ushort& imgCnt) {
+	if (imgCnt >= NR_OF_IMS_FOR_CHECK_BEND) {
+		m_RouteCalculator->startCheckForBend();
+	}
+	else {
+		imgCnt++;
+	}
+}
+
+void RouteFinder::setCrossingSearchState(ushort imgCnt) {
+	if (imgCnt < NR_OF_IMS_FOR_CHECK_BEND) {
+		return;
+	}
+	if (m_waitImgCnt >= 1000) {
+		if (m_RouteCalculator->startCheckForCrossing()) {
+			m_waitImgCnt = 0;
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		m_waitImgCnt++;
+	}
+}
