@@ -33,13 +33,13 @@ void* ConsoleView::startThread(void* threadId) {
 }
 
 void ConsoleView::setRouteFinderText(string text, unsigned int line) {
-	pthread_mutex_lock(&m_mutex);
+	//pthread_mutex_lock(&m_mutex);
 	wclrtoeol(m_RtFinderView);
 	wborder(m_RtFinderView, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 	box(m_RtFinderView, 0, 0);
 	mvwprintw(m_RtFinderView, 1 + line, 1, text.c_str());
 	wrefresh(m_RtFinderView);
-	pthread_mutex_unlock(&m_mutex);
+	//pthread_mutex_unlock(&m_mutex);
 
 }
 
@@ -55,24 +55,24 @@ void ConsoleView::setObjectFinderText(string text, unsigned int line) {
 }
 
 void ConsoleView::setUARTStateText(string text, unsigned int line) {
-	pthread_mutex_lock(&m_mutex);
+	//pthread_mutex_lock(&m_mutex);
 	wclrtoeol(m_UARTState);
 	wborder(m_UARTState, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 	box(m_UARTState, 0, 0);
 	mvwprintw(m_UARTState, 1 + line, 1, text.c_str());
 	wrefresh(m_UARTState);
-	pthread_mutex_unlock(&m_mutex);
+	//pthread_mutex_unlock(&m_mutex);
 
 }
 
 void ConsoleView::setControllerText(string text, unsigned int line) {
-	pthread_mutex_lock(&m_mutex);
+	//pthread_mutex_lock(&m_mutex);
 	wclrtoeol(m_ControllerView);
 	wborder(m_ControllerView, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
 	box(m_ControllerView, 0, 0);
 	mvwprintw(m_ControllerView, 1 + line, 1, text.c_str());
 	wrefresh(m_ControllerView);
-	pthread_mutex_unlock(&m_mutex);
+	//pthread_mutex_unlock(&m_mutex);
 }
 
 void ConsoleView::stopProcess() {

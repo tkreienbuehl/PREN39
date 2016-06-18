@@ -18,7 +18,7 @@
 	}
 
 	bool UARTHandler::openSerialIF(const char* ifName) {
-		m_uart0_filestream = open(ifName, O_RDWR | O_NONBLOCK);	//Open in non blocking read/write mode
+		m_uart0_filestream = open(ifName, O_RDWR);	//Open in (non) blocking read/write mode
 		if (m_uart0_filestream == -1)
 		{
 			if(!m_prenConfig->IS_ON_IDE) {

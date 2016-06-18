@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 
 	handler->openSerialIF(prenConfig.IF_NAME.c_str());
 	usleep(1000);
-	if (!handler->setUartConfig(handler->FULL_SPEED)) {
+	if (!handler->setUartConfig(handler->MEDIUM)) {
 		cout << "configuration failed" << endl;
 	}
 	UARTSender* uartSender = new UARTSender(handler);
@@ -54,13 +54,6 @@ int main(int argc, char** argv) {
 		exit(-1);
 	}
 	usleep(1000000);	//wait a moment to let the camera come up
-
-	rc = pthread_create(&threads[1], NULL, RouteFinder::staticEntryPoint, rtFinder);
-	if (rc) {
-		cout << "Error:unable to create thread," << rc << endl;
-		exit(-1);
-	}
-	usleep(100);
 
 	rc = pthread_create(&threads[2], NULL, ObjectFinder::staticEntryPoint, objectFinder);
 	if (rc) {
@@ -93,23 +86,38 @@ int main(int argc, char** argv) {
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;
 	}
+
+	usleep(100);
+
+	rc = pthread_create(&threads[1], NULL, RouteFinder::staticEntryPoint, rtFinder);
+	if (rc) {
+		cout << "Error:unable to create thread," << rc << endl;
+		exit(-1);
+	}
+	usleep(100);
+
 	usleep(1000);
 
 	controller->start();
 
+	usleep(50 * 1000);
+	uartReceiver->stopReading();
+	pthread_cancel(threads[5]);
+
+	usleep(500 * 1000);
 	debugServer->stopServer();
-	usleep(1000000);
+	usleep(500 * 1000);
 	picViewer->stopViewer();
-	usleep(1000000);
+	usleep(500 * 1000);
 	objectFinder->stopProcess();
-	usleep(1000000);
+	usleep(500 * 1000);
+	pthread_cancel(threads[1]);
 
 	delete picViewer;
 	delete rtFinder;
 	delete objectFinder;
 
 	picCreator->StopRecording();
-	uartReceiver->stopReading();
 
 	usleep(5000);
 

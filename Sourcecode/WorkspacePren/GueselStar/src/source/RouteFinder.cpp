@@ -122,6 +122,7 @@ void RouteFinder::outPutNrOfIms(uint imgCnt) {
 void RouteFinder::setDriveState(ushort& setSpeedCnt) {
 	if (m_RouteCalculator->getRouteFoundState() && !m_Driving) {
 		m_Controller->setEngineSpeed(MAX_ENGINE_SPEED);
+		usleep(200 * 1000);
 		if (setSpeedCnt == 3) {
 			m_Driving = true;
 		}

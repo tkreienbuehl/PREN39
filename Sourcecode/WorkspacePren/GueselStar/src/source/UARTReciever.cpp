@@ -15,9 +15,11 @@ UARTReciever::UARTReciever(UARTHandler* handler, PrenController* controller) {
 	m_unloadDoneCmd = "StEf";
 	m_DCengCmd = "DCDr";
 	m_Controller = controller;
+	m_Logger = UARTLogger::getInstance("uartLog.log");
 }
 
 UARTReciever::~UARTReciever() {
+	UARTLogger::releaseInstance();
 }
 
 void UARTReciever::startRecording() {
@@ -32,41 +34,18 @@ void UARTReciever::stopReading() {
 
 void UARTReciever::readAndPlotData() {
 
+	unsigned char rx_buffer[512];
 	while(m_active) {
 			//----- CHECK FOR ANY RX BYTES -----
-		//cout << "reading..." << endl;
 		if (m_uart0_filestream != -1) {
-			unsigned char rx_buffer[256];
-			unsigned char rchar[1];
-			int i = 0;
-			rchar[0] = 'x';
-			for (int i = 0; i<256; i++) {
-				rx_buffer[i] = 'x';
-			}
-			while (rchar[0] != '\n') {
-				if (i== 255) {
-					i=0;
+			bzero(rx_buffer,sizeof(rx_buffer));
+			int rx_length = read(m_uart0_filestream, rx_buffer, sizeof(rx_buffer));
+			if (rx_length > 0 ) {
+				string str(reinterpret_cast<const char*>(rx_buffer));
+				if (str.length() > 0) {
+					m_Logger->logMessage(str, m_Logger->RECEIVER);
+					decodeRecievedString(str);
 				}
-				int rx_length = read(m_uart0_filestream, (void*)rchar, 1);		//Filestream, buffer to store in, number of bytes to read (max)
-				if (rx_length < 0) {
-					//An error occured (will occur if there are no bytes)
-				}
-				else if (rx_length == 0) {
-					//No data waiting
-				}
-				else {
-					//Bytes received
-					if (rchar[0] != '\r' && rchar[0] != '\n') {
-						rx_buffer[i] = rchar[0];
-						i++;
-					}
-
-				}
-			}
-			if (i > 0) {
-				rx_buffer[i] = '\0';
-				std::string str(reinterpret_cast<const char*>(rx_buffer));
-				decodeRecievedString(str);
 			}
 		}
 	}
@@ -88,7 +67,6 @@ void UARTReciever::decodeRecievedString(std::string message) {
 		m_Controller->printString(message, m_Controller->UART_COMM, 1);
 		m_Controller->setState(m_Controller->END);
 	}
-	// TODO: EngineSpeed
 }
 
 void UARTReciever::decodeUnknownCommandError(std::string message) {
@@ -115,7 +93,6 @@ void UARTReciever::decodeFlexValue(std::string message) {
 	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 
-
 void UARTReciever::decodeStillThere(std::string message) {
 	m_Controller->responseStillThere();
 }
@@ -126,7 +103,6 @@ void* UARTReciever::staticEntryPoint(void* threadId) {
 }
 
 uint8_t UARTReciever::getFlexDistance() {
-
 	return m_FlexDistance;
 }
 uint8_t UARTReciever::getEngineSpeed() {

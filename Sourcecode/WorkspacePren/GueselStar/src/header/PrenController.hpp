@@ -33,8 +33,8 @@ public:
 
 	enum CameraStatesE {
 		CAM_STRAIGHT = 120,
-		CAM_TURN_LEFT = 130,
-		CAM_TURN_RIGHT = 86,
+		CAM_TURN_LEFT = 140,
+		CAM_TURN_RIGHT = 78,
 		CAM_CHECK_STREET = 50
 	};
 

@@ -43,8 +43,8 @@ void PrenController::setState(const states state) {
 
 void PrenController::runProgram() {
 
-	uartSender->sendStopCmd();
-	usleep(10000);
+	//uartSender->sendStopCmd();
+	usleep(20 * 1000);
 	uartSender->sendStartCmd();
 
 	while (m_State != END) {
@@ -122,7 +122,7 @@ void PrenController::setVehicleInCrossing(bool found) {
 }
 
 void PrenController::checkUltraDist(int ultraDistance) {
-	///*
+	/*
 	bool objectOnLane = false;
 
 	lastUltraValues[ultraValueIndex] = ultraDistance;
@@ -160,7 +160,7 @@ void PrenController::checkUltraDist(int ultraDistance) {
 			printString("lane free", OBJECT_FINDER, 5);
 		}
 	}
-	//*/
+	*/
 }
 
 void PrenController::setFlexValue(int flexValue) {
