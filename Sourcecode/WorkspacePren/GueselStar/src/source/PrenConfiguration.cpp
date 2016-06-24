@@ -50,8 +50,10 @@ PrenConfiguration::PrenConfiguration() {
 		ROUTE_POS_CORR_VAL = parser.readIntParam("ROUTE_POS_CORR_VAL");
 		CAM_ANG_CORR_VAL = parser.readUShortParam("CAM_ANG_CORR_VAL");
 		NR_OF_IMS_FOR_CHECK_BEND = parser.readUShortParam("NR_OF_IMS_FOR_CHECK_BEND");
-		SLOPE_VAL_FOR_BEND = parser.readFloatParam("SLOPE_VAL_FOR_BEND");
-		SLOPE_VAL_FOR_STRAIGHT = parser.readFloatParam("SLOPE_VAL_FOR_STRAIGHT");
+		SLOPE_VAL_FOR_BEND_LEFT = parser.readFloatParam("SLOPE_VAL_FOR_BEND_LEFT");
+		SLOPE_VAL_FOR_STRAIGHT_LEFT = parser.readFloatParam("SLOPE_VAL_FOR_STRAIGHT_LEFT");
+		SLOPE_VAL_FOR_BEND_RIGHT = parser.readFloatParam("SLOPE_VAL_FOR_BEND_LEFT");
+		SLOPE_VAL_FOR_STRAIGHT_RIGHT = parser.readFloatParam("SLOPE_VAL_FOR_STRAIGHT_LEFT");
 }
 
 PrenConfiguration::~PrenConfiguration() {

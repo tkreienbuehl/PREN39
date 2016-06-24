@@ -20,8 +20,10 @@ RouteCalculation::RouteCalculation(PrenController* controller) {
 	MAX_PIX_DIFF = m_Controller->getPrenConfig()->MAX_PIX_DIFF;
 	CAM_ANG_CORR_VAL = m_Controller->getPrenConfig()->CAM_ANG_CORR_VAL;
 	CAM_POS_CHANGE_LIMIT = m_Controller->getPrenConfig()->CAM_POS_CHANGE_LIMIT;
-	SLOPE_VAL_FOR_BEND = m_Controller->getPrenConfig()->SLOPE_VAL_FOR_BEND;
-	SLOPE_VAL_FOR_STRAIGHT = m_Controller->getPrenConfig()->SLOPE_VAL_FOR_STRAIGHT;
+	SLOPE_VAL_FOR_BEND_LEFT = m_Controller->getPrenConfig()->SLOPE_VAL_FOR_BEND_LEFT;
+	SLOPE_VAL_FOR_STRAIGHT_LEFT = m_Controller->getPrenConfig()->SLOPE_VAL_FOR_STRAIGHT_LEFT;
+	SLOPE_VAL_FOR_BEND_RIGHT = m_Controller->getPrenConfig()->SLOPE_VAL_FOR_BEND_RIGHT;
+	SLOPE_VAL_FOR_STRAIGHT_RIGHT = m_Controller->getPrenConfig()->SLOPE_VAL_FOR_STRAIGHT_RIGHT;
 	//
 	m_RouteCalc = NULL;
 }
@@ -122,7 +124,8 @@ void RouteCalculation::lineFilter(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines
 		cv::Vec4i l = leftLines[i];
 		int slope = (l[3] - l[1]) / (l[2] - l[0]);
 		if ( (slope > 0 && m_leftSidePositiveSlope) || (slope < 0 && !m_leftSidePositiveSlope)) {
-			if (l[0] >= lowerLeftMax && l[2] >= upperLeftMax) {
+			//if (l[0] >= lowerLeftMax && l[2] >= upperLeftMax) {
+			if (l[2] >= upperLeftMax) {
 				lowerLeftMax = l[0];
 				upperLeftMax = l[2];
 				usedLinesLeft.push_back(l);
@@ -256,11 +259,11 @@ void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& 
 			m_Controller->setCameraPos(m_Controller->CAM_TURN_LEFT);
 			m_CamPos = m_Controller->CAM_TURN_LEFT;
 		}
-		else if (m_CamPos == m_Controller->CAM_TURN_RIGHT && (lRtState == STRAIGHT || rRtState == STRAIGHT)) {
+		else if (m_CamPos == m_Controller->CAM_TURN_RIGHT && lRtState == STRAIGHT) {
 			m_Controller->setCameraPos(m_Controller->CAM_STRAIGHT);
 			m_CamPos = m_Controller->CAM_STRAIGHT;
 		}
-		else if (m_CamPos == m_Controller->CAM_TURN_LEFT && (lRtState == STRAIGHT || rRtState == STRAIGHT)) {
+		else if (m_CamPos == m_Controller->CAM_TURN_LEFT && rRtState == STRAIGHT) {
 			m_Controller->setCameraPos(m_Controller->CAM_STRAIGHT);
 			m_CamPos = m_Controller->CAM_STRAIGHT;
 		}
@@ -278,7 +281,7 @@ void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& 
 	}
 	else if (m_CamPos == m_Controller->CAM_TURN_LEFT) {
 		//m_Controller->printString("CAM-State: CAM_TURN_LEFT", me, 14);
-		m_DistCorrAng = CAM_ANG_CORR_VAL/8;
+		m_DistCorrAng = -CAM_ANG_CORR_VAL;
 	}
 	sprintf(str,"Cam position change counter: %d", m_CamPosCorrCnt);
 	m_Controller->printString(str, me, 15);
@@ -286,7 +289,7 @@ void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& 
 
 RouteCalculation::routeVals RouteCalculation::checkLeftRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines,
 		float& xDist, float& yDist, ushort textStartPos) {
-	//char str[40];
+	char str[40];
 	float slope = -100;
 	if (lines.size()>0) {
 		xDist = lines[0][2] - lines[0][0];
@@ -300,14 +303,14 @@ RouteCalculation::routeVals RouteCalculation::checkLeftRouteLimit(cv::Mat* edgeI
 		//sprintf(str,"X: %.2f , Y: %.2f", xDist, yDist);
 		//putText(*edgeImg, str, cv::Point(textStartPos, 50), cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255));
 		//m_Controller->printString(str, me, 16);
-		//sprintf(str,"Slope: %.2f", slope);
-		//m_Controller->printString(str, me, 17);
-		if (abs(slope) < SLOPE_VAL_FOR_BEND) {
+		sprintf(str,"Slope: %.2f", slope);
+		m_Controller->printString(str, me, 17);
+		if (abs(slope) < SLOPE_VAL_FOR_BEND_LEFT) {
 			m_CamPosCorrCnt++;
 			//m_Controller->printString("View line slope min Limit reached", me, 18);
 			return BEND_RIGHT;
 		}
-		if (abs(slope) > SLOPE_VAL_FOR_STRAIGHT) {
+		if (abs(slope) > SLOPE_VAL_FOR_STRAIGHT_LEFT) {
 			m_CamPosCorrCnt++;
 			//m_Controller->printString("View line slope max Limit reached", me, 18);
 			return STRAIGHT;
@@ -338,12 +341,12 @@ RouteCalculation::routeVals RouteCalculation::checkRightRouteLimit(cv::Mat* edge
 		//m_Controller->printString(str, me, 16);
 		//sprintf(str,"Slope: %.2f", slope);
 		//m_Controller->printString(str, me, 17);
-		if (abs(slope) < SLOPE_VAL_FOR_BEND) {
+		if (abs(slope) < SLOPE_VAL_FOR_BEND_RIGHT) {
 			m_CamPosCorrCnt++;
 			//m_Controller->printString("View line slope min Limit reached", me, 18);
 			return BEND_LEFT;
 		}
-		if (abs(slope) > SLOPE_VAL_FOR_STRAIGHT) {
+		if (abs(slope) > SLOPE_VAL_FOR_STRAIGHT_RIGHT) {
 			m_CamPosCorrCnt++;
 			//m_Controller->printString("View line slope max Limit reached", me, 18);
 			return STRAIGHT;

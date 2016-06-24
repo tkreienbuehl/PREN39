@@ -29,10 +29,17 @@ private:
 
 	int connectToServer(string ipAddr);
 	int sendMessageRecieveImage(string* message);
-	void getFilteredImageFromServer(cv::Mat& img);
-	void getGrayImageFromServer(cv::Mat& img);
+
+	void getDummy();
+
+	cv::Mat getFilteredImageFromServer();
+	cv::Mat getGrayImageFromServer();
+	cv::Mat getObjectImageFromServer();
 
 	static const short PORT_TO_PI = 14001;
 	int m_socketForward;
+
+	cv::Mat m_GrayImg, m_FltImg, m_ObjectImg;
+	string m_Dummy;
 
 };

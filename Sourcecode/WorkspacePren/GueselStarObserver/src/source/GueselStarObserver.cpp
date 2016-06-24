@@ -7,8 +7,9 @@ int main(int argc, char** argv) {
 }
 
 GueselStarObserver::GueselStarObserver() {
-	connectToServer("10.10.0.1");
-	//connectToServer("127.0.0.1");
+	//connectToServer("10.10.0.1");
+	connectToServer("127.0.0.1");
+	m_Dummy = "  dummy string zum buffern  \0";
 }
 
 GueselStarObserver::~GueselStarObserver() {
@@ -45,7 +46,7 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 		cout << "ERROR connecting" << endl;
 	}
 	cout << "connected to server" << endl;
-	usleep(100000);
+	//usleep(100 * 1000);
 
 	string message;
 
@@ -61,10 +62,10 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 			message = "getFilteredImage";
 			break;
 		case 1:
-			//message = "getObjectImage";
+			message = "getObjectImage";
 			break;
 		case 2:
-			message = "getGrayImage";
+			//message = "getGrayImage";
 			break;
 		}
 		if (selector == 2) {
@@ -73,7 +74,7 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 		else {
 			selector++;
 		}
-		usleep(100000);
+		//usleep(1 * 1000);
 		if (sendMessageRecieveImage(&message) < 0) {
 			cout << "Connection aborted" << endl;
 			close(m_socketForward);
@@ -97,64 +98,62 @@ int GueselStarObserver::sendMessageRecieveImage(string* message) {
 		cout << "ERROR writing to socket" << endl;
 		return -1;
 	}
-	//usleep(1000);
-	if (message->find("getFilteredImage") != message->npos) {
-		getFilteredImageFromServer(fltImg);
+	if (message->find("dummy") != message->npos) {
+
+	}
+	else if (message->find("getFilteredImage") != message->npos) {
+		fltImg = getFilteredImageFromServer().clone();
+		cv::resize(fltImg,m_FltImg,m_FltImg.size(),2.0,2.0,cv::INTER_LANCZOS4);
 		if (!fltImg.empty()) {
-			cv::imshow("The filtered Image", fltImg);
-			cv::waitKey(10);
+			cv::imshow("The filtered Image", m_FltImg);
+			cv::waitKey(1);
 		}
 	}
 	else if (message->find("getObjectImage") != message->npos) {
+		objImg = getObjectImageFromServer().clone();
+		cv::resize(objImg,m_ObjectImg,m_ObjectImg.size(),2.0,2.0,cv::INTER_LANCZOS4);
+		if (!objImg.empty()) {
+			cv::imshow("The object Image", m_ObjectImg);
+			cv::waitKey(1);
+		}
 	}
 	else if (message->find("getGrayImage") != message->npos) {
-		getGrayImageFromServer(grayImg);
+		grayImg = getGrayImageFromServer().clone();
+		cv::resize(grayImg,m_GrayImg,m_GrayImg.size(),2.0,2.0,cv::INTER_LANCZOS4);
 		if (!grayImg.empty()) {
-			cv::imshow("The gray Image", grayImg);
-			cv::waitKey(10);
+			cv::imshow("The gray Image", m_GrayImg);
+			cv::waitKey(1);
 		}
 	}
 	message->clear();
 	return 0;
 }
 
-void GueselStarObserver::getFilteredImageFromServer(cv::Mat& img) {
+void GueselStarObserver::getDummy() {
+	int size = m_Dummy.length();
+	char sockData[size];
 
-	int height = 240, width = 320;
-	img = cv::Mat::zeros( height, width, CV_8UC1);
-	int  imgSize = img.total()*img.elemSize();
-	//cout << imgSize << endl;
-	uchar sockData[imgSize];
-
-	for (int i = 0; i < imgSize; i += imgSize) {
-		if ((imgSize = recv(m_socketForward, sockData+i, imgSize-i, 0)) == -1) {
-			cout << "ERROR" << endl;
-		}
+	if ((size = recv(m_socketForward, sockData, size, MSG_WAITALL)) == -1) {
+		cout << "ERROR" << endl;
 	}
 
-	int ptr=0;
-	for (int i = 0;  i < img.rows; i++) {
-		for (int j = 0; j < img.cols; j++) {
-			img.at<uchar>(i,j) = sockData[ptr];
-			ptr++;
-		}
-	}
+	char buffer[256];
+	recv(m_socketForward,buffer, sizeof(buffer), MSG_DONTWAIT);
 
 }
 
-void GueselStarObserver::getGrayImageFromServer(cv::Mat& img) {
+cv::Mat GueselStarObserver::getFilteredImageFromServer() {
 
 	int height = 240, width = 320;
-	img = cv::Mat::zeros( height, width, CV_8UC1);
+	cv::Mat img = cv::Mat::zeros( height, width, CV_8UC1);
 	int  imgSize = img.total()*img.elemSize();
 	//cout << imgSize << endl;
 	uchar sockData[imgSize];
 
-	for (int i = 0; i < imgSize; i += imgSize) {
-		if ((imgSize = recv(m_socketForward, sockData+i, imgSize-i, 0)) == -1) {
-			cout << "ERROR" << endl;
-		}
+	if ((imgSize = recv(m_socketForward, sockData, imgSize, MSG_WAITALL)) == -1) {
+		cout << "ERROR" << endl;
 	}
+
 	int ptr=0;
 	for (int i = 0;  i < img.rows; i++) {
 		for (int j = 0; j < img.cols; j++) {
@@ -162,6 +161,58 @@ void GueselStarObserver::getGrayImageFromServer(cv::Mat& img) {
 			ptr++;
 		}
 	}
+
+	return img;
+}
+
+cv::Mat GueselStarObserver::getGrayImageFromServer() {
+
+	int height = 240, width = 320;
+	cv::Mat img = cv::Mat::zeros( height, width, CV_8UC1);
+	int  imgSize = img.total()*img.elemSize();
+	//cout << imgSize << endl;
+	uchar sockData[imgSize];
+
+	if ((imgSize = recv(m_socketForward, sockData, imgSize, MSG_DONTWAIT)) == -1) {
+		cout << "ERROR" << endl;
+	}
+
+	int ptr=0;
+	for (int i = 0;  i < img.rows; i++) {
+		for (int j = 0; j < img.cols; j++) {
+			img.at<uchar>(i,j) = sockData[ptr];
+			ptr++;
+		}
+	}
+
+	return img;
+
+}
+
+cv::Mat GueselStarObserver::getObjectImageFromServer() {
+
+	int height = 240, width = 320 >> 1;
+	cv::Mat img = cv::Mat::zeros( height, width, CV_8UC3);
+	int  imgSize = img.total()*img.elemSize();
+	//cout << imgSize << endl;
+	uchar sockData[imgSize];
+
+	if ((imgSize = recv(m_socketForward, sockData, imgSize, MSG_WAITALL)) == -1) {
+		cout << "ERROR" << endl;
+	}
+
+	int ptr=0;
+	for (int i = 0;  i < img.rows; i++) {
+		for (int j = 0; j < img.cols; j++) {
+			img.at<cv::Vec3b>(i,j) = cv::Vec3b(sockData[ptr+ 0],sockData[ptr+1],sockData[ptr+2]);;
+			ptr += 3;
+		}
+	}
+
+	char buffer[256];
+	recv(m_socketForward,buffer, sizeof(buffer), MSG_DONTWAIT);
+
+	return img;
 
 }
 

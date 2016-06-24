@@ -269,7 +269,7 @@ void ObjectFinder::detectObjectAtCrossing() {
 
 cv::Mat ObjectFinder::getImage() {
 	pthread_mutex_lock(&m_mutex);
-	cv::Mat retImg = m_MarkedImage;
+	cv::Mat retImg = m_MarkedImage.clone();
 	pthread_mutex_unlock(&m_mutex);
 	return retImg;
 }

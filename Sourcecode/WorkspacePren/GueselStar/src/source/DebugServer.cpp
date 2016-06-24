@@ -4,6 +4,8 @@ DebugServer::DebugServer(RouteFinder* rtFinder, ObjectFinder* objectFinder) {
 	m_running = true;
 	m_rtFinder = rtFinder;
 	m_objectFinder = objectFinder;
+	pthread_mutex_init(&m_mutex, NULL);
+	m_Dummy = "  dummy string zum buffern  \0";
 }
 
 DebugServer::~DebugServer() {
@@ -67,13 +69,17 @@ void DebugServer::requestHandler(int newSocketfd) {
 
 	while (m_running) {
 		bzero(buffer,50);
-		int n = read(newSocketfd, buffer, 49);
+		pthread_mutex_lock(&m_mutex);
+		int n = recv(newSocketfd, buffer, 50, 0);
 		if (n < 0) {
 			//cout << "ERROR reading from socket" << endl;
 		}
 		string message(buffer);
 		if (message.find("end connection") != message.npos) {
 			m_running = false;
+		}
+		else if (message.find("dummy") != message.npos) {
+				prepareAndSendDummy(newSocketfd);
 		}
 		else if (message.find("getFilteredImage") != message.npos) {
 			cv::Mat image = m_rtFinder->getFilteredImage();
@@ -84,7 +90,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 		else if (message.find("getObjectImage") != message.npos) {
 			cv::Mat image = m_objectFinder->getImage();
 			if (!image.empty()) {
-				//prepareAndSendImage(newSocketfd, image);
+				prepareAndSendColorImage(newSocketfd, &image);
 			}
 		}
 		else if (message.find("getGrayImage") != message.npos) {
@@ -95,7 +101,7 @@ void DebugServer::requestHandler(int newSocketfd) {
 		}
 		else {
 			string msg = "I got your message, but i dont't understand";
-			n = write(newSocketfd, msg.c_str(), msg.length());
+			n = send(newSocketfd, msg.c_str(), msg.length(), 0);
 			if (n < 0) {
 				//cout << "ERROR writing to socket" << endl;
 			}
@@ -104,7 +110,17 @@ void DebugServer::requestHandler(int newSocketfd) {
 
 		//cout << message << endl;
 		message.clear();
+		pthread_mutex_unlock(&m_mutex);
 	}
+}
+
+void DebugServer::prepareAndSendDummy(int socketfd) {
+
+	int bytes = send(socketfd, m_Dummy.c_str(), m_Dummy.length(), 0);
+	if (bytes < 0) {
+		cout << "ERROR writing to socket" << endl;
+	}
+
 }
 
 void DebugServer::prepareAndSendImage(int socketfd, cv::Mat* image) {
@@ -114,6 +130,20 @@ void DebugServer::prepareAndSendImage(int socketfd, cv::Mat* image) {
 	int  imgSize = image->total()*image->elemSize();
 
 	int bytes = send(socketfd, image->data, imgSize, 0);
+	if (bytes < 0) {
+		cout << "ERROR writing to socket" << endl;
+	}
+
+}
+
+void DebugServer::prepareAndSendColorImage(int socketfd, cv::Mat* image) {
+
+	cv::Mat lImg = image->clone();
+	lImg = (lImg.reshape(0,1)); // to make it continuous
+
+	int  imgSize = lImg.total()*lImg.elemSize();
+
+	int bytes = send(socketfd, lImg.data, imgSize, 0);
 	if (bytes < 0) {
 		cout << "ERROR writing to socket" << endl;
 	}
