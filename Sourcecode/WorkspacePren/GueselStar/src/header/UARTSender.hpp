@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UARTHandler.hpp"
-#include "UARTLogger.hpp"
+#include "UARTSenderLogger.hpp"
 
 using namespace std;
 
@@ -34,6 +34,6 @@ private:
 	UARTHandler m_handler;
 	int m_uart0_filestream;
 	pthread_mutex_t m_mutex;
-	UARTLogger* m_Logger;
+	UARTSenderLogger* m_Logger;
 
 };

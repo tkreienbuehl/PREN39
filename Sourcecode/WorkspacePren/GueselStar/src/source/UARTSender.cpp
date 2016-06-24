@@ -3,11 +3,11 @@
 UARTSender::UARTSender(UARTHandler* handler) {
 	m_uart0_filestream = handler->getFileStream();
 	pthread_mutex_init(&m_mutex, NULL);
-	m_Logger = UARTLogger::getInstance("uartLog.log");
+	m_Logger = UARTSenderLogger::getInstance("uartSendLog.log");
 }
 
 UARTSender::~UARTSender() {
-	UARTLogger::releaseInstance();
+	UARTSenderLogger::releaseInstance();
 }
 
 bool UARTSender::sendStartCmd() {

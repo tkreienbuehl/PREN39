@@ -15,11 +15,11 @@ UARTReciever::UARTReciever(UARTHandler* handler, PrenController* controller) {
 	m_unloadDoneCmd = "StEf";
 	m_DCengCmd = "DCDr";
 	m_Controller = controller;
-	m_Logger = UARTLogger::getInstance("uartLog.log");
+	m_Logger = UARTReceiverLogger::getInstance("uartReceiveLog.log");
 }
 
 UARTReciever::~UARTReciever() {
-	UARTLogger::releaseInstance();
+	UARTReceiverLogger::releaseInstance();
 }
 
 void UARTReciever::startRecording() {

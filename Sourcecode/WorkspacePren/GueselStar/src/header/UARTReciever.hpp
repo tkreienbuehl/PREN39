@@ -2,7 +2,7 @@
 
 #include "UARTHandler.hpp"
 #include "PrenController.hpp"
-#include "UARTLogger.hpp"
+#include "UARTReceiverLogger.hpp"
 
 using namespace std;
 
@@ -36,6 +36,6 @@ private:
 	std::string m_startCmd, m_ultraCmd, m_camCmd, m_debug, m_flex1Cmd, m_ContDoneCmd;
 	std::string m_unloadDoneCmd, m_DCengCmd;
 	PrenController* m_Controller;
-	UARTLogger* m_Logger;
+	UARTReceiverLogger* m_Logger;
 
 };
