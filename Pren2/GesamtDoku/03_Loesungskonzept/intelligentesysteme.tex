@@ -24,9 +24,9 @@ Der Controller behandelt alle Anweisungen der Prozesse. Meldet beispielsweise di
 \caption{Komponentendiagramm}
 \end{figure}
 Damit keine zyklischen Abhängigkeiten enstehen, wurde entschieden, dass ein Oberserver nach dem Observer-Entwurfsmusster (GoF) implementiert wird. Normalerweise senden der RouteFinder und der ObjectFinder die Informationen an den Controller. Beim Eintreffen an der Kreuzung zum Beispiel, muss aber der Controller Informationen an den ObjectFinder senden. Diese Informationen werden über den ObjectStateObserver gesendent, wobei sich der ObjectFinder zuerst beim Controller als Observer registrieren muss.
-
+\\[0.2cm]
 \textbf{Debug-View}\\[0.2cm]
-Um während der Implementierungs-Phase der geschriebene Code zu testen wurde eine Debug-View entwickelt. Mit dieser kann auf den Debug-Server, welcher auf dem Raspberry Pi gestartet wird, zugegriffen werden. Nach einer erfolgreichen Verbindung werden die aufgenommenen Bilder vom Server an den Client (GueselStarObserver) gesendet.
+Um während der Implementierungs-Phase den geschriebenen Code zu testen wurde eine Debug-View entwickelt. Mit dieser kann auf den Debug-Server, welcher auf dem Raspberry Pi gestartet wird, zugegriffen werden. Nach einer erfolgreichen Verbindung werden die aufgenommenen Bilder vom Server an den Client (GueselStarObserver) gesendet. So kann während dem Fahren verfolgt werden, wie die Software die aufenommenen Bilder verarbeitet.
 
 \begin{figure}[H]
 \centering
@@ -37,9 +37,9 @@ Um während der Implementierungs-Phase der geschriebene Code zu testen wurde ein
 Die Kommunikation zwischen Server und Client läuft über TCP/IP. Auf dem Server wird ein Server-Socket geöffnet, auf welches sich der Client verbinden kann.
 
 Zusätzlich werden über die Konsole der SSH-Verbindung Werte ausgegeben. Dazu wurde die Bibliothek ncurses verwendet, welche es ermöglicht Daten schön übersichtlich und gruppiert darzustellen.
-
+\\[0.2cm]
 \textbf{Konfiguration}\\[0.2cm]
-Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, welcher Zeit benötigt, zu unterbinden wurde eine Konfigurations-Datei erstellt, in welcher alle benötigten Parameter angepasst werden können. Das Einlesen der Konfiguration erfolgt über einen selbstentwickelten Parser und wird anschliessend in einem Objekt der Klasse "{}PRENConfiguration"{} abgespeichert.
+Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, welcher Zeit benötigt, zu unterbinden wurde eine Konfigurations-Datei erstellt, in welcher alle beliebigen Parameter angepasst werden können. Das Einlesen der Konfiguration erfolgt über einen selbstentwickelten Parser und wird anschliessend in einem Objekt der Klasse "{}PRENConfiguration"{} abgespeichert.
 
 \begin{figure}[H]
 \centering
@@ -48,7 +48,8 @@ Neu geschriebener Code benötigt einen erneuten Build. Um einen neuen Build, wel
 \end{figure}
 
 \textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
-Die Planung der Softwarearchitektur war nach Pren1 noch nicht weit fortgeschritten, daher wurden die meisten Entscheidungen erst in Pren2 getroffen. Die parallelisierte Ausführung der Threads "{}Fahrbahnerkennung"{}, "{}Objekterkennung"{} und "{}Bilderzeugung"{} wurde beibehalten, jedoch kamen noch einige Threads, wie die Klassen für die UART-Kommunikation dazu.
+Die Planung der Softwarearchitektur war nach Pren1 noch nicht weit fortgeschritten, daher wurden die meisten Entscheidungen erst in Pren2 getroffen. Die parallelisierte Ausführung der Threads "{}Fahrbahnerkennung"{}, "{}Objekterkennung"{} und "{}Bilderzeugung"{} wurde beibehalten, jedoch kamen noch einige Threads, wie die Klassen für die UART-Kommunikation,  dazu.
+\newpage
  
 %***************************
 \subsubsection{Software auf Mikrocontrollerboard}
@@ -62,11 +63,12 @@ Hier eine Übersicht der Tasks und Events:
 	\includegraphics[width=0.9\textwidth]{03_Loesungskonzept/pictures/MC_Tasks.png}
 	\caption{Übersicht MC Tasks}
 \end{figure}
-In den folgenden Abschnitten werden kurz auf die einzelnen Tasks und Events eingegangen. Dies dient jedoch nur der Übersicht.\\
-\textbf{Controller}\\[0.2cm]
-Dieser Task steuert das Freedomboard. Das heisst konkret, dass dieser Task das initialisieren, fahren, aufladen, entladen  und beenden des Programmes zuständg ist. Dies ist über eine FineState Maschiene realisiert, welche bei besonderen Events den State wechselt. Ein besonderer Event ist zum Beispiel das Startkommando über die Kommunikation oder eine Unterspannung am Akku.\\[0.2cm]
+In den folgenden Abschnitten wird kurz auf die einzelnen Tasks und Events eingegangen. Dies dient jedoch nur der Übersicht.
+\\[0.2cm]\textbf{Controller}\\[0.2cm]
+Dieser Task steuert das Freedomboard. Das heisst konkret, dass dieser Task das initialisieren, fahren, aufladen, entladen  und beenden des Programmes zuständg ist. Dies ist über eine FineState Maschine realisiert, welche bei besonderen Events den State wechselt. Ein besonderer Event ist zum Beispiel das Startkommando über die Kommunikation oder eine Unterspannung am Akku.\\[0.2cm]
 \textbf{Kommunikation}\\[0.2cm]
 Dieser Task übernimmt die Auswertung der erhaltenen Kommandos über die UART Schnittstelle. Dies geschieht über eine sogenannte Parsertabelle. In dieser Parsertabelle können beliebig weitere Kommandos (Funktionen) hinzugefügt werden. Dieser Task wird alle 10ms aufgerufen, da die Kommunikation mit dem Raspberry Pi möglichst schnell funktionieren soll.\\[0.2cm]
+\newpage
 \textbf{Analog-Digitalwandlung}\\[0.2cm]
 Dieser Task holt und verarbeitet die Daten aus dem Analog Digitalwandler des KL25Z. Das heisst konkret, es werden beide Akku Spannungen ausgelesen und überwacht. Zudem wird der Widerstandswert des Flexsensensors eingelesen und damit der Abstand zum Gehsteig berechnet. Zur Akkuüberwachung folgen weiter im Text weitere Informationen.\\[0.2cm]
 \textbf{Geschwindigkeitsregelung}\\[0.2cm]
@@ -80,22 +82,23 @@ Hier wird die Akkuspannung und der Flexsensorwert eingelesen und verarbeitet. We
 \textbf{Event}\\[0.2cm]
 Die Events treten unregelmäßig und ungeplant auf. Diese unterbrechen das normale Programm (Interrupt) und führen einen eigenen kurzen Programmcode aus. Dies ist bei den im Bild aufgeführten Funktionen der Fall.\\[0.2cm]
 \textbf{Die Konfigurationsdatei}\\[0.2cm]
-Damit einzelne Komponenten des Fahrzeuges getestet werden konnten, mussten teilweise andere Fahrzeugkomponenten ausgeschaltet werden. Zum Beispiel als das Aufladen des Containers getestet werden sollte, wollte man nicht noch das Anfahren testen. Aus diesem Grund ist das File config.h entstanden. Darin lassen sich einzelne Baugruppen und Funktionen des Programmes effizient ein oder ausschalten. Dieses System hat sich als sehr nützlich erwiesen und ist sehr wichtig für die Funktion des Fahrzeuges.\\[0.2cm]
+Damit einzelne Komponenten des Fahrzeuges getestet werden konnten, mussten teilweise andere Fahrzeugkomponenten ausgeschaltet werden. Zum Beispiel als das Aufladen des Containers getestet werden sollte, wollte man nicht noch das Anfahren testen. Aus diesem Grund ist das File config.h entstanden. Darin lassen sich einzelne Baugruppen und Funktionen des Programmes effizient ein- oder ausschalten. Dieses System hat sich als sehr nützlich erwiesen und ist sehr wichtig für die Funktion des Fahrzeuges.\\[0.2cm]
 \textbf{Das Debuggen und Fehlersuchen}\\[0.2cm]
-Ein grosser Vorteil am Freedomboard ist die Möglichkeit zum Debuggen. Dies war einerseits über die normale Entwicklungsumgebung Kinetis möglich. Andererseits war dies auch durch den SystemViewer möglich. Damit man dieses Tool nutzen kann, ist es nötig den Debugger von der Firma Segger zu brauchen. Mit diesem Tool kann analysiert werden, wie viel und wie lange ein Task aktiv ist. Diese Tool half dabei, schwierige Fehler im Taskhandling zu finden. Eine Anleitung dazu findet sich auch auf mcuoneclipse.com.\\[0.2cm]
+Ein grosser Vorteil am Freedomboard ist die Möglichkeit zum Debuggen. Dies war einerseits über die normale Entwicklungsumgebung Kinetis möglich. Andererseits war dies auch durch den SystemViewer möglich. Damit man dieses Tool nutzen kann, ist es nötig den Debugger von der Firma Segger zu brauchen. Mit diesem Tool kann analysiert werden, wie viel und wie lange ein Task aktiv ist. Dieses Tool half dabei, schwierige Fehler im Taskhandling zu finden. Eine Anleitung dazu findet sich auch auf mcuoneclipse.com.\\[0.2cm]
 \textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
-Die Software wurde grösstenteils so implementiert, wie dies im Pren1 geplant war. Die einzigen Unterschiede zwischen dem Konzept und der Umsetzung liegen in der Zusammenführung verschiedener Tasks. So wurde die Tasks Akkuüberwachung und Trottoirabstand zu dem Task Analogdigitalwandlung zusammengeführt. Dies weil so das Programm effizienter gemacht werden konnte. Zudem wurde der Task Stellelementesteuerung nicht als Task, sondern als Event realisiert. Dies weil zum Beispiel das neue Stellen eines Servos immer eine eingabe erfordert und somit ein Event viel sinnvoller ist als polling. 
+Die Software wurde grösstenteils so implementiert, wie dies im Pren1 geplant war. Die einzigen Unterschiede zwischen dem Konzept und der Umsetzung liegen in der Zusammenführung verschiedener Tasks. So wurden die Tasks Akkuüberwachung und Trottoirabstand zu dem Task Analogdigitalwandlung zusammengeführt. Dies weil so das Programm effizienter gemacht werden konnte. Zudem wurde der Task Stellelementesteuerung nicht als Task, sondern als Event realisiert. Dies weil zum Beispiel das neue Stellen eines Servos immer eine Eingabe erfordert und somit ein Event viel sinnvoller ist als Polling. 
 %***************************
 \subsubsection{Schnittstellen}
 \textbf{UART Schnittstelle}\\[0.2cm]
 Aufgabe der UART Schnittstelle ist es, die Kommunikation zwischen Minicomputer und Mikrocontroller sicherzustellen. Dazu gehören folgende Aufgaben
 \begin{itemize}
 \item Austausch der Sensorwerte für die Regelkreise.
-\item Definierte Kommandos um die Aktoren anzusteuern.
+\item Definierte Kommandos, um die Aktoren anzusteuern.
 \end{itemize}
 \textbf{Architektur und Designentscheide}\\[0.2cm]
-Um den Datenfluss einfach zu halten, werden Sensorwerte periodisch vom Freedom Board an das Raspberry Pi übertragen. Die Klasse \code{UARTReciever} ist entsprechend als Thread realisiert entschlüsselt den empfangenen String und schreibt den Wert auf entsprechende Member-Variabeln. Diese können über Funktionsgerechte Get-Methoden abgefragt werden.\\
+Um den Datenfluss einfach zu halten, werden Sensorwerte periodisch vom Freedom Board an das Raspberry Pi übertragen. Die Klasse \code{UARTReciever} ist entsprechend als Thread realisiert, entschlüsselt den empfangenen String und schreibt den Wert auf entsprechende Member-Variabeln. Diese können über Funktionsgerechte Get-Methoden abgefragt werden.\\
 Das Senden von Daten wird ebenfalls über Funktionsgerechte Send-Methoden von der Klasse \code{UARTSender} zur Verfügung gestellt. Entsprechend setzen diese Methoden die Ausgabestrings zusammen.\\[0.2cm]
+\newpage
 \textbf{UART-Methodenstrings}
 \begin{figure}[H]
 	\centering

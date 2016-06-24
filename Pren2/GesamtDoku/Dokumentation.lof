@@ -17,13 +17,13 @@
 \contentsline {figure}{\numberline {16}{\ignorespaces Halterungen f\IeC {\"u}r Kamera, Rasperry Pi, Freedom Board und Print}}{21}{figure.16}
 \contentsline {figure}{\numberline {17}{\ignorespaces Halterungen f\IeC {\"u}r Motorentreiber, Infrarotsensor und Flexsensor}}{22}{figure.17}
 \contentsline {figure}{\numberline {18}{\ignorespaces Aufteilung der Akkumulatoren}}{23}{figure.18}
-\contentsline {figure}{\numberline {19}{\ignorespaces Ausschnitt aus dem Elektroschema}}{28}{figure.19}
-\contentsline {figure}{\numberline {20}{\ignorespaces PCB}}{29}{figure.20}
-\contentsline {figure}{\numberline {21}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Grobablauf}}{30}{figure.21}
-\contentsline {figure}{\numberline {22}{\ignorespaces Komponentendiagramm}}{31}{figure.22}
-\contentsline {figure}{\numberline {23}{\ignorespaces Debug-View}}{32}{figure.23}
-\contentsline {figure}{\numberline {24}{\ignorespaces Konfiguration}}{32}{figure.24}
-\contentsline {figure}{\numberline {25}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{33}{figure.25}
+\contentsline {figure}{\numberline {19}{\ignorespaces Ausschnitt aus dem Elektroschema}}{27}{figure.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces PCB}}{28}{figure.20}
+\contentsline {figure}{\numberline {21}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Grobablauf}}{29}{figure.21}
+\contentsline {figure}{\numberline {22}{\ignorespaces Komponentendiagramm}}{30}{figure.22}
+\contentsline {figure}{\numberline {23}{\ignorespaces Debug-View}}{31}{figure.23}
+\contentsline {figure}{\numberline {24}{\ignorespaces Konfiguration}}{31}{figure.24}
+\contentsline {figure}{\numberline {25}{\ignorespaces \IeC {\"U}bersicht MC Tasks}}{32}{figure.25}
 \contentsline {figure}{\numberline {26}{\ignorespaces Definition der \IeC {\"U}bertragungsstrings}}{35}{figure.26}
 \contentsline {figure}{\numberline {27}{\ignorespaces Raspberry Pi Kameramudul}}{37}{figure.27}
 \contentsline {figure}{\numberline {28}{\ignorespaces Aktivit\IeC {\"a}tendiagramm Fahrbahnerkennung}}{38}{figure.28}
@@ -36,5 +36,5 @@
 \contentsline {figure}{\numberline {35}{\ignorespaces Distanzbemessung}}{47}{figure.35}
 \contentsline {figure}{\numberline {36}{\ignorespaces Zeitplan}}{50}{figure.36}
 \contentsline {figure}{\numberline {37}{\ignorespaces Risikomatrix}}{51}{figure.37}
-\contentsline {figure}{\numberline {38}{\ignorespaces Budgetplanung}}{55}{figure.38}
-\contentsline {figure}{\numberline {39}{\ignorespaces Scrum-Board}}{56}{figure.39}
+\contentsline {figure}{\numberline {38}{\ignorespaces Budgetplanung}}{54}{figure.38}
+\contentsline {figure}{\numberline {39}{\ignorespaces Scrum-Board}}{55}{figure.39}

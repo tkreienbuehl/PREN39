@@ -39,7 +39,6 @@ P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 5.258\frac{U}{sec}\cdot 2.23Nm = 
 P=2\cdot \pi\cdot N\cdot M \to 2\cdot \pi\cdot 16.6\frac{U}{sec}\cdot 0.028Nm = 2.9W
 \]
 \end{itemize}
-\newpage
 Kapazitätenberechnungen:
 \begin{itemize}
 \item DC-Motor für den Antrieb:
@@ -74,11 +73,11 @@ I\cdot t \to 2A*0.25h = 0.5 Ah
 \[
 0.5Ah
 \]
-\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
-Im Pren1 wurde beschlossen die beiden Akkumulatoren galvanisch zu trennen, um allfällige Störungen die aufgrund des Anlaufstromes der Motoren ausgelöst werden könnte, auszuschliessen. Nun wurde jedoch beschlossen darauf zu verzichten, da die Chancen für einen Störfall eher gering sind und den benötigten Aufwand nicht rechtfertigen würden.
 \end{itemize}
+\textbf{Vergleich Konzept und Umsetzung}\\[0.2cm]
+In Pren1 wurde beschlossen die beiden Akkumulatoren galvanisch zu trennen, um allfällige Störungen die aufgrund des Anlaufstromes der Motoren ausgelöst werden könnten, auszuschliessen. Nun wurde jedoch beschlossen darauf zu verzichten, da die Chancen für einen Störfall eher gering sind und den benötigten Aufwand nicht rechtfertigen würden.
 \subsubsection{Akkuüberwachung Schwellwertberechnung}
-Damit die LiPo-Akkumulatoren nicht zerstört werden, muss sichergestellt werden das diese nicht tief entladen werden. Dies wird über das Freedomboard gelöst. Die Akkuspannung wird über einen Analog - Digitalwandler eingelesen. Wenn die Akkuspannung einen gewissen Wert unterschreiten, werden die Verbraucher an den Akkus abgeschaltet. Eine Lipozelle sollte die Zellenspannung von 3.7V nicht unterschreiten. Im Normalfall sollten alle Zellen einzeln überwacht werden, dies ist jedoch im Rahmen dieses Prototypen nicht angemessen. Als Kompromiss wird gesamte Ausgangsspannung gemessen. Das heisst zwei beziehungsweise drei Zellen in Serie (je nach Akku).\\
+Damit die LiPo-Akkumulatoren nicht zerstört werden, muss sichergestellt werden, dass diese nicht zu tief entladen werden. Dies wird über das Freedomboard gelöst. Die Akkuspannung wird über einen Analog - Digitalwandler eingelesen. Wenn die Akkuspannung einen gewissen Wert unterschreitet, werden die Verbraucher an den Akkus abgeschaltet. Eine Lipozelle sollte die Zellenspannung von 3.7V nicht unterschreiten. Im Normalfall sollten alle Zellen einzeln überwacht werden, dies ist jedoch im Rahmen dieses Prototypen nicht angemessen. Als Kompromiss wird die gesamte Ausgangsspannung gemessen. Das heisst zwei, beziehungsweise drei Zellen in Serie (je nach Akku).\\
 Das Freedomboard kann nur Spannungen bis 3.3V einlesen. Daher ist ein Spannungsteiler nötig. Damit dieser Wert sicher nicht überschritten wird, wird mit einer maximal zulässigen Spannung von 3V gerechnet. Für UAkku wurde 13V gewählt, damit der AD-Wandler sicher nie 3V erreicht.\\
 Für den 11.1V Akku:
 \[	U_Akku/U_Frd=R1/R2\]
