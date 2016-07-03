@@ -52,15 +52,15 @@ void PIDCalculation::pidDoWork(int calcVal) {
 	m_Controller->printString(str, m_Controller->ROUTE_FINDER, 8);
 
 	// limit control point
-	if (m_val > 125)
+	if (m_val > 105)
 	{
-		m_val = 125;
+		m_val = 105;
 		m_integ -= m_dev;
 	}
-	else if (m_val < -125)
+	else if (m_val < -105)
 	{
-		m_val = -125;
+		m_val = -105;
 		m_integ -= m_dev;
 	}
-	m_Controller->setSteeringAngle((m_val+125));
+	m_Controller->setSteeringAngle((m_val+105));
 }

@@ -6,7 +6,8 @@
 using namespace std;
 
 ObjectFinder::ObjectFinder(PrenController* controller,
-		PictureCreator* picCreator) {
+		PictureCreator* picCreator)
+: ObjectStateObserver() {
 	m_Controller = controller;
 	m_PicCreator = picCreator;
 	prenConfig = m_Controller->getPrenConfig();
@@ -20,11 +21,11 @@ ObjectFinder::ObjectFinder(PrenController* controller,
 }
 
 ObjectFinder::~ObjectFinder() {
-
 }
 
 void* ObjectFinder::staticEntryPoint(void* threadId) {
 	((ObjectFinder*) threadId)->RunProcess();
+	cout << "Thread Object finder ended" << endl;
 	return NULL;
 }
 

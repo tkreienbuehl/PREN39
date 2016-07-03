@@ -13,6 +13,7 @@ public:
 	bool getRouteFoundState();
 	ushort getLineLostCnt();
 	int getCamCorrVal();
+	ushort getCrossingCnt();
 
 private:
 
@@ -23,12 +24,13 @@ private:
 		STRAIGHT
 	};
 
-	void lineFilter(cv::Mat* changesMat, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
-	void routeLocker(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
-	void checkRouteDirection(cv::Mat* edgeImg, vector<cv::Vec4i>& leftLines, vector<cv::Vec4i>& rightLines);
-	routeVals checkLeftRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos);
-	routeVals checkRightRouteLimit(cv::Mat* edgeImg, vector<cv::Vec4i>& lines, float& xDist, float& yDist, ushort textStartPos);
-	void analyzeHorizonalLines(vector<cv::Vec4i>* lines);
+	void lineFilter(cv::Mat* changesMat, vector<Line>& leftLines, vector<Line>& rightLines);
+	void routeLocker(cv::Mat* edgeImg, vector<Line>& leftLines, vector<Line>& rightLines);
+	void checkRouteDirection(cv::Mat* edgeImg, vector<Line>& leftLines, vector<Line>& rightLines);
+	routeVals checkBendLeft(cv::Mat* edgeImg, vector<Line>& lines);
+	routeVals checkBendRight(cv::Mat* edgeImg, vector<Line>& lines);
+	routeVals checkBackStraight(cv::Mat* edgeImg, vector<Line>& leftLines, vector<Line>& rightLines);
+	void analyzeHorizonalLines(vector<Line>* lines);
 
 	PrenController* m_Controller;
 	RouteCalcMath* m_RouteCalc;
@@ -39,6 +41,7 @@ private:
 	ushort m_Rows, m_Cols;
 	short m_DistCorrAng;
 	ushort m_CamPos;
+	routeVals m_RouteState;
 	ushort m_LineLostCnt;
 	ushort m_CamPosCorrCnt;
 	bool m_CheckBend;
@@ -50,9 +53,9 @@ private:
 	ushort MAX_PIX_DIFF;
 	ushort CAM_ANG_CORR_VAL;
 	ushort CAM_POS_CHANGE_LIMIT;
-	float SLOPE_VAL_FOR_BEND_LEFT;
-	float SLOPE_VAL_FOR_STRAIGHT_LEFT;
 	float SLOPE_VAL_FOR_BEND_RIGHT;
-	float SLOPE_VAL_FOR_STRAIGHT_RIGHT;
+	float SLOPE_VAL_FOR_BEND_LEFT;
+	float SLOPE_UPPER_VAL_FOR_STRAIGHT;
+	float SLOPE_LOWER_VAL_FOR_STRAIGHT;
 
 };

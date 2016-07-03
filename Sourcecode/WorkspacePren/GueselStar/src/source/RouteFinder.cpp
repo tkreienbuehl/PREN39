@@ -21,6 +21,7 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_pidCalc = new PIDCalculation(m_Controller);
 	m_RouteCalculator = new RouteCalculation(m_Controller);
 	m_Driving = false;
+	m_CrossingCnt = m_CrossingMatchCnt = 0;
 	me = m_Controller->ROUTE_FINDER;
 }
 
@@ -31,7 +32,8 @@ RouteFinder::~RouteFinder() {
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
 	reinterpret_cast<RouteFinder*>(threadId)->runProcess();
-	return NULL;
+	cout << "Thread RouteFinder ended" << cout;
+	pthread_exit(threadId);
 }
 
 cv::Mat RouteFinder::getOriginalImage() {
@@ -76,6 +78,12 @@ int RouteFinder::runProcess() {
 			checkLaneLost();
 			setBendCheck(imgCnt);
 			setCrossingSearchState(imgCnt);
+			if (m_CrossingMatchCnt == 2) {
+				m_Controller->setCrossingFound(200);
+			}
+			if (m_CrossingMatchCnt == 3) {
+				m_Controller->setTargetFieldFound(0);
+			}
         }
         else {
         	i--;
@@ -111,7 +119,7 @@ void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
 }
 
 void RouteFinder::outPutNrOfIms(uint imgCnt) {
-	if (imgCnt%100 == 0) {
+	if (imgCnt%10 == 0) {
 		char str[50];
 		bzero(str,sizeof(str));
 		sprintf(str,"image processed nr: %d",imgCnt);
@@ -122,7 +130,7 @@ void RouteFinder::outPutNrOfIms(uint imgCnt) {
 void RouteFinder::setDriveState(ushort& setSpeedCnt) {
 	if (m_RouteCalculator->getRouteFoundState() && !m_Driving) {
 		m_Controller->setEngineSpeed(MAX_ENGINE_SPEED);
-		usleep(200 * 1000);
+		usleep(20 * 1000);
 		if (setSpeedCnt == 3) {
 			m_Driving = true;
 		}
@@ -148,18 +156,27 @@ void RouteFinder::setBendCheck(ushort& imgCnt) {
 }
 
 void RouteFinder::setCrossingSearchState(ushort imgCnt) {
-	if (imgCnt < NR_OF_IMS_FOR_CHECK_BEND) {
-		return;
-	}
-	if (m_waitImgCnt >= 1000) {
+
+	if (m_waitImgCnt >= NR_OF_IMS_FOR_CHECK_BEND) {
+		m_Controller->printString("Crossing search is running", me, 40);
 		if (m_RouteCalculator->startCheckForCrossing()) {
-			m_waitImgCnt = 0;
 		}
 		else {
-			return;
+			if (m_CrossingCnt < m_RouteCalculator->getCrossingCnt()) {
+				char str[60];
+				m_CrossingCnt = m_RouteCalculator->getCrossingCnt();
+				m_CrossingMatchCnt++;
+				sprintf(str, "Crossing registered nr: %d" , m_CrossingMatchCnt);
+				m_Controller->printString(str, me, 41);
+				m_waitImgCnt = 0;
+			}
 		}
 	}
 	else {
+		m_Controller->printString("Crossing search is sleeping", me, 40);
 		m_waitImgCnt++;
+		if (m_CrossingCnt < m_RouteCalculator->getCrossingCnt()) {
+			m_CrossingCnt = m_RouteCalculator->getCrossingCnt();
+		}
 	}
 }

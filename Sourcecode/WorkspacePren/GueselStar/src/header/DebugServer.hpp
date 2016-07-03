@@ -24,8 +24,6 @@ private:
 	void runningServer();
 	void requestHandler(int newSocketfd);
 
-	void prepareAndSendDummy(int socketfd);
-
 	void prepareAndSendImage(int socketfd, cv::Mat* image);
 	void prepareAndSendColorImage(int socketfd, cv::Mat* image);
 
@@ -38,6 +36,5 @@ private:
 	ObjectFinder* m_objectFinder;
 
 	pthread_mutex_t m_mutex;
-	string m_Dummy;
 
 };

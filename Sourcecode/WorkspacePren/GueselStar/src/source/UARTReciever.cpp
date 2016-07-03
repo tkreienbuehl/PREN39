@@ -29,7 +29,7 @@ void UARTReciever::startRecording() {
 
 void UARTReciever::stopReading() {
 	m_active = false;
-	m_Controller->printString("Stop command recieved", m_Controller->UART_COMM, 0);
+	cout << "Stop command received" << endl;
 }
 
 void UARTReciever::readAndPlotData() {
@@ -64,8 +64,8 @@ void UARTReciever::decodeRecievedString(std::string message) {
 	} else if(message.find("There") != std::string::npos) {
 		decodeStillThere(message);
 	} else if(message.find("Stop") != std::string::npos) {
-		m_Controller->printString(message, m_Controller->UART_COMM, 1);
 		m_Controller->setState(m_Controller->END);
+		m_active = false;
 	}
 }
 
@@ -81,7 +81,6 @@ void UARTReciever::decodeUltraValue(std::string message) {
 	int value = atoi(message.c_str());
 	m_UltraDist = value;
 	m_Controller->checkUltraDist(value);
-	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 
 void UARTReciever::decodeFlexValue(std::string message) {
@@ -90,7 +89,6 @@ void UARTReciever::decodeFlexValue(std::string message) {
 	int value = atoi(message.c_str());
 	m_FlexDistance = value;
 	m_Controller->setFlexValue(value);
-	m_Controller->printString(message, m_Controller->UART_COMM, 1);
 }
 
 void UARTReciever::decodeStillThere(std::string message) {
@@ -99,7 +97,8 @@ void UARTReciever::decodeStillThere(std::string message) {
 
 void* UARTReciever::staticEntryPoint(void* threadId) {
 	((UARTReciever*)threadId)->startRecording();
-	return NULL;
+	cout << "Thread UARTReceiver ended" << endl;
+	pthread_exit(threadId);
 }
 
 uint8_t UARTReciever::getFlexDistance() {

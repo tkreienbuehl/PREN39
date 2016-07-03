@@ -30,8 +30,6 @@ private:
 	int connectToServer(string ipAddr);
 	int sendMessageRecieveImage(string* message);
 
-	void getDummy();
-
 	cv::Mat getFilteredImageFromServer();
 	cv::Mat getGrayImageFromServer();
 	cv::Mat getObjectImageFromServer();
@@ -40,6 +38,5 @@ private:
 	int m_socketForward;
 
 	cv::Mat m_GrayImg, m_FltImg, m_ObjectImg;
-	string m_Dummy;
 
 };

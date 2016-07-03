@@ -13,6 +13,7 @@ RouteCalcMath::~RouteCalcMath() {
 
 }
 
+/*
 void RouteCalcMath::setLineDirection(cv::Vec4i& line) {
 	cv::Point p1(line[0], line[1]);
 	cv::Point p2(line[2], line[3]);
@@ -31,6 +32,7 @@ void RouteCalcMath::adjustLineLength(cv::Vec4i& line) {
 	adjustPoint(m_Rows, &pt1, line);
 	adjustPoint((m_Rows >> 1), &pt2, line);
 }
+*/
 
 short RouteCalcMath::calcLeftRefDistance(cv::Point pt) {
 	short dist = (pt.y >> 1) + 40;
@@ -60,7 +62,7 @@ void RouteCalcMath::countPositiveNegativeSlopes(ushort& posCnt, ushort& negCnt, 
 	}
 }
 
-
+/*
 void RouteCalcMath::adjustPoint(ushort refLinePosY, cv::Point* refPoint, cv::Vec4i& outputLine) {
 	cv::Point pt1(outputLine[0], outputLine[1]);
 	cv::Point pt2(outputLine[2], outputLine[3]);
@@ -97,3 +99,4 @@ uint RouteCalcMath::calcLineLength(const cv::Vec4i& line) {
 
 	return sqrt(distX * distX + distY * distY);
 }
+*/

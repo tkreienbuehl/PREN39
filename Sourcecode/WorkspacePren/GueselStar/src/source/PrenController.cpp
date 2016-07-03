@@ -12,8 +12,7 @@ PrenController::PrenController(UARTSender* sender, ConsoleView* viewer) {
 }
 
 PrenController::~PrenController() {
-
-	delete uartSender;
+	delete prenConfig;
 }
 
 PrenConfiguration* PrenController::getPrenConfig(void) {
@@ -42,13 +41,10 @@ void PrenController::setState(const states state) {
 }
 
 void PrenController::runProgram() {
-
-	//uartSender->sendStopCmd();
 	usleep(20 * 1000);
 	uartSender->sendStartCmd();
 
 	while (m_State != END) {
-
 		usleep(300);
 	}
 
@@ -57,6 +53,7 @@ void PrenController::runProgram() {
 	}
 	uartSender->sendStopCmd();
 	cout << "exiting Controller" << endl;
+	usleep(200 * 1000);
 }
 
 int PrenController::stopProgram() {
@@ -95,7 +92,7 @@ void PrenController::setLaneLost() {
 	printString("RouteFinder lost Lane", CONTROLLER, 1);
 	uartSender->sendStopCmd();
 	if(prenConfig->IS_ON_PI) {
-		usleep(3000 * 1000);
+		usleep(1000 * 1000);
 		this->setState(END);
 	}
 }
@@ -177,6 +174,9 @@ void PrenController::responseStillThere() {
 }
 
 void PrenController::printString(string str, classes cl, uint line) {
+	if (m_State == END) {
+		return;
+	}
 	if (prenConfig->IS_ON_IDE) {
 		cout << str.c_str() << endl;
 	} else {
@@ -200,7 +200,6 @@ void PrenController::printString(string str, classes cl, uint line) {
 }
 
 void PrenController::setObjectStateObserver(ObjectStateObserver* observer) {
-//objectStateObserverList.push_back(observer);
 	objectStateObserver = observer;
 }
 

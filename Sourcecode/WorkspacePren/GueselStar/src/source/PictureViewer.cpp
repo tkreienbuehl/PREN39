@@ -12,7 +12,8 @@
 
 	void* PictureViewer::startThread(void* threadId) {
 		((PictureViewer*) threadId)->runProcess();
-		return threadId;
+		cout << "Thread PictureViewer ended" << endl;
+		pthread_exit(threadId);
 	}
 
 	void PictureViewer::stopViewer() {
@@ -28,7 +29,6 @@
 		m_state = true;
 		uint32_t imgNr = 0;
 		char str[20];
-		char strO[20];
 		if (!conf.IS_ON_PI) {
 			cv::namedWindow( "The Image", CV_WINDOW_AUTOSIZE );
 		}
@@ -42,8 +42,6 @@
 					if (conf.IS_ON_PI) {
 						sprintf(str,"/tmp/img_%i.jpg",imgNr);
 						cv::imwrite(str, origImg);
-					//	sprintf(strO,"/tmp/object_img_%i.jpg",imgNr);
-					//	cv::imwrite(strO, objectImg);
 						imgNr++;
 					} else {
 						try {

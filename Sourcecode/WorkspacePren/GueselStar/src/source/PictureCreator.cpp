@@ -20,7 +20,7 @@ PictureCreator::~PictureCreator() {
 
 void* PictureCreator::staticEntryPoint(void* threadId) {
 	reinterpret_cast<PictureCreator*>(threadId)->StartRecording();
-	cout << "Stop recording pictures" << endl;
+	cout << "Thread PictureCreator ended" << endl;;
 	pthread_exit(threadId);
 }
 
@@ -32,6 +32,7 @@ cv::Mat PictureCreator::GetImage() {
 }
 
 void PictureCreator::StopRecording() {
+	cout << "Stop recording pictures" << endl;
 	m_State = false;
 }
 

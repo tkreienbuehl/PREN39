@@ -29,7 +29,7 @@ void ConsoleView::freeInstance() {
 void* ConsoleView::startThread(void* threadId) {
 	reinterpret_cast<ConsoleView*>(threadId)->runProcess();
 	cout << "Thread Console View ended " << endl;
-	return NULL;
+	pthread_exit(threadId);
 }
 
 void ConsoleView::setRouteFinderText(string text, unsigned int line) {

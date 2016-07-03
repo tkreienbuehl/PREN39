@@ -58,5 +58,7 @@ private:
 	PrenController::classes me;
 	RouteCalculation* m_RouteCalculator;
 	ushort m_waitImgCnt;
+	ushort m_CrossingCnt;
+	ushort m_CrossingMatchCnt;
 
 };

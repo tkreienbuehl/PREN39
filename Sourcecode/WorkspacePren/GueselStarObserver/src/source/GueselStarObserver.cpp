@@ -7,9 +7,8 @@ int main(int argc, char** argv) {
 }
 
 GueselStarObserver::GueselStarObserver() {
-	//connectToServer("10.10.0.1");
-	connectToServer("127.0.0.1");
-	m_Dummy = "  dummy string zum buffern  \0";
+	connectToServer("10.10.0.1");
+	//connectToServer("127.0.0.1");
 }
 
 GueselStarObserver::~GueselStarObserver() {
@@ -62,10 +61,10 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 			message = "getFilteredImage";
 			break;
 		case 1:
-			message = "getObjectImage";
+			message = "getGrayImage";
 			break;
 		case 2:
-			//message = "getGrayImage";
+			message = "getObjectImage";
 			break;
 		}
 		if (selector == 2) {
@@ -74,12 +73,12 @@ int GueselStarObserver::connectToServer(std::string ipAddr) {
 		else {
 			selector++;
 		}
-		//usleep(1 * 1000);
 		if (sendMessageRecieveImage(&message) < 0) {
 			cout << "Connection aborted" << endl;
 			close(m_socketForward);
 			loop = false;
 		}
+		usleep(15 * 100);
 	}
 
 	close(m_socketForward);
@@ -129,19 +128,6 @@ int GueselStarObserver::sendMessageRecieveImage(string* message) {
 	return 0;
 }
 
-void GueselStarObserver::getDummy() {
-	int size = m_Dummy.length();
-	char sockData[size];
-
-	if ((size = recv(m_socketForward, sockData, size, MSG_WAITALL)) == -1) {
-		cout << "ERROR" << endl;
-	}
-
-	char buffer[256];
-	recv(m_socketForward,buffer, sizeof(buffer), MSG_DONTWAIT);
-
-}
-
 cv::Mat GueselStarObserver::getFilteredImageFromServer() {
 
 	int height = 240, width = 320;
@@ -151,7 +137,7 @@ cv::Mat GueselStarObserver::getFilteredImageFromServer() {
 	uchar sockData[imgSize];
 
 	if ((imgSize = recv(m_socketForward, sockData, imgSize, MSG_WAITALL)) == -1) {
-		cout << "ERROR" << endl;
+		cout << "ERROR Filtered Image" << endl;
 	}
 
 	int ptr=0;
@@ -173,8 +159,8 @@ cv::Mat GueselStarObserver::getGrayImageFromServer() {
 	//cout << imgSize << endl;
 	uchar sockData[imgSize];
 
-	if ((imgSize = recv(m_socketForward, sockData, imgSize, MSG_DONTWAIT)) == -1) {
-		cout << "ERROR" << endl;
+	if ((imgSize = recv(m_socketForward, sockData, imgSize, MSG_WAITALL)) == -1) {
+		cout << "ERROR Gray Image" << endl;
 	}
 
 	int ptr=0;
@@ -198,7 +184,7 @@ cv::Mat GueselStarObserver::getObjectImageFromServer() {
 	uchar sockData[imgSize];
 
 	if ((imgSize = recv(m_socketForward, sockData, imgSize, MSG_WAITALL)) == -1) {
-		cout << "ERROR" << endl;
+		cout << "ERROR Object Image" << endl;
 	}
 
 	int ptr=0;
