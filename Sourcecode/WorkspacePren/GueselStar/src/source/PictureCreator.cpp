@@ -20,8 +20,9 @@ PictureCreator::~PictureCreator() {
 
 void* PictureCreator::staticEntryPoint(void* threadId) {
 	reinterpret_cast<PictureCreator*>(threadId)->StartRecording();
-	cout << "Thread PictureCreator ended" << endl;;
+	cout << "Thread PictureCreator ended" << endl;
 	pthread_exit(threadId);
+	return threadId;
 }
 
 cv::Mat PictureCreator::GetImage() {
@@ -32,7 +33,6 @@ cv::Mat PictureCreator::GetImage() {
 }
 
 void PictureCreator::StopRecording() {
-	cout << "Stop recording pictures" << endl;
 	m_State = false;
 }
 
@@ -49,8 +49,6 @@ void PictureCreator::StartRecording() {
 }
 
 void PictureCreator::RecordFromCam(PrenConfiguration conf) {
-	usleep(1000);
-	cout << "Start recording pictures" << endl;
 	m_State = true;
 
 	CvCapture* capture = cvCaptureFromCAM(0);
@@ -61,7 +59,6 @@ void PictureCreator::RecordFromCam(PrenConfiguration conf) {
 		return;
 	}
 
-	cout << "running :)" << endl;
 	while (m_State) {
 	    IplImage* iplImg = cvQueryFrame( capture );
 	    cv::Mat capturedImage =  cv::cvarrToMat(iplImg);
@@ -81,7 +78,6 @@ void PictureCreator::RecordFromCam(PrenConfiguration conf) {
 
 void PictureCreator::ReadFromFiles(PrenConfiguration conf) {
 	usleep(1000);
-	cout << "Start reading pictures" << endl;
 	m_State = true;
 	while (m_State) {
 		for (int i = conf.TEST_IMG_FIRST; i < conf.TEST_IMG_LAST; i++) {
@@ -99,7 +95,7 @@ void PictureCreator::ReadFromFiles(PrenConfiguration conf) {
 			}
 			else {
 				cv::resize(capturedImage, m_TheImage, m_TheImage.size(),0.5,0.5,cv::INTER_LANCZOS4);
-				usleep(100000);
+				usleep(10000);
 			}
 		}
 	}

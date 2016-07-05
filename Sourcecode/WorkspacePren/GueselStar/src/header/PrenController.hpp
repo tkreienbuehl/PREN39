@@ -33,7 +33,7 @@ public:
 
 	enum CameraStatesE {
 		CAM_STRAIGHT = 120,
-		CAM_TURN_LEFT = 160,
+		CAM_TURN_LEFT = 150,
 		CAM_TURN_RIGHT = 85,
 		CAM_CHECK_STREET = 50
 	};
@@ -75,4 +75,5 @@ private:
 	int lastUltraValues[5];
 	int ultraValueIndex;
 	bool m_objectOnLane;
+	ushort MAX_ENGINE_SPEED;
 };

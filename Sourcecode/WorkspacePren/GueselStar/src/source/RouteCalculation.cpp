@@ -15,7 +15,7 @@ RouteCalculation::RouteCalculation(PrenController* controller) {
 	me = m_Controller->ROUTE_FINDER;
 	m_Rows = 0;
 	m_Cols = 0;
-	m_CamPosCorrCnt = m_DistCorrAng = m_LineLostCnt = 0;
+	m_CamPosCorrCnt = m_CamPosChangeWaitCnt = m_DistCorrAng = m_LineLostCnt = 0;
 	m_RouteState = STRAIGHT;
 	//Konstante Stellwerte
 	MAX_PIX_DIFF = m_Controller->getPrenConfig()->MAX_PIX_DIFF;
@@ -30,7 +30,7 @@ RouteCalculation::RouteCalculation(PrenController* controller) {
 }
 
 RouteCalculation::~RouteCalculation() {
-
+	delete m_RouteCalc;
 }
 
 int RouteCalculation::lineDetection(cv::Mat* edgeImg) {
@@ -41,41 +41,43 @@ int RouteCalculation::lineDetection(cv::Mat* edgeImg) {
 		m_RouteCalc = new RouteCalcMath(m_Controller, m_Rows, m_Cols);
 	}
 
-    ushort lNegSignCnt, lPosSignCnt, rNegSignCnt, rPosSignCnt;
-    lNegSignCnt = lPosSignCnt = rNegSignCnt = rPosSignCnt = 0;
+	ushort maxPixDiff;
+	if (!m_CheckBend) {
+		maxPixDiff = MAX_PIX_DIFF << 1;
+	}
+	else
+		maxPixDiff = MAX_PIX_DIFF;
 
     std::vector<cv::Vec4i> lines;
     std::vector<Line> savedLinesLeft, savedLinesRight, horizonalLines;
-    cv::HoughLinesP(*edgeImg, lines, 1, CV_PI/180, 20, 50, 20 );
+    cv::HoughLinesP(*edgeImg, lines, 1, CV_PI/180, 20, 40, 20 );
     for( size_t i = 0; i < lines.size(); i++ )
     {
 		Line l(lines[i]);
 		float slope = l.getSlope();
-		if (abs(slope) > 0.95) {
+		if (fabs(slope) > 0.95) {
 			if (!m_Controller->getPrenConfig()->IS_ON_PI) {
 				usleep(10* 1000);
 			}
 			l.adjustLineLength(m_Rows);
 			//leftSide
-			if (l.getStartPoint().x < ((m_Cols >> 1) + MAX_PIX_DIFF) && l.getEndPoint().x < ((m_Cols >> 1) + MAX_PIX_DIFF)) {
-				m_Controller->printString(l.getLineInfoString(),me,10);
-				m_RouteCalc->countPositiveNegativeSlopes(lPosSignCnt, lNegSignCnt, slope);
-				savedLinesLeft.push_back(l);
+			if (slope > 0.0 && m_CheckBend) {	// left side only if not in start zone
+				if (l.getStartPoint().x < ((m_Cols >> 1) + MAX_PIX_DIFF) && l.getEndPoint().x < ((m_Cols >> 1) + MAX_PIX_DIFF)) {
+					m_Controller->printString(l.getLineInfoString(),me,10);
+					savedLinesLeft.push_back(l);
+				}
 			}
 			//right side
-			else if (l.getStartPoint().x > ((m_Cols >> 1) - MAX_PIX_DIFF) && l.getEndPoint().x > ((m_Cols >> 1) - MAX_PIX_DIFF)) {
-				m_Controller->printString(l.getLineInfoString(),me,15);
-				m_RouteCalc->countPositiveNegativeSlopes(rPosSignCnt, lNegSignCnt, slope);
-				savedLinesRight.push_back(l);
+			else {
+				if (l.getStartPoint().x > ((m_Cols >> 1) - maxPixDiff) && l.getEndPoint().x > ((m_Cols >> 1) - maxPixDiff)) {
+					m_Controller->printString(l.getLineInfoString(),me,15);
+					savedLinesRight.push_back(l);
+				}
 			}
 		}
 		else if (slope <= 0.25) {
 			horizonalLines.push_back(l);
 		}
-    }
-    m_leftSidePositiveSlope = true;
-    if (lPosSignCnt < lNegSignCnt) {
-    	m_leftSidePositiveSlope = false;
     }
     m_Controller->printString("", me, 40);
     analyzeHorizonalLines(&horizonalLines);
@@ -87,6 +89,11 @@ int RouteCalculation::lineDetection(cv::Mat* edgeImg) {
 void RouteCalculation::startCheckForBend() {
 	m_Controller->printString("Start checking for bend",me, 20);
 	m_CheckBend = true;
+}
+
+void RouteCalculation::stopCheckForBend() {
+	m_Controller->printString("Stop checking for bend",me, 20);
+	m_CheckBend = false;
 }
 
 bool RouteCalculation::startCheckForCrossing() {
@@ -124,10 +131,8 @@ void RouteCalculation::lineFilter(cv::Mat* edgeImg, vector<Line>& leftLines, vec
     {
 		Line l = leftLines[i];
 		float slope = l.getSlope();
-		if ( (slope > 0 && m_leftSidePositiveSlope) || (slope < 0 && !m_leftSidePositiveSlope)) {
-			//if (l[0] >= lowerLeftMax && l[2] >= upperLeftMax) {
+		if ( (slope > 0 )) {
 			if (l.getEndPoint().x >= upperLeftMax) {
-				lowerLeftMax = l.getStartPoint().x;
 				upperLeftMax = l.getEndPoint().x;
 				usedLinesLeft.push_back(l);
 			}
@@ -139,10 +144,8 @@ void RouteCalculation::lineFilter(cv::Mat* edgeImg, vector<Line>& leftLines, vec
     {
 		Line l = rightLines[i];
 		float slope = l.getSlope();;
-		if ( (slope > 0 && m_rightSidePositiveSlope) || (slope < 0 && !m_rightSidePositiveSlope)) {
-			//if (l[0] <= lowerRightMin && l[2] <= upperRightMin ) {
+		if ( (slope < 0 ) ) {
 			if (l.getEndPoint().x <= upperRightMin) {
-				lowerRightMin = l.getStartPoint().x;
 				upperRightMin = l.getEndPoint().x;
 				usedLinesRight.push_back(l);
 			}
@@ -235,6 +238,10 @@ void RouteCalculation::routeLocker(cv::Mat* edgeImg, vector<Line>& leftLines, ve
 
 void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<Line>& leftLines, vector<Line>& rightLines) {
 
+	if (m_CamPosChangeWaitCnt > 0 ) {
+		m_CamPosChangeWaitCnt--;
+		return;
+	}
 	char str[40];
 	routeVals routeState = m_RouteState;
 	if (m_CamPos == m_Controller->CAM_TURN_LEFT || m_CamPos == m_Controller->CAM_TURN_RIGHT) {
@@ -242,7 +249,7 @@ void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<Line>& leftL
 	}
 	else if (m_CamPos == m_Controller->CAM_STRAIGHT) {
 		routeState = checkBendLeft(edgeImg, rightLines);
-		if (m_CamPos == m_Controller->CAM_STRAIGHT) {
+		if (routeState != BEND_LEFT) {
 			routeState = checkBendRight(edgeImg, leftLines);
 		}
 	}
@@ -252,18 +259,21 @@ void RouteCalculation::checkRouteDirection(cv::Mat* edgeImg, vector<Line>& leftL
 		m_CamPos = m_Controller->CAM_TURN_RIGHT;
 		m_Controller->printString("CAM_RIGHT", me, 24);
 		m_DistCorrAng = CAM_ANG_CORR_VAL;
+		m_CamPosChangeWaitCnt = m_Controller->getPrenConfig()->CAM_STATE_CHANGE_WAIT_LIMIT;
 	}
 	else if (routeState == BEND_LEFT) {
 		m_Controller->setCameraPos(m_Controller->CAM_TURN_LEFT);
 		m_CamPos = m_Controller->CAM_TURN_LEFT;
 		m_Controller->printString("CAM_LEFT", me, 24);
 		m_DistCorrAng = -CAM_ANG_CORR_VAL;
+		m_CamPosChangeWaitCnt = m_Controller->getPrenConfig()->CAM_STATE_CHANGE_WAIT_LIMIT;
 	}
 	else if (routeState == STRAIGHT) {
 		m_Controller->setCameraPos(m_Controller->CAM_STRAIGHT);
 		m_CamPos = m_Controller->CAM_STRAIGHT;
 		m_Controller->printString("CAM_STRAIGHT", me, 24);
 		m_DistCorrAng = 0;
+		m_CamPosChangeWaitCnt = m_Controller->getPrenConfig()->CAM_STATE_CHANGE_WAIT_LIMIT;
 	}
 
 	sprintf(str,"Cam position change counter: %d", m_CamPosCorrCnt);

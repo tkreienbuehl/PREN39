@@ -23,20 +23,20 @@ public:
 
 	static void* staticEntryPoint(void* threadId);
 
+	void stopProcess();
+
 private:
 
-	int runProcess();
+	void runProcess();
 	void edgeDetection(cv::Mat* mat, cv::Mat* changesMat);
-
 	void outPutNrOfIms(uint imgCnt);
-
 	void setDriveState(ushort& setSpeedCnt);
-
 	void checkLaneLost();
-
 	void setBendCheck(ushort& imgCnt);
-
 	void setCrossingSearchState(ushort imgCnt);
+	void checkCrossingPriorityLane();
+	void checkTargetFieldFound();
+	void checkMaxNrOfImgsReached(ushort& nrOfImgs);
 
 	ushort MINLENGTH;
 	ushort MINXDIFF;
@@ -50,6 +50,7 @@ private:
 	PrenController* m_Controller;
 	bool m_State;
 	bool m_Driving;
+	bool m_Running;
 	cv::Mat m_GrayImg;
 	cv::Mat m_FinalFltImg;
 	pthread_mutex_t m_mutex;
@@ -60,5 +61,6 @@ private:
 	ushort m_waitImgCnt;
 	ushort m_CrossingCnt;
 	ushort m_CrossingMatchCnt;
+	bool m_CrossingReported;
 
 };

@@ -26,7 +26,8 @@ ObjectFinder::~ObjectFinder() {
 void* ObjectFinder::staticEntryPoint(void* threadId) {
 	((ObjectFinder*) threadId)->RunProcess();
 	cout << "Thread Object finder ended" << endl;
-	return NULL;
+	pthread_exit(threadId);
+	return threadId;
 }
 
 void ObjectFinder::RunProcess() {

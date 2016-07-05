@@ -30,6 +30,7 @@ void* ConsoleView::startThread(void* threadId) {
 	reinterpret_cast<ConsoleView*>(threadId)->runProcess();
 	cout << "Thread Console View ended " << endl;
 	pthread_exit(threadId);
+	return threadId;
 }
 
 void ConsoleView::setRouteFinderText(string text, unsigned int line) {
@@ -80,7 +81,6 @@ void ConsoleView::stopProcess() {
 }
 
 void ConsoleView::runProcess() {
-	usleep(10000);
 	wclear(m_RtFinderView);
 	while (m_State) {
 		usleep(5000);
@@ -118,13 +118,6 @@ void ConsoleView::initView() {
 	printw("Welcome");
 	mvchgat(0, 0, -1, A_BLINK, 1, NULL);
 	attroff(A_BOLD);
-	move(1, 0);
-	printw("Drücke 'F1' um die View zu schliessen");
-	move(2, 0);
-	printw("Das Programm startet in wenigen Augenblicken");
-	refresh();
-	usleep(1000000);
-	clear();
 	refresh();
 	m_UARTState = createNewWindow(4, m_width, 0, 0);
 	m_RtFinderView = createNewWindow(m_height - 10, (m_width >> 1) - 1, 5, 0);

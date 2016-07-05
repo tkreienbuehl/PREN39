@@ -9,6 +9,7 @@ public:
 
 	int lineDetection(cv::Mat* edgeImg);
 	void startCheckForBend();
+	void stopCheckForBend();
 	bool startCheckForCrossing();
 	bool getRouteFoundState();
 	ushort getLineLostCnt();
@@ -44,6 +45,7 @@ private:
 	routeVals m_RouteState;
 	ushort m_LineLostCnt;
 	ushort m_CamPosCorrCnt;
+	ushort m_CamPosChangeWaitCnt;
 	bool m_CheckBend;
 	bool m_RouteFound;
 	bool m_CrossingFound;

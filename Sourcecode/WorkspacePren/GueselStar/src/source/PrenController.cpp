@@ -9,6 +9,7 @@ PrenController::PrenController(UARTSender* sender, ConsoleView* viewer) {
 	m_FlexValue = 0;
 	ultraValueIndex = 0;
 	m_objectOnLane = false;
+	MAX_ENGINE_SPEED = prenConfig->MAX_SPEED;
 }
 
 PrenController::~PrenController() {
@@ -53,7 +54,6 @@ void PrenController::runProgram() {
 	}
 	uartSender->sendStopCmd();
 	cout << "exiting Controller" << endl;
-	usleep(200 * 1000);
 }
 
 int PrenController::stopProgram() {
@@ -75,8 +75,13 @@ void PrenController::setCrossingFound(int distance) {
 	sprintf(str, "Crossing ahead: Distance to Crossing: %d", distance);
 	printString(str, CONTROLLER, 1);
 	// inform MC-Board
+	uartSender->setEngineSpeed(0, UARTSender::SOFT);
+	uartSender->setCameraPos(CAM_CHECK_STREET);
 	// inform ObjectFinder
 	objectStateObserver->updateCrossingState(true);
+	usleep(500 * 1000);
+	uartSender->setCameraPos(CAM_STRAIGHT);
+	uartSender->setEngineSpeed(MAX_ENGINE_SPEED);
 }
 
 void PrenController::setTargetFieldFound(int distance) {
@@ -85,6 +90,8 @@ void PrenController::setTargetFieldFound(int distance) {
 	printString(str, CONTROLLER, 1);
 	// inform MC-Board
 	uartSender->setTargetFieldFound(distance);
+	usleep(3000 * 1000);
+	m_State = END;
 }
 
 void PrenController::setLaneLost() {

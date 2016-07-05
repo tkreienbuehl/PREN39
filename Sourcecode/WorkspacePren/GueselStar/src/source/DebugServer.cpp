@@ -14,7 +14,7 @@ DebugServer::~DebugServer() {
 void* DebugServer::startDebugServer(void* threadId) {
 	((DebugServer*)threadId)->runningServer();
 	cout << "DebugServer thread ended " << endl;
-	return NULL;
+	return threadId;
 }
 
 void DebugServer::stopServer() {
@@ -26,8 +26,6 @@ void DebugServer::runningServer() {
 	socklen_t clientLength;
 
 	sockaddressIn_t serverAddress, clientAddress;
-
-	//cout << "Hallo! " << endl;
 
 	socketfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (socketfd < 0 ) {
@@ -43,13 +41,10 @@ void DebugServer::runningServer() {
 		cout << "ERROR on binding" << endl;
 	}
 
-	//cout << "server listens" << endl;
 	listen(socketfd,5);
 
 	clientLength = sizeof(clientAddress);
 	newSocketfd = accept(socketfd, reinterpret_cast<socketAddress_t*>(&clientAddress), &clientLength);
-	usleep(1000);
-	//cout << "server connected" << endl;
 
 	if (newSocketfd < 0) {
 		cout << "ERROR on accept" << endl;
@@ -69,10 +64,8 @@ void DebugServer::requestHandler(int newSocketfd) {
 	while (m_running) {
 		bzero(buffer,50);
 		pthread_mutex_lock(&m_mutex);
-		int n = recv(newSocketfd, buffer, 50, 0);
-		if (n < 0) {
-			//cout << "ERROR reading from socket" << endl;
-		}
+		recv(newSocketfd, buffer, 50, 0);
+
 		string message(buffer);
 		if (message.find("end connection") != message.npos) {
 			m_running = false;
@@ -97,14 +90,10 @@ void DebugServer::requestHandler(int newSocketfd) {
 		}
 		else {
 			string msg = "I got your message, but i dont't understand";
-			n = send(newSocketfd, msg.c_str(), msg.length(), 0);
-			if (n < 0) {
-				//cout << "ERROR writing to socket" << endl;
-			}
+			send(newSocketfd, msg.c_str(), msg.length(), 0);
 			msg.clear();
 		}
 
-		//cout << message << endl;
 		message.clear();
 		pthread_mutex_unlock(&m_mutex);
 	}

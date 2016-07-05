@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
 	UARTHandler* handler = new UARTHandler();
 
 	handler->openSerialIF(prenConfig.IF_NAME.c_str());
-	//usleep(1000);
 	if (!handler->setUartConfig(handler->MEDIUM)) {
 		cout << "configuration failed" << endl;
 	}
@@ -45,20 +44,18 @@ int main(int argc, char** argv) {
 	DebugServer* debugServer = new DebugServer(rtFinder, objectFinder);
 	controller->setObjectStateObserver(objectFinder);
 
-
 	rc = pthread_create(&threads[0], NULL, PictureCreator::staticEntryPoint, picCreator);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;
 		exit(-1);
 	}
-	usleep(100000);	//wait a moment to let the camera come up
+	usleep(10 * 1000);
 
 	rc = pthread_create(&threads[2], NULL, ObjectFinder::staticEntryPoint, objectFinder);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;
 		exit(-1);
 	}
-	//usleep(100);
 
 	if(controller->getPrenConfig()->START_LOCAL_VIEW) {
 		rc = pthread_create(&threads[3], NULL, PictureViewer::startThread, picViewer);
@@ -77,15 +74,11 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	//usleep(100);
-
 	rc = pthread_create(&threads[5], NULL, UARTReciever::staticEntryPoint,
 			uartReceiver);
 	if (rc) {
 		cout << "Error:unable to create thread," << rc << endl;
 	}
-
-	//usleep(100);
 
 	rc = pthread_create(&threads[1], NULL, RouteFinder::staticEntryPoint, rtFinder);
 	if (rc) {
@@ -96,53 +89,29 @@ int main(int argc, char** argv) {
 	controller->start();
 
 	uartReceiver->stopReading();
-	cout << "UARTReceiver stopped" << endl;
 
 	debugServer->stopServer();
-	cout << "Debug server stopped" << endl;
 
 	picViewer->stopViewer();
-	cout << "Picture viewer stopped" << endl;
 
 	objectFinder->stopProcess();
 
+	usleep (1000 * 1000);
+	rtFinder->stopProcess();
+	usleep (5000 * 1000);
+
 	delete picViewer;
-	cout << "Picture Viewer deleted" << endl;
-
 	delete rtFinder;
-	cout << "Route finder deleted" << endl;
-
 	delete objectFinder;
-	cout << "Object finder deleted" << endl;
 
 	picCreator->StopRecording();
-	cout << "Picture creator stopped" << endl;
-
-	for ( uint i = 0; i < 7; i++) {
-		pthread_cancel(threads[i]);
-	}
-
-	//usleep(5000);
 
 	delete picCreator;
-	cout << "Picture creator deleted" << endl;
-
 	delete debugServer;
-	cout << "Debug server deleted" << endl;
-
 	delete uartReceiver;
-	cout << "UART receiver deleted" << endl;
-
 	delete uartSender;
-	cout << "UART sender deleted" << endl;
-
 	delete handler;
-	cout << "UART handler deleted" << endl;
-
 	delete controller;
-	cout << "Controller deleted" << endl;
-
-	//usleep(1000);
 
 	cout << "done :)" << endl;
 

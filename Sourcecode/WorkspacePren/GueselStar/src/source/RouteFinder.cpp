@@ -20,9 +20,11 @@ RouteFinder::RouteFinder(PrenController* controller, PictureCreator* picCreator)
 	m_Cols = m_Rows = 0;
 	m_pidCalc = new PIDCalculation(m_Controller);
 	m_RouteCalculator = new RouteCalculation(m_Controller);
+	m_CrossingReported = false;
 	m_Driving = false;
 	m_CrossingCnt = m_CrossingMatchCnt = 0;
 	me = m_Controller->ROUTE_FINDER;
+	m_Running = false;
 }
 
 RouteFinder::~RouteFinder() {
@@ -32,8 +34,8 @@ RouteFinder::~RouteFinder() {
 
 void* RouteFinder::staticEntryPoint(void* threadId) {
 	reinterpret_cast<RouteFinder*>(threadId)->runProcess();
-	cout << "Thread RouteFinder ended" << cout;
-	pthread_exit(threadId);
+	cout << "Thread RouteFinder ended" << endl;
+	return(threadId);
 }
 
 cv::Mat RouteFinder::getOriginalImage() {
@@ -42,27 +44,33 @@ cv::Mat RouteFinder::getOriginalImage() {
 
 cv::Mat RouteFinder::getGrayImage() {
 	pthread_mutex_lock(&m_mutex);
-		cv::Mat retImg = m_GrayImg.clone();
+	cv::Mat retImg = m_GrayImg.clone();
 	pthread_mutex_unlock(&m_mutex);
 	return retImg;
 }
 
 cv::Mat RouteFinder::getFilteredImage() {
 	pthread_mutex_lock(&m_mutex);
-		cv::Mat retImg = m_FinalFltImg.clone();
+	cv::Mat retImg = m_FinalFltImg.clone();
 	pthread_mutex_unlock(&m_mutex);
 	return retImg;
 }
 
-int RouteFinder::runProcess() {
+void RouteFinder::stopProcess() {
+	cout << "RouteFinder stop command received" << endl;
+	m_Running = false;
+}
+
+void RouteFinder::runProcess() {
 	cv::Mat grayImg, image;
-	ushort imgCnt = 0;
+	ushort imgCntBendCrossing = 0;
+	ushort imgCntDone = 0;
 	ushort setSpeedCnt = 0;
+	m_Running = true;
 
 	m_Controller->printString("Start", me, 1);
-    for(int i = 0; i<MAX_NR_OF_IMAGES; i++) {
+    while(m_Running) {
         image = m_PicCreator->GetImage();
-
         if (!image.empty()) {
 			cv::cvtColor(image,grayImg,CV_BGR2GRAY);
 			cv::Mat fltImg = cv::Mat::zeros(grayImg.rows, grayImg.cols, CV_8UC1);
@@ -73,29 +81,17 @@ int RouteFinder::runProcess() {
 			edgeDetection(&grayImg, &fltImg);
 			m_GrayImg = grayImg.clone();
 			m_FinalFltImg = fltImg.clone();
-			outPutNrOfIms(i);
+			outPutNrOfIms(imgCntDone);
 			setDriveState(setSpeedCnt);
 			checkLaneLost();
-			setBendCheck(imgCnt);
-			setCrossingSearchState(imgCnt);
-			if (m_CrossingMatchCnt == 2) {
-				m_Controller->setCrossingFound(200);
-			}
-			if (m_CrossingMatchCnt == 3) {
-				m_Controller->setTargetFieldFound(0);
-			}
-        }
-        else {
-        	i--;
+			setBendCheck(imgCntBendCrossing);
+			setCrossingSearchState(imgCntBendCrossing);
+			checkCrossingPriorityLane();
+			checkTargetFieldFound();
+			checkMaxNrOfImgsReached(imgCntDone);
         }
     }
-    m_Controller->printString("Ende :)", me ,6);
-    m_Controller->setState(m_Controller->END);
-	string bye = "Now I've done my job, have fun with your pics ;)";
-	m_Controller->printString(bye, me, 6);
-
-	return 0;
-
+    m_Controller->printString("Stop", me, 1);
 }
 
 void RouteFinder::edgeDetection(cv::Mat* mat, cv::Mat* changesMat) {
@@ -178,5 +174,34 @@ void RouteFinder::setCrossingSearchState(ushort imgCnt) {
 		if (m_CrossingCnt < m_RouteCalculator->getCrossingCnt()) {
 			m_CrossingCnt = m_RouteCalculator->getCrossingCnt();
 		}
+	}
+}
+
+void RouteFinder::checkCrossingPriorityLane() {
+	if (m_CrossingMatchCnt == 2 && !m_CrossingReported) {
+		m_Controller->setCrossingFound(200);
+		m_CrossingReported = true;
+	}
+}
+
+void RouteFinder::checkTargetFieldFound() {
+	if (m_CrossingMatchCnt == 4) {
+		m_Controller->setTargetFieldFound(150);
+		string bye = "Now I've done my job, we are in target field ;)";
+		m_Controller->printString(bye, me, 6);
+		usleep(2000 * 1000);
+	}
+}
+
+void RouteFinder::checkMaxNrOfImgsReached(ushort& nrOfImgs) {
+	if (nrOfImgs >= MAX_NR_OF_IMAGES) {
+	    m_Controller->printString("Ende :)", me ,6);
+		string bye = "Now I've done my job, have fun with your pics ;)";
+		m_Controller->printString(bye, me, 6);
+		usleep(2000 * 1000);
+		m_Controller->setState(m_Controller->END);
+	}
+	else {
+		nrOfImgs++;
 	}
 }
